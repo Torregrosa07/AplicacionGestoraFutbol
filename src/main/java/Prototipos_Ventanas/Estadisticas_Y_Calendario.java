@@ -4,6 +4,9 @@
  */
 package Prototipos_Ventanas;
 
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Santiago
@@ -84,6 +87,12 @@ public class Estadisticas_Y_Calendario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+                Date mFecha = jdcFecha.getDate();
+                long fecha = mFecha.getTime();
+                java.sql.Date fecha_sql = new java.sql.Date(fecha);
+                
+                JOptionPane.showMessageDialog(null, fecha_sql);
+                
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
