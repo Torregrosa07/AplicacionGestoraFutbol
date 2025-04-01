@@ -16,11 +16,7 @@ public class KickOff_Tournaments_Aplicacion_Gestora_Futbol {
         System.out.println("Keiny");
         System.out.println("Thomas12321");
         
-        System.out.println("Sexo"
-                + ""
-                + ""
-                + 
-                );
+    
         
     }
 }
