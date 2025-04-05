@@ -29,7 +29,7 @@ public class Page2 extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
         jLabel1.setText("JUGADORES");
 
