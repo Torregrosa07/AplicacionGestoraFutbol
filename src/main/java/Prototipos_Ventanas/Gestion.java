@@ -55,6 +55,8 @@ public class Gestion extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
+        inicio.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        inicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanaInicio.png"))); // NOI18N
         inicio.setText("Inicio");
         inicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,6 +64,8 @@ public class Gestion extends javax.swing.JFrame {
             }
         });
 
+        jugadores.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        jugadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestionarJugadorees-removebg-preview.png"))); // NOI18N
         jugadores.setText("Jugadores");
         jugadores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,6 +73,8 @@ public class Gestion extends javax.swing.JFrame {
             }
         });
 
+        equipos.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        equipos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestionarEquipos-removebg-preview.png"))); // NOI18N
         equipos.setText("Equipos");
         equipos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,6 +82,8 @@ public class Gestion extends javax.swing.JFrame {
             }
         });
 
+        partidos.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        partidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestionarPartidos-removebg-preview.png"))); // NOI18N
         partidos.setText("Partidos");
         partidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
