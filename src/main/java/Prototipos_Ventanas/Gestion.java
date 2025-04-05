@@ -5,6 +5,7 @@
 package Prototipos_Ventanas;
 
 import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 /**
  *
@@ -19,15 +20,18 @@ public class Gestion extends javax.swing.JFrame {
         initComponents();
         
         Page1 p1 = new Page1();
-        p1.setSize(679, 473);
-        p1.setLocation(0, 0);
-        
-        content.removeAll();
-        content.add(p1, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
+        ShowPanel(p1);
     }
 
+    private void ShowPanel(JPanel p){
+        p.setSize(679, 473);
+        p.setLocation(0, 0);
+        
+        content.removeAll();
+        content.add(p, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();  
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -155,47 +159,23 @@ public class Gestion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void inicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioActionPerformed
-         Page1 p1 = new Page1();
-        p1.setSize(679, 473);
-        p1.setLocation(0, 0);
-        
-        content.removeAll();
-        content.add(p1, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
+        Page1 p1 = new Page1();
+        ShowPanel(p1);
     }//GEN-LAST:event_inicioActionPerformed
 
     private void jugadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugadoresActionPerformed
         Page2 p2 = new Page2();
-        p2.setSize(679, 473);
-        p2.setLocation(0, 0);
-        
-        content.removeAll();
-        content.add(p2, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
+        ShowPanel(p2);
     }//GEN-LAST:event_jugadoresActionPerformed
 
     private void equiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equiposActionPerformed
         Page3 p3 = new Page3();
-        p3.setSize(679, 473);
-        p3.setLocation(0, 0);
-        
-        content.removeAll();
-        content.add(p3, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
+        ShowPanel(p3);
     }//GEN-LAST:event_equiposActionPerformed
 
     private void partidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partidosActionPerformed
         Page4 p4 = new Page4();
-        p4.setSize(679, 473);
-        p4.setLocation(0, 0);
-        
-        content.removeAll();
-        content.add(p4, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
+        ShowPanel(p4);
     }//GEN-LAST:event_partidosActionPerformed
 
     /**
