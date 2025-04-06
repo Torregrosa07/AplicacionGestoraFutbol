@@ -4,6 +4,12 @@
  */
 package Prototipos_Ventanas;
 
+import ConexionesBD.ConexionBDR.ConexionBD;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -86,11 +92,39 @@ public class Estadisticas_Y_Calendario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void VerPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerPartidoActionPerformed
-                Date mFecha = jdcFecha.getDate();
-                long fecha = mFecha.getTime();
-                java.sql.Date fecha_sql = new java.sql.Date(fecha);
-               
-                JOptionPane.showMessageDialog(null, fecha_sql);
+         Date mFecha = jdcFecha.getDate();
+    if (mFecha == null) {
+        JOptionPane.showMessageDialog(this, "Por favor selecciona una fecha.");
+        return;
+    }
+
+    java.sql.Date fecha_sql = new java.sql.Date(mFecha.getTime());
+
+    try (Connection con = ConexionBD.conectar()) {
+        String sql = "SELECT equipo_local, equipo_visitante, hora FROM partidos WHERE fecha = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setDate(1, fecha_sql);
+
+        ResultSet rs = ps.executeQuery();
+
+        StringBuilder resultado = new StringBuilder();
+        while (rs.next()) {
+            String local = rs.getString("equipo_local");
+            String visitante = rs.getString("equipo_visitante");
+            String hora = rs.getString("hora");
+            resultado.append(local).append(" vs ").append(visitante)
+                     .append(" a las ").append(hora).append("\n");
+        }
+
+        if (resultado.length() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay partidos programados para esa fecha.");
+        } else {
+            JOptionPane.showMessageDialog(this, resultado.toString(), "Partidos del Día", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al conectar con la BD: " + e.getMessage());
+    }
                 
     }//GEN-LAST:event_VerPartidoActionPerformed
 
