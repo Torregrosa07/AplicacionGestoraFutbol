@@ -20,8 +20,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        
-        
+
         txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -46,8 +45,11 @@ public class Login extends javax.swing.JFrame {
             }
         });
         SwingUtilities.invokeLater(() -> {
-            jPanel1.requestFocusInWindow(); 
+            jPanel1.requestFocusInWindow();
         });
+
+        InicioSesion.addActionListener(e -> validarAcceso());
+
     }
 
     /**
@@ -63,10 +65,10 @@ public class Login extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        InicioSesion = new javax.swing.JButton();
+        EntrarDeInvitado = new javax.swing.JButton();
+        Registrarse = new javax.swing.JButton();
+        RestaurarContraseña = new javax.swing.JButton();
         txtContraseña = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,13 +85,13 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Iniciar Sesión");
+        InicioSesion.setText("Iniciar Sesión");
 
-        jButton2.setText("Entrar como invitado");
+        EntrarDeInvitado.setText("Entrar como invitado");
 
-        jButton3.setText("Registrarse");
+        Registrarse.setText("Registrarse");
 
-        jButton4.setText("No recuerdas tu contraseña?");
+        RestaurarContraseña.setText("No recuerdas tu contraseña?");
 
         txtContraseña.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtContraseña.setText("Contraseña");
@@ -107,14 +109,14 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 28, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                        .addComponent(jButton4))
+                        .addComponent(RestaurarContraseña))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(158, 158, 158)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(InicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(75, 75, 75)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,7 +126,7 @@ public class Login extends javax.swing.JFrame {
                                         .addComponent(txtContraseña))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(151, 151, 151)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(EntrarDeInvitado, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -138,13 +140,13 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(InicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(RestaurarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(EntrarDeInvitado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(62, Short.MAX_VALUE))
         );
 
@@ -232,11 +234,63 @@ public class Login extends javax.swing.JFrame {
         });
     }
 
+    private void validarAcceso() {
+        String[][] usuarios = {
+            {"profesorx", "macarena"},
+            {"Lobezno", "Laura123"},
+            {"Tormenta", "elrayodestructor"},
+            {"ciclope", "quemeves"},
+            {"bestia", "noseescribirjajasaludos"},
+            {"nightcrawler", "vivacristorey"},
+            {"quicksilver", "hijodeamagnetonojodaporquemicontraseñaestanlarganomameslol"},
+            {"mystique", "Xavier"},
+            {"marksuckerberg", "facebook325"},
+            {"homelander", "olasoyjomlander"}
+        };
+
+        String usuarioIngresado = txtUsuario.getText();
+        String contraseñaIngresada = new String(txtContraseña.getPassword());
+
+        if (usuarioIngresado.equals("Usuario")) {
+            usuarioIngresado = "";
+        }
+        if (contraseñaIngresada.equals("Contraseña")) {
+            contraseñaIngresada = "";
+        }
+
+        boolean accesoValido = false;
+        int i = 0;
+        while (i < usuarios.length && !accesoValido) {
+            if (usuarios[i][0].equalsIgnoreCase(usuarioIngresado)
+                    && usuarios[i][1].equals(contraseñaIngresada)) {
+                accesoValido = true;
+            }
+            i++;
+        }
+
+        if (accesoValido) {
+            JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+
+            // Abre la nueva ventana
+            Gestion nuevaVentana = new Gestion();
+            nuevaVentana.setVisible(true);
+            nuevaVentana.setLocationRelativeTo(null); // Centra la nueva ventana
+
+            // Cierra la ventana de login
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Acceso denegado", JOptionPane.ERROR_MESSAGE);
+            txtContraseña.setText("");
+            txtContraseñaFocusLost(null);
+        }
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton EntrarDeInvitado;
+    private javax.swing.JButton InicioSesion;
+    private javax.swing.JButton Registrarse;
+    private javax.swing.JButton RestaurarContraseña;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
