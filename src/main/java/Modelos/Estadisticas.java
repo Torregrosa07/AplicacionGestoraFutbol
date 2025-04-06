@@ -8,6 +8,6 @@ package Modelos;
  *
  * @author thomas
  */
-public class Estadísticas {
+public class Estadisticas {
     
 }
