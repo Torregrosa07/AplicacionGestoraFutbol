@@ -19,8 +19,8 @@ public class Gestion extends javax.swing.JFrame {
     public Gestion() {
         initComponents();
         
-        Page1 p1 = new Page1();
-        ShowPanel(p1);
+        Inicio1 i1 = new Inicio1();
+        ShowPanel(i1);
     }
 
     private void ShowPanel(JPanel p){
@@ -165,22 +165,22 @@ public class Gestion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void inicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioActionPerformed
-        Page1 p1 = new Page1();
-        ShowPanel(p1);
+        Inicio1 i1 = new Inicio1();
+        ShowPanel(i1);
     }//GEN-LAST:event_inicioActionPerformed
 
     private void jugadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugadoresActionPerformed
-        Page2 p2 = new Page2();
-        ShowPanel(p2);
+        Jugadores1 j2 = new Jugadores1();
+        ShowPanel(j2);
     }//GEN-LAST:event_jugadoresActionPerformed
 
     private void equiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equiposActionPerformed
-        Page3 p3 = new Page3();
-        ShowPanel(p3);
+        Equipos1 e3 = new Equipos1();
+        ShowPanel(e3);
     }//GEN-LAST:event_equiposActionPerformed
 
     private void partidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partidosActionPerformed
-        Page4 p4 = new Page4();
+        Partidos1 p4 = new Partidos1();
         ShowPanel(p4);
     }//GEN-LAST:event_partidosActionPerformed
 

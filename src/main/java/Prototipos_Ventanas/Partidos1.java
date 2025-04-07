@@ -8,12 +8,12 @@ package Prototipos_Ventanas;
  *
  * @author keiny
  */
-public class Page2 extends javax.swing.JPanel {
+public class Partidos1 extends javax.swing.JPanel {
 
     /**
-     * Creates new form Page2
+     * Creates new form Page4
      */
-    public Page2() {
+    public Partidos1() {
         initComponents();
     }
 
@@ -29,9 +29,11 @@ public class Page2 extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
+        setBackground(new java.awt.Color(255, 204, 255));
 
-        jLabel1.setText("JUGADORES");
+        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+
+        jLabel1.setText("PARTIDOS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -39,15 +41,15 @@ public class Page2 extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(122, 122, 122)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(473, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addContainerGap(502, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(400, Short.MAX_VALUE))
+                .addGap(68, 68, 68)
+                .addComponent(jLabel1)
+                .addContainerGap(409, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
