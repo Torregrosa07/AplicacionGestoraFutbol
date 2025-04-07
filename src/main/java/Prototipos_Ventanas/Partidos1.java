@@ -42,14 +42,14 @@ public class Partidos1 extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(122, 122, 122)
                 .addComponent(jLabel1)
-                .addContainerGap(502, Short.MAX_VALUE))
+                .addContainerGap(783, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(jLabel1)
-                .addContainerGap(409, Short.MAX_VALUE))
+                .addContainerGap(426, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
