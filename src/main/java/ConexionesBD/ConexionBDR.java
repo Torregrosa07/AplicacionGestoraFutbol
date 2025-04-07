@@ -23,6 +23,9 @@ public class ConexionBD {
     public static Connection conectar() throws SQLException {
         return DriverManager.getConnection(URL, USUARIO, CLAVE);
     }
+    
 }
+
+
     
 }
