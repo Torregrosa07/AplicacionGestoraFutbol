@@ -8,12 +8,12 @@ package Prototipos_Ventanas;
  *
  * @author keiny
  */
-public class Jugadores1 extends javax.swing.JPanel {
+public class GestionJugadores extends javax.swing.JPanel {
 
     /**
      * Creates new form Page2
      */
-    public Jugadores1() {
+    public GestionJugadores() {
         initComponents();
     }
 

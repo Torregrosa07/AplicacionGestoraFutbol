@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package gestion;
+package Prototipos_Ventanas;
 
-import Prototipos_Ventanas.*;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
@@ -12,16 +11,16 @@ import javax.swing.JPanel;
  *
  * @author Santiago
  */
-public class Principal extends javax.swing.JFrame {
+public class Consultar extends javax.swing.JFrame {
 
     /**
      * Creates new form Gestion
      */
-    public Principal() {
+    public Consultar() {
         initComponents();
         
-        Inicio1 i1 = new Inicio1();
-        ShowPanel(i1);
+        ConsultaInicio ci1 = new ConsultaInicio();
+        ShowPanel(ci1);
     }
 
     private void ShowPanel(JPanel p){
@@ -59,6 +58,7 @@ public class Principal extends javax.swing.JFrame {
         inicio.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         inicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanaInicio.png"))); // NOI18N
         inicio.setText("Inicio");
+        inicio.setBorder(null);
         inicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inicioActionPerformed(evt);
@@ -68,6 +68,7 @@ public class Principal extends javax.swing.JFrame {
         jugadores.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jugadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestionarJugadorees-removebg-preview.png"))); // NOI18N
         jugadores.setText("Jugadores");
+        jugadores.setBorder(null);
         jugadores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jugadoresActionPerformed(evt);
@@ -77,6 +78,7 @@ public class Principal extends javax.swing.JFrame {
         equipos.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         equipos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestionarEquipos-removebg-preview.png"))); // NOI18N
         equipos.setText("Equipos");
+        equipos.setBorder(null);
         equipos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 equiposActionPerformed(evt);
@@ -86,6 +88,7 @@ public class Principal extends javax.swing.JFrame {
         partidos.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         partidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gestionarPartidos-removebg-preview.png"))); // NOI18N
         partidos.setText("Partidos");
+        partidos.setBorder(null);
         partidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 partidosActionPerformed(evt);
@@ -159,68 +162,42 @@ public class Principal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void inicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioActionPerformed
-        Inicio1 i1 = new Inicio1();
-        ShowPanel(i1);
+        ConsultaInicio ci1 = new ConsultaInicio();
+        ShowPanel(ci1);
     }//GEN-LAST:event_inicioActionPerformed
 
     private void jugadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugadoresActionPerformed
-        Jugadores1 j2 = new Jugadores1();
-        ShowPanel(j2);
+        ConsultaJugadores cj2 = new ConsultaJugadores();
+        ShowPanel(cj2);
     }//GEN-LAST:event_jugadoresActionPerformed
 
     private void equiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equiposActionPerformed
-        Equipos1 e3 = new Equipos1();
-        ShowPanel(e3);
+        ConsultaEquipos ce3 = new ConsultaEquipos();
+        ShowPanel(ce3);
     }//GEN-LAST:event_equiposActionPerformed
 
     private void partidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partidosActionPerformed
-        Partidos1 p4 = new Partidos1();
-        ShowPanel(p4);
+        ConsultaPartidos cp4 = new ConsultaPartidos();
+        ShowPanel(cp4);
     }//GEN-LAST:event_partidosActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                new Consultar().setVisible(true);
             }
         });
     }

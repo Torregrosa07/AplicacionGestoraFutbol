@@ -2,20 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package gestion;
-
-import Prototipos_Ventanas.*;
+package Prototipos_Ventanas;
 
 /**
  *
  * @author keiny
  */
-public class Partidos1 extends javax.swing.JPanel {
+public class GestionPartidos1 extends javax.swing.JPanel {
 
     /**
      * Creates new form Page4
      */
-    public Partidos1() {
+    public GestionPartidos1() {
         initComponents();
     }
 
