@@ -4,37 +4,37 @@
  */
 package Modelos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author keiny
  */
-public class Jugador {
+public class Jugador implements Comparable<Jugador>, Serializable{
     private int IDjugador;
     private String nombre;
     private String apellidos;
     private String posicion;
+    private Equipo equipo;
+    private String dorsal;
+    
     enum Sexo{FEMENINO, MASCULINO, NO_DEFINIDO};
     private int edad;
     private String nacionalidad;
     enum TipoTarjeta{AMARILLO, ROJO};
 
-    public Jugador() {
+    @Override
+    public int compareTo(Jugador otro) {
+        return this.getNombre().toLowerCase().compareTo(otro.getNombre().toLowerCase());
     }
 
-    public Jugador(int IDjugador, String nombre) {
-        this.IDjugador = IDjugador;
-        this.nombre = nombre;
+    public Equipo getEquipo() {
+        return equipo;
     }
 
-    public Jugador(int IDjugador, String nombre, String apellidos, String posicion, int edad, String nacionalidad) {
-        this.IDjugador = IDjugador;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.posicion = posicion;
-        this.edad = edad;
-        this.nacionalidad = nacionalidad;
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
     }
-
 
     public int getIDjugador() {
         return IDjugador;
@@ -68,6 +68,14 @@ public class Jugador {
         this.posicion = posicion;
     }
 
+    public String getDorsal() {
+        return dorsal;
+    }
+
+    public void setDorsal(String dorsal) {
+        this.dorsal = dorsal;
+    }
+
     public int getEdad() {
         return edad;
     }
@@ -83,7 +91,42 @@ public class Jugador {
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
+    
 
+    public Jugador() {
+    }
+
+    public Jugador(String nombre, String apellidos) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+    }
+
+    public Jugador(int IDjugador, String nombre, String apellidos, String posicion, Equipo equipo, String dorsal, int edad, String nacionalidad) {
+        this.IDjugador = IDjugador;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.posicion = posicion;
+        this.equipo = equipo;
+        this.dorsal = dorsal;
+        this.edad = edad;
+        this.nacionalidad = nacionalidad;
+    }
+    
+    
+    //Constructor para el metodo de añdair
+    public Jugador(String nombre, String apellidos, String posicion, Equipo equipo, String dorsal) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.posicion = posicion;
+        this.equipo = equipo;
+        this.dorsal = dorsal;
+        
+    }
+    
+    
+    
+    
+  
     @Override
     public String toString() {
         return "Jugador{" + "IDjugador=" + IDjugador + ", nombre=" + nombre + ", apellidos=" + apellidos + ", posicion=" + posicion + ", edad=" + edad + ", nacionalidad=" + nacionalidad + '}';
