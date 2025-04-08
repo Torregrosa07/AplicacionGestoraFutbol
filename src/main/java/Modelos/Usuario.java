@@ -7,14 +7,16 @@ package Modelos;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+
 /*
 *
 * @author thomas
-*/
-@NamedQuery(name="queryEstática1", query="SELECT u FROM Usuario u")
+ */
+@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
 
 @Entity
 public class Usuario {
+
     @Id
     private Long id;
     private String Usuario;
@@ -62,8 +64,4 @@ public class Usuario {
         return "Usuario{" + "id=" + id + ", Usuario=" + Usuario + ", Contrase\u00f1a=" + Contraseña + '}';
     }
 
-    
-
-   
-    
 }

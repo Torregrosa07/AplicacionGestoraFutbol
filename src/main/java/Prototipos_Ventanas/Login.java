@@ -4,6 +4,7 @@
  */
 package Prototipos_Ventanas;
 
+import Modelos.Usuario;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -15,6 +16,7 @@ import javax.swing.*;
  */
 public class Login extends javax.swing.JFrame {
 
+    boolean esAdministrador = false;
     /**
      * Creates new form Login
      */
@@ -183,13 +185,14 @@ public class Login extends javax.swing.JFrame {
     private void EntrarDeInvitadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntrarDeInvitadoActionPerformed
         JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido Invitado", "KickOff Tournaments", JOptionPane.INFORMATION_MESSAGE);
 
-            // Abre la nueva ventana
-            Gestion nuevaVentana = new Gestion();
-            nuevaVentana.setVisible(true);
-            nuevaVentana.setLocationRelativeTo(null); // Centra la nueva ventana
+        // Abre la nueva ventana
+        Gestion nuevaVentana = new Gestion();
+        nuevaVentana.setVisible(true);
+        nuevaVentana.setLocationRelativeTo(null); // Centra la nueva ventana
+        esAdministrador = false;
 
-            // Cierra la ventana de login
-            this.dispose();
+        // Cierra la ventana de login
+        this.dispose();
     }//GEN-LAST:event_EntrarDeInvitadoActionPerformed
     private void txtUsuarioFocusGained(java.awt.event.FocusEvent evt) {
         if (txtUsuario.getText().equals("Usuario")) {
@@ -227,6 +230,15 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        // Creación de usuarios
+        Usuario u1 = new Usuario(1L, "admin", "1234");
+        Usuario u2 = new Usuario(2L, "usuario1", "abcd");
+        Usuario u3 = new Usuario(3L, "profesor", "clave");
+        em.persist(u1);
+        em.persist(u2);
+        em.persist(u3);
+
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         try {
@@ -276,6 +288,7 @@ public class Login extends javax.swing.JFrame {
         }
 
         boolean accesoValido = false;
+        esAdministrador = true;
         int i = 0;
         while (i < usuarios.length && !accesoValido) {
             if (usuarios[i][0].equalsIgnoreCase(usuarioIngresado)
