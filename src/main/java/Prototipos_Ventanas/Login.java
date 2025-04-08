@@ -190,7 +190,7 @@ public class Login extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido Invitado", "KickOff Tournaments", JOptionPane.INFORMATION_MESSAGE);
 
         // Abre la nueva ventana
-        Gestion nuevaVentana = new Gestion();
+        Consultar nuevaVentana = new Consultar();
         nuevaVentana.setVisible(true);
         nuevaVentana.setLocationRelativeTo(null); // Centra la nueva ventana
         esAdministrador = false;
