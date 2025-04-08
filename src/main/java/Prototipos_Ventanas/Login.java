@@ -88,6 +88,11 @@ public class Login extends javax.swing.JFrame {
         InicioSesion.setText("Iniciar Sesión");
 
         EntrarDeInvitado.setText("Entrar como invitado");
+        EntrarDeInvitado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EntrarDeInvitadoActionPerformed(evt);
+            }
+        });
 
         Registrarse.setText("Registrarse");
 
@@ -174,6 +179,18 @@ public class Login extends javax.swing.JFrame {
     private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtContraseñaActionPerformed
+
+    private void EntrarDeInvitadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntrarDeInvitadoActionPerformed
+        JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido Invitado", "KickOff Tournaments", JOptionPane.INFORMATION_MESSAGE);
+
+            // Abre la nueva ventana
+            Gestion nuevaVentana = new Gestion();
+            nuevaVentana.setVisible(true);
+            nuevaVentana.setLocationRelativeTo(null); // Centra la nueva ventana
+
+            // Cierra la ventana de login
+            this.dispose();
+    }//GEN-LAST:event_EntrarDeInvitadoActionPerformed
     private void txtUsuarioFocusGained(java.awt.event.FocusEvent evt) {
         if (txtUsuario.getText().equals("Usuario")) {
             txtUsuario.setText("");
