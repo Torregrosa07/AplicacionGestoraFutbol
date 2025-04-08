@@ -190,8 +190,8 @@ public class Gestion extends javax.swing.JFrame {
     }//GEN-LAST:event_inicioActionPerformed
 
     private void jugadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugadoresActionPerformed
-        GestionJugadores j2 = new GestionJugadores();
-        ShowPanel(j2);
+//        GestionJugadores j2 = new GestionJugadores();
+//        ShowPanel(j2);
     }//GEN-LAST:event_jugadoresActionPerformed
 
     private void equiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equiposActionPerformed
