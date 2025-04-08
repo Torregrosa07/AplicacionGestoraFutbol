@@ -15,6 +15,7 @@ public class GestionJugadores extends javax.swing.JPanel {
      */
     public GestionJugadores() {
         initComponents();
+        
     }
 
     /**
