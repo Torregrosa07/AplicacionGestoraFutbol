@@ -234,9 +234,9 @@ public class Login extends javax.swing.JFrame {
         Usuario u1 = new Usuario(1L, "admin", "1234");
         Usuario u2 = new Usuario(2L, "usuario1", "abcd");
         Usuario u3 = new Usuario(3L, "profesor", "clave");
-        em.persist(u1);
-        em.persist(u2);
-        em.persist(u3);
+//        em.persist(u1);
+//        em.persist(u2);
+//        em.persist(u3);
 
 
         /* Set the Nimbus look and feel */
