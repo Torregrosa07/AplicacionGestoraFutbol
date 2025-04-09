@@ -12,19 +12,31 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+
 /**
  *
  * @author thomas
  */
 public class controladorUsuarios {
-    
-private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("BDOUsuarios");
+
+    static String nombreBDO = "AD_Ejemplo1.odb";
+    static String rutaBase = "$objectdb/db/";
+    static String rutaBDO = rutaBase + nombreBDO;
+    String jpql;
+    static EntityManagerFactory emf;
+    static EntityManager em;
+
+    static {
+        emf = Persistence.createEntityManagerFactory(rutaBDO);
+    }
 
     public static Usuario validarUsuario(String nombre, String contraseña) {
-        EntityManager em = emf.createEntityManager();
+
+        em = emf.createEntityManager();
+
         try {
             TypedQuery<Usuario> query = em.createQuery(
-                "SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.contraseña = :contraseña", Usuario.class);
+                    "SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.contraseña = :contraseña", Usuario.class);
             query.setParameter("nombre", nombre);
             query.setParameter("contraseña", contraseña);
 
@@ -44,10 +56,10 @@ private static final EntityManagerFactory emf = Persistence.createEntityManagerF
             em.persist(usuario);
             tx.commit();
         } finally {
-            if (tx.isActive()) tx.rollback();
+            if (tx.isActive()) {
+                tx.rollback();
+            }
             em.close();
         }
     }
 }
-
-

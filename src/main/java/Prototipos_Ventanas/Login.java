@@ -18,13 +18,13 @@ import javax.swing.*;
 public class Login extends javax.swing.JFrame {
 
     boolean esAdministrador = false;
+
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
         setResizable(false);
-
 
         txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
@@ -235,15 +235,9 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
-        // Creación de usuarios
-        Usuario u1 = new Usuario(1L, "admin", "1234");
-        Usuario u2 = new Usuario(2L, "usuario1", "abcd");
-        Usuario u3 = new Usuario(3L, "profesor", "clave");
-//        em.persist(u1);
-//        em.persist(u2);
-//        em.persist(u3);
 
+        Usuario nuevo = new Usuario("admin", "1234");
+        controladorUsuarios.insertarUsuario(nuevo);
 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -270,27 +264,30 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void validarAcceso() {
-    String usuarioIngresado = txtUsuario.getText().trim();
-    String contraseñaIngresada = new String(txtContraseña.getPassword());
+        String usuarioIngresado = txtUsuario.getText().trim();
+        String contraseñaIngresada = new String(txtContraseña.getPassword());
 
-    if (usuarioIngresado.equals("Usuario")) usuarioIngresado = "";
-    if (contraseñaIngresada.equals("Contraseña")) contraseñaIngresada = "";
+        if (usuarioIngresado.equals("Usuario")) {
+            usuarioIngresado = "";
+        }
+        if (contraseñaIngresada.equals("Contraseña")) {
+            contraseñaIngresada = "";
+        }
 
-    Usuario usuario = controladorUsuarios.validarUsuario(usuarioIngresado, contraseñaIngresada);
+        Usuario usuario = controladorUsuarios.validarUsuario(usuarioIngresado, contraseñaIngresada);
 
-    if (usuario != null) {
-        JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-        Gestion nuevaVentana = new Gestion();
-        nuevaVentana.setVisible(true);
-        nuevaVentana.setLocationRelativeTo(null);
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Acceso denegado", JOptionPane.ERROR_MESSAGE);
-        txtContraseña.setText("");
-        txtContraseñaFocusLost(null);
+        if (usuario != null) {
+            JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+            Gestion nuevaVentana = new Gestion();
+            nuevaVentana.setVisible(true);
+            nuevaVentana.setLocationRelativeTo(null);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Acceso denegado", JOptionPane.ERROR_MESSAGE);
+            txtContraseña.setText("");
+            txtContraseñaFocusLost(null);
+        }
     }
-}
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

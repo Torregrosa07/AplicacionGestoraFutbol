@@ -5,6 +5,7 @@
 package Modelos;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 
@@ -12,56 +13,37 @@ import javax.persistence.NamedQuery;
 *
 * @author thomas
  */
-@NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-
 @Entity
 public class Usuario {
-
     @Id
+    @GeneratedValue
     private Long id;
-    private String Usuario;
-    private String Contraseña;
 
-    public Usuario() {
+    private String nombre;
+    private String contraseña;
+
+    // Constructores, getters y setters
+    public Usuario() {}
+
+    public Usuario(String nombre, String contraseña) {
+        this.nombre = nombre;
+        this.contraseña = contraseña;
     }
 
-    public Usuario(Long id) {
-        this.id = id;
+    public String getNombre() {
+        return nombre;
     }
 
-    public Usuario(Long id, String Usuario, String Contraseña) {
-        this.id = id;
-        this.Usuario = Usuario;
-        this.Contraseña = Contraseña;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsuario() {
-        return Usuario;
-    }
-
-    public void setUsuario(String Usuario) {
-        this.Usuario = Usuario;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getContraseña() {
-        return Contraseña;
+        return contraseña;
     }
 
-    public void setContraseña(String Contraseña) {
-        this.Contraseña = Contraseña;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
-
-    @Override
-    public String toString() {
-        return "Usuario{" + "id=" + id + ", Usuario=" + Usuario + ", Contrase\u00f1a=" + Contraseña + '}';
-    }
-//Comentario diablitosdfsdfsdffsdfsdfds
 }
+
