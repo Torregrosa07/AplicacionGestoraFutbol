@@ -5,6 +5,7 @@
 package Prototipos_Ventanas;
 
 import Modelos.Usuario;
+import controladores.controladorUsuarios;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -269,56 +270,27 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void validarAcceso() {
-        String[][] usuarios = {
-            {"profesorx", "macarena"},
-            {"Lobezno", "Laura123"},
-            {"Tormenta", "elrayodestructor"},
-            {"ciclope", "quemeves"},
-            {"bestia", "noseescribirjajasaludos"},
-            {"nightcrawler", "vivacristorey"},
-            {"quicksilver", "hijodeamagnetonojodaporquemicontraseñaestanlarganomameslol"},
-            {"mystique", "Xavier"},
-            {"marksuckerberg", "facebook325"},
-            {"homelander", "olasoyjomlander"}
-        };
+    String usuarioIngresado = txtUsuario.getText().trim();
+    String contraseñaIngresada = new String(txtContraseña.getPassword());
 
-        String usuarioIngresado = txtUsuario.getText();
-        String contraseñaIngresada = new String(txtContraseña.getPassword());
+    if (usuarioIngresado.equals("Usuario")) usuarioIngresado = "";
+    if (contraseñaIngresada.equals("Contraseña")) contraseñaIngresada = "";
 
-        if (usuarioIngresado.equals("Usuario")) {
-            usuarioIngresado = "";
-        }
-        if (contraseñaIngresada.equals("Contraseña")) {
-            contraseñaIngresada = "";
-        }
+    Usuario usuario = controladorUsuarios.validarUsuario(usuarioIngresado, contraseñaIngresada);
 
-        boolean accesoValido = false;
-        esAdministrador = true;
-        int i = 0;
-        while (i < usuarios.length && !accesoValido) {
-            if (usuarios[i][0].equalsIgnoreCase(usuarioIngresado)
-                    && usuarios[i][1].equals(contraseñaIngresada)) {
-                accesoValido = true;
-            }
-            i++;
-        }
-
-        if (accesoValido) {
-            JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-
-            // Abre la nueva ventana
-            Gestion nuevaVentana = new Gestion();
-            nuevaVentana.setVisible(true);
-            nuevaVentana.setLocationRelativeTo(null); // Centra la nueva ventana
-
-            // Cierra la ventana de login
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Acceso denegado", JOptionPane.ERROR_MESSAGE);
-            txtContraseña.setText("");
-            txtContraseñaFocusLost(null);
-        }
+    if (usuario != null) {
+        JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+        Gestion nuevaVentana = new Gestion();
+        nuevaVentana.setVisible(true);
+        nuevaVentana.setLocationRelativeTo(null);
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Acceso denegado", JOptionPane.ERROR_MESSAGE);
+        txtContraseña.setText("");
+        txtContraseñaFocusLost(null);
     }
+}
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
