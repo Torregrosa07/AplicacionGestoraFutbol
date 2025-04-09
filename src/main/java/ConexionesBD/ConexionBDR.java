@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class ConexionBDR {
 
-    String bd = "ejemplo";
+    String bd = "pruebaaplicacion";
     String sql;
     String usuario = "root";
     String clave = "";
