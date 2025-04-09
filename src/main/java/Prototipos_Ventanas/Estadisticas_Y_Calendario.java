@@ -4,7 +4,7 @@
  */
 package Prototipos_Ventanas;
 
-import ConexionesBD.ConexionBDR.ConexionBD;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

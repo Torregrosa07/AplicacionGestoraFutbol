@@ -20,7 +20,7 @@ import javax.persistence.TypedQuery;
 public class controladorUsuarios {
 
     static String nombreBDO = "AD_Ejemplo1.odb";
-    static String rutaBase = "$objectdb/db/";
+    static String rutaBase = "db/";
     static String rutaBDO = rutaBase + nombreBDO;
     String jpql;
     static EntityManagerFactory emf;
