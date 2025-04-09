@@ -8,48 +8,54 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Santiago
  */
 public class ConexionBDR {
-    
 
-public class ConexionBD {
-    public static void main(String[] args) {
-        Connection con;
-        Statement sentencia;
-        String sql;
-        String usuario ="root";
-        String clave ="FNYqz3BMkWdV";
-        String url = "jdbc:mysql://192.168.0.139/Instituto";
-        
+    String bd = "ejemplo";
+    String sql;
+    String usuario = "root";
+    String clave = "";
+    String url = "jdbc:mysql://localhost:3306/";
+    String driver = "com.mysql.cj.jdbc.Driver";
+    Connection con;
+    Statement sentencia;
+
+    public ConexionBDR() {
+    }
+
+    public Connection conectar() throws ClassNotFoundException {
+        Class.forName(driver);
+        System.out.println("SE CONECTO A BASE DE DATOS " + bd);
         try {
-            // comprobación de disponibilidad del conector jdbc - cargar driver
-            // No necesario desde Java SE 6
-//            try {
-//                Class.forName("com.mysql.cj.jdbc.Driver");
-//            } catch (ClassNotFoundException ex) {
-//                System.out.println("Clase no encontrada para conectar con BD");
-//            }
-//            
-            // conexión con la BD
-            con = DriverManager.getConnection(url, usuario, clave);
-            System.out.println("Conexión establecida con " + url);
-            
-            // cierre de la conexión
-            con.close(); 
-            
-        } catch (SQLException e) {
-            // Información del Error
-            System.err.println("SQL Error mensaje: " + e.getMessage());
-            System.err.println("SQL Estado: " + e.getSQLState());
-            System.err.println("SQL código específico: " + e.getErrorCode());
-        } catch (Exception e){
-            e.printStackTrace(System.err);
-            }
-        }
+            con = DriverManager.getConnection(url + bd, usuario, clave);
+        } catch (SQLException ex) {
+            System.out.println("NO SE CONECTO A BASE DE DATOS " + bd);
+            Logger.getLogger(ConexionBDR.class.getName()).log(Level.SEVERE, null, ex);
 
+        }
+        return con;
+    }
+
+    public Connection getConnection() {
+        return con;
+    }
+
+    public void desconectar() {
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexionBDR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        ConexionBDR conexion = new ConexionBDR();
+        conexion.conectar();
     }
 }
