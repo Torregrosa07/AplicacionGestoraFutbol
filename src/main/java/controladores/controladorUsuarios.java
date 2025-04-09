@@ -62,4 +62,17 @@ public class controladorUsuarios {
             em.close();
         }
     }
+
+    public static boolean existeUsuario(String nombre) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Long> query = em.createQuery(
+                    "SELECT COUNT(u) FROM Usuario u WHERE u.nombre = :nombre", Long.class);
+            query.setParameter("nombre", nombre);
+            Long count = query.getSingleResult();
+            return count > 0;
+        } finally {
+            em.close();
+        }
+    }
 }
