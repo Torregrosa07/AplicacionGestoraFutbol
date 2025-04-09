@@ -296,14 +296,14 @@ public class GestionJugadores extends javax.swing.JPanel {
 
             if (añadido) {
                 actualizaTabla(); // recarga datos desde el TreeSet
-                JOptionPane.showMessageDialog(this, "Deportista añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "El deportista ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El jugador ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Formato inválido para año o altura.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }           
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
