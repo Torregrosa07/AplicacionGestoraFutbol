@@ -1,1 +1,4 @@
 /target/
+/db/*.odb
+/db/*.lck
+/db/*.log
