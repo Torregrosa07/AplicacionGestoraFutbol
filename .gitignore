@@ -2,3 +2,6 @@
 /db/*.odb
 /db/*.lck
 /db/*.log
+
+# Ignorar base de datos
+db/AD_Ejemplo1.odb
