@@ -75,4 +75,28 @@ public class controladorUsuarios {
             em.close();
         }
     }
+    
+    public static void crearAdminSiNoExiste() {
+    EntityManager em = emf.createEntityManager();
+    try {
+        TypedQuery<Long> query = em.createQuery(
+                "SELECT COUNT(u) FROM Usuario u WHERE u.nombre = :nombre", Long.class);
+        query.setParameter("nombre", "admin");
+        Long count = query.getSingleResult();
+
+        if (count == 0) {
+            Usuario admin = new Usuario();
+            admin.setNombre("admin");
+            admin.setContraseña("1234");
+
+            insertarUsuario(admin);
+            System.out.println("Usuario admin creado.");
+        } else {
+            System.out.println("🔵 Usuario admin ya existe.");
+        }
+    } finally {
+        em.close();
+    }
+}
+
 }
