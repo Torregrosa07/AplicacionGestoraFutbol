@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author thomas
  */
-public class Equipo {
+public class Equipo implements Comparable<Equipo>{
     private int IDEquipo;
     private String nombre;
     private Date añoFundacion;
@@ -83,6 +83,11 @@ public class Equipo {
     @Override
     public String toString() {
         return "Equipo{" + "IDEquipo=" + IDEquipo + ", nombre=" + nombre + ", a\u00f1oFundacion=" + añoFundacion + ", localidad=" + localidad + ", entrenador=" + entrenador + '}';
+    }
+    
+    @Override
+    public int compareTo(Equipo otro) {
+        return this.nombre.compareToIgnoreCase(otro.getNombre());
     }
     
     private void agregarJugador (Jugador jugador) {

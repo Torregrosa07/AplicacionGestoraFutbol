@@ -14,16 +14,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Santiago
  */
 public class GestionJugadores extends javax.swing.JPanel {
+
     private controladores.controladorJugadores controladorJug = new controladores.controladorJugadores();
     private controladores.controladorEquipos controladorEquipos = new controladores.controladorEquipos();
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
     private String[] columnas = {"NOMBRE", "APELLIDOS", "EQUIPO", "DORSAL", "POSICIÓN"};
     
-    private void actualizarTabla() {
-        
-    TDatos.setModel(new javax.swing.table.DefaultTableModel(matrizDatos, columnas));
-}
+    
 
     /**
      * Creates new form GestionJugadores
@@ -31,24 +29,20 @@ public class GestionJugadores extends javax.swing.JPanel {
     public GestionJugadores() {
         initComponents();
         // Inicializar controladores
-    controladorJug = new controladores.controladorJugadores();
-    controladorEquipos = new controladores.controladorEquipos();
-    
-    // Cargar equipos (si no hay, muestra advertencia)
-    if (controladorEquipos.getListadoEquipos().isEmpty()) {
-        JOptionPane.showMessageDialog(
-            this, 
-            "No hay equipos registrados. Por favor, añade al menos uno.", 
-            "Advertencia", 
-            JOptionPane.WARNING_MESSAGE
-        );
-    } else {
+        controladorJug = new controladores.controladorJugadores();
+        controladorEquipos = new controladores.controladorEquipos();
+
+        // Cargar equipos (si no hay, crea equipos de prueba)
+        if (controladorEquipos.getListadoEquipos().isEmpty()) {
+            // Crear equipos de prueba si no hay ninguno
+            crearEquiposDePrueba();
+        }
+
         cargarEquiposEnCombo();
+        actualizaTabla(); // Usa el método que funciona correctamente
     }
     
-    actualizarTabla();
-}
-
+    
     
 
     /**
@@ -165,7 +159,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         labelEquipo.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         labelEquipo.setText("Equipo:");
 
-        jComboEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Barcelona", "Atlético de Madrid", "Real Madrid" }));
         jComboEquipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboEquipoActionPerformed(evt);
@@ -292,42 +286,42 @@ public class GestionJugadores extends javax.swing.JPanel {
         String posicionStr = txtPosicion.getText().trim();
 
         if (nombre.isEmpty() || apellidos.isEmpty() || posicionStr.isEmpty() || dorsal.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "No añadido", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    try {
-        // Obtener el equipo seleccionado
-        String nombreEquipo = (String) jComboEquipo.getSelectedItem();
-        Equipo equipo = controladorEquipos.getEquipoPorNombre(nombreEquipo);
-        
-        if (equipo == null) {
-            JOptionPane.showMessageDialog(this, "Equipo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "No añadido", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Convertir posición de String a enum
-        Jugador.Posicion posicion;
         try {
-            posicion = Jugador.Posicion.valueOf(posicionStr.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Posición no válida. Use: PORTERO, DEFENSA, MEDIOCENTRO o DELANTERO", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            // Obtener el equipo seleccionado
+            String nombreEquipo = (String) jComboEquipo.getSelectedItem();
+            Equipo equipo = controladorEquipos.getEquipoPorNombre(nombreEquipo);
+
+            if (equipo == null) {
+                JOptionPane.showMessageDialog(this, "Equipo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Convertir posición de String a enum
+            Jugador.Posicion posicion;
+            try {
+                posicion = Jugador.Posicion.valueOf(posicionStr.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Posición no válida. Use: PORTERO, DEFENSA, MEDIOCENTRO o DELANTERO", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Jugador nuevo = new Jugador(nombre, apellidos, equipo, posicion, dorsal);
+            boolean añadido = controladorJug.añadir(nuevo);
+
+            if (añadido) {
+                actualizaTabla(); // Asegúrate de usar el método correcto
+                JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "El jugador ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al añadir jugador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        Jugador nuevo = new Jugador(nombre, apellidos, equipo, posicion, dorsal);
-        boolean añadido = controladorJug.añadir(nuevo);
-
-        if (añadido) {
-            actualizaTabla();
-            JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "El jugador ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al añadir jugador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }           
 
     }//GEN-LAST:event_btnAnadirActionPerformed
 
@@ -344,33 +338,32 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboEquipoActionPerformed
 
     private void crearEquiposDePrueba() {
-    try {
-        // Ejemplo: Crear 3 equipos básicos
-        controladorEquipos.añadir(new Equipo(1, "Barcelona"));
-        controladorEquipos.añadir(new Equipo(2, "Real Madrid"));
-        controladorEquipos.añadir(new Equipo(3, "Atlético de Madrid"));
-        
-        JOptionPane.showMessageDialog(
-            this, 
-            "Se crearon equipos de prueba automáticamente.", 
-            "Aviso", 
-            JOptionPane.INFORMATION_MESSAGE
-        );
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(
-            this, 
-            "Error al crear equipos de prueba: " + e.getMessage(), 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE
-        );
+        try {
+            // Ejemplo: Crear 3 equipos básicos
+            controladorEquipos.añadir(new Equipo(1, "Barcelona"));
+            controladorEquipos.añadir(new Equipo(2, "Real Madrid"));
+            controladorEquipos.añadir(new Equipo(3, "Atlético de Madrid"));
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Se crearon equipos de prueba automáticamente.",
+                    "Aviso",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al crear equipos de prueba: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
-}
-    
+
     private void actualizaTabla() {
         //miniAgenda.añadir(new Deportista("Ana","Futbol",2011, 1.76f)); // registro de ejemplo directo
         matrizDatos = controladorJug.convertirAMatrizObject();
-
-        dtm = new DefaultTableModel(matrizDatos, columnas) {
+         dtm = new DefaultTableModel(matrizDatos, columnas) {
             //para impedir edición de las celdas
             @Override
             public boolean isCellEditable(int fila, int columna) {
@@ -380,17 +373,15 @@ public class GestionJugadores extends javax.swing.JPanel {
         TDatos.setModel(dtm);
 
     }
-    
+
     private void cargarEquiposEnCombo() {
-    jComboEquipo.removeAllItems(); // Limpiar el combo
-    
-    if (controladorEquipos.getListadoEquipos() != null) {
+        jComboEquipo.removeAllItems(); // Limpiar antes de cargar
+
         for (Equipo equipo : controladorEquipos.getListadoEquipos()) {
             jComboEquipo.addItem(equipo.getNombre());
         }
     }
-}
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
     private javax.swing.JButton btnActualizar;
