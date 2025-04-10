@@ -30,9 +30,26 @@ public class GestionJugadores extends javax.swing.JPanel {
      */
     public GestionJugadores() {
         initComponents();
-        actualizarTabla();
-        cargarEquiposEnCombo(); 
+        // Inicializar controladores
+    controladorJug = new controladores.controladorJugadores();
+    controladorEquipos = new controladores.controladorEquipos();
+    
+    // Cargar equipos (si no hay, muestra advertencia)
+    if (controladorEquipos.getListadoEquipos().isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this, 
+            "No hay equipos registrados. Por favor, añade al menos uno.", 
+            "Advertencia", 
+            JOptionPane.WARNING_MESSAGE
+        );
+    } else {
+        cargarEquiposEnCombo();
     }
+    
+    actualizarTabla();
+}
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -326,8 +343,28 @@ public class GestionJugadores extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboEquipoActionPerformed
 
-    
-    
+    private void crearEquiposDePrueba() {
+    try {
+        // Ejemplo: Crear 3 equipos básicos
+        controladorEquipos.añadir(new Equipo(1, "Barcelona"));
+        controladorEquipos.añadir(new Equipo(2, "Real Madrid"));
+        controladorEquipos.añadir(new Equipo(3, "Atlético de Madrid"));
+        
+        JOptionPane.showMessageDialog(
+            this, 
+            "Se crearon equipos de prueba automáticamente.", 
+            "Aviso", 
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(
+            this, 
+            "Error al crear equipos de prueba: " + e.getMessage(), 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
+}
     
     private void actualizaTabla() {
         //miniAgenda.añadir(new Deportista("Ana","Futbol",2011, 1.76f)); // registro de ejemplo directo
@@ -345,15 +382,15 @@ public class GestionJugadores extends javax.swing.JPanel {
     }
     
     private void cargarEquiposEnCombo() {
-    jComboEquipo.removeAllItems();
-    for (Equipo equipo : controladorEquipos.getListadoEquipos()) {
-        jComboEquipo.addItem(equipo.getNombre());
+    jComboEquipo.removeAllItems(); // Limpiar el combo
+    
+    if (controladorEquipos.getListadoEquipos() != null) {
+        for (Equipo equipo : controladorEquipos.getListadoEquipos()) {
+            jComboEquipo.addItem(equipo.getNombre());
+        }
     }
 }
-
-    
-    
-
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
     private javax.swing.JButton btnActualizar;
