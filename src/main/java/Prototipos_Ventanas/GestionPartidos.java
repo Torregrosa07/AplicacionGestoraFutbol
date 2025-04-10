@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.TextField;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -21,24 +22,25 @@ import javax.swing.table.DefaultTableModel;
 public class GestionPartidos extends javax.swing.JPanel {
 
     private DefaultTableModel tableModel;
-    
+
     public GestionPartidos() {
         initComponents();
-        
+
+        initComponents();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
+      
+
         setVisible(true);
+    
+        
         calendario = new JDateChooser();
         calendario.setDateFormatString("yyyy-MM-dd");
-        hora = new TextField(5);     
+
+        hora = new TextField(5);
+          
         tableModel = new DefaultTableModel(new Object[]{"Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
-        partidos.setModel(tableModel);
-        
-        if (calendario == null) {
-        System.out.println("El calendario no está inicializado correctamente.");
-         }
-
-    calendario.setDateFormatString("yyyy-MM-dd");  
-
+        tabla.setModel(tableModel);
         
         add(new JLabel("Fecha:"));
         add(calendario);
@@ -47,7 +49,7 @@ public class GestionPartidos extends javax.swing.JPanel {
       
         
         setVisible(true);
-        
+
     }
 
     /**
@@ -68,13 +70,13 @@ public class GestionPartidos extends javax.swing.JPanel {
         modificar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
         hora = new java.awt.TextField();
-        calendario = new com.toedter.calendar.JDateChooser();
         JScrollPanell = new javax.swing.JScrollPane();
-        partidos = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
         fechaSeleccionada = new javax.swing.JLabel();
+        calendario = new com.toedter.calendar.JDateChooser();
 
         setBackground(new java.awt.Color(255, 204, 255));
 
@@ -124,7 +126,7 @@ public class GestionPartidos extends javax.swing.JPanel {
             }
         });
 
-        partidos.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -135,7 +137,7 @@ public class GestionPartidos extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        JScrollPanell.setViewportView(partidos);
+        JScrollPanell.setViewportView(tabla);
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jLabel1.setText("HORA:");
@@ -162,8 +164,9 @@ public class GestionPartidos extends javax.swing.JPanel {
                         .addGap(17, 17, 17)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(49, 49, 49)
+                                .addGap(16, 16, 16)
+                                .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(99, 99, 99)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(hora, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -188,21 +191,22 @@ public class GestionPartidos extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(67, 67, 67)
-                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(22, 22, 22)
-                                        .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(fechaSeleccionada, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(20, 20, 20)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(hora, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(67, 67, 67)
+                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(22, 22, 22)
+                                                .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(fechaSeleccionada, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(31, 31, 31)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(hora, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(106, 106, 106)
                                 .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -264,13 +268,16 @@ public class GestionPartidos extends javax.swing.JPanel {
     String equipoVisitante = jComboBox2.getSelectedItem().toString();
 
     if (fecha == null || horaTexto.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+    
+    
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     String fechaFormateada = sdf.format(fecha);
 
+    
     tableModel.addRow(new Object[]{fechaFormateada, horaTexto, equipoLocal, equipoVisitante});
 
     }//GEN-LAST:event_guargarActionPerformed
@@ -296,6 +303,10 @@ public class GestionPartidos extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificar;
-    private javax.swing.JTable partidos;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
+
+    private void setDefaultCloseOperation(int EXIT_ON_CLOSE) {
+       
+    }
 }
