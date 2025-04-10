@@ -198,9 +198,21 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_EntrarDeInvitadoActionPerformed
 
     private void RegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarseActionPerformed
-        VentanaRegistros ventana = new VentanaRegistros(Login.this, true); // modal
-        ventana.setLocationRelativeTo(null);
+
+        VentanaRegistros ventana = new VentanaRegistros(Login.this);
         ventana.setVisible(true);
+        // Simula modal: desactiva esta ventana
+        setEnabled(false);
+
+        // Reactiva Login cuando cierre la ventana de registros
+        ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                setEnabled(true);
+                setVisible(true);
+            }
+        });
+
     }//GEN-LAST:event_RegistrarseActionPerformed
     private void txtUsuarioFocusGained(java.awt.event.FocusEvent evt) {
         if (txtUsuario.getText().equals("Usuario")) {
@@ -238,7 +250,7 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         try {

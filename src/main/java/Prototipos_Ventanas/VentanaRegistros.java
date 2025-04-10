@@ -7,22 +7,34 @@ package Prototipos_Ventanas;
 import Modelos.Usuario;
 import controladores.controladorUsuarios;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author thomas
  */
-public class VentanaRegistros extends JDialog {
+public class VentanaRegistros extends javax.swing.JFrame {
+
+    private Login parentLogin;
 
     /**
      * Creates new form VentanaRegistros
      */
-    public VentanaRegistros(Login aThis, boolean par) {
-         super(aThis, par); // Importante: asegúrate de llamar al constructor padre correctamente
+    public VentanaRegistros(Login parent) {
         initComponents();
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        // Bloquear la X
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // No permitir maximizar
+        setResizable(false);
+
+        // Centrar
+        setLocationRelativeTo(null);
+
+        // Guardar referencia si necesitás volver a activarlo más tarde
+        this.parentLogin = parent;
     }
 
     /**
@@ -176,7 +188,11 @@ public class VentanaRegistros extends JDialog {
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
-        dispose();        // TODO add your handling code here:
+        dispose();
+        if (parentLogin != null) {
+            parentLogin.setEnabled(true);
+            parentLogin.setVisible(true);
+        }// TODO add your handling code here:
     }//GEN-LAST:event_btncancelarActionPerformed
 
     /**
