@@ -14,27 +14,18 @@ public class Jugador implements Comparable<Jugador>, Serializable{
     private int IDjugador;
     private String nombre;
     private String apellidos;
-    private String posicion;
+    public enum Posicion{PORTERO, DEFENSA, MEDIOCENTRO, DELANTERO};
+    private Posicion posicion;
     private Equipo equipo;
     private String dorsal;
     
-    enum Sexo{FEMENINO, MASCULINO, NO_DEFINIDO};
+    public enum Sexo{FEMENINO, MASCULINO, NO_DEFINIDO};
+    private Sexo sexo;
     private int edad;
     private String nacionalidad;
-    enum TipoTarjeta{AMARILLO, ROJO};
+    public enum TipoTarjeta{AMARILLO, ROJO};
+    private TipoTarjeta tipoTarjeta;
 
-    @Override
-    public int compareTo(Jugador otro) {
-        return this.getNombre().toLowerCase().compareTo(otro.getNombre().toLowerCase());
-    }
-
-    public Equipo getEquipo() {
-        return equipo;
-    }
-
-    public void setEquipo(Equipo equipo) {
-        this.equipo = equipo;
-    }
 
     public int getIDjugador() {
         return IDjugador;
@@ -60,12 +51,20 @@ public class Jugador implements Comparable<Jugador>, Serializable{
         this.apellidos = apellidos;
     }
 
-    public String getPosicion() {
+    public Posicion getPosicion() {
         return posicion;
     }
 
-    public void setPosicion(String posicion) {
+    public void setPosicion(Posicion posicion) {
         this.posicion = posicion;
+    }
+
+    public Equipo getEquipo() {
+        return equipo;
+    }
+
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
     }
 
     public String getDorsal() {
@@ -74,6 +73,14 @@ public class Jugador implements Comparable<Jugador>, Serializable{
 
     public void setDorsal(String dorsal) {
         this.dorsal = dorsal;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
     public int getEdad() {
@@ -91,7 +98,19 @@ public class Jugador implements Comparable<Jugador>, Serializable{
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
+
+    public TipoTarjeta getTipoTarjeta() {
+        return tipoTarjeta;
+    }
+
+    public void setTipoTarjeta(TipoTarjeta tipoTarjeta) {
+        this.tipoTarjeta = tipoTarjeta;
+    }
     
+    @Override
+    public int compareTo(Jugador otro) {
+        return this.getNombre().toLowerCase().compareTo(otro.getNombre().toLowerCase());
+    }
 
     public Jugador() {
     }
@@ -101,31 +120,19 @@ public class Jugador implements Comparable<Jugador>, Serializable{
         this.apellidos = apellidos;
     }
 
-    public Jugador(int IDjugador, String nombre, String apellidos, String posicion, Equipo equipo, String dorsal, int edad, String nacionalidad) {
+    public Jugador(int IDjugador, String nombre, String apellidos, Posicion posicion, Equipo equipo, String dorsal, Sexo sexo, int edad, String nacionalidad, TipoTarjeta tipoTarjeta) {
         this.IDjugador = IDjugador;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.posicion = posicion;
         this.equipo = equipo;
         this.dorsal = dorsal;
+        this.sexo = sexo;
         this.edad = edad;
         this.nacionalidad = nacionalidad;
+        this.tipoTarjeta = tipoTarjeta;
     }
-    
-    
-    //Constructor para el metodo de añdair
-    public Jugador(String nombre, String apellidos, String posicion, Equipo equipo, String dorsal) {
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.posicion = posicion;
-        this.equipo = equipo;
-        this.dorsal = dorsal;
-        
-    }
-    
-    
-    
-    
+
   
     @Override
     public String toString() {
