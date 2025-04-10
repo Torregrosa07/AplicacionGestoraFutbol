@@ -25,6 +25,13 @@ public class Equipo {
         this.nombre = nombre;
     }
 
+    public Equipo(String nombre, Date añoFundacion, String localidad, String entrenador) {
+        this.IDEquipo = IDEquipo;
+        this.nombre = nombre;
+        this.añoFundacion = añoFundacion;
+        this.localidad = localidad;
+        this.entrenador = entrenador;
+    }
     public Equipo(int IDEquipo, String nombre, Date añoFundacion, String localidad, String entrenador) {
         this.IDEquipo = IDEquipo;
         this.nombre = nombre;
