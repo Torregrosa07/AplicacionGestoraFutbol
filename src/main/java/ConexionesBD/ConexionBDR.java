@@ -43,8 +43,8 @@ public class ConexionBDR {
     }
 
     public Connection getConnection() {
-        return con;
-    }
+    return con;
+}
 
     public void desconectar() {
         try {
@@ -58,5 +58,12 @@ public class ConexionBDR {
         ConexionBDR conexion = new ConexionBDR();
         conexion.conectar();
       
+    }
+    
+     public Statement getStatement() throws SQLException, ClassNotFoundException {
+        if (con == null || con.isClosed()) {
+            conectar();
+        }
+        return con.createStatement();
     }
 }

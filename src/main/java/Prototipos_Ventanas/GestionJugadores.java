@@ -280,7 +280,11 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_txtPosicionActionPerformed
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
-        String nombre = txtNombre.getText().trim();
+        
+        
+        
+            // PRUEBA CON TREESET Y OBJETOS 
+        /*String nombre = txtNombre.getText().trim();
         String apellidos = txtApellidos.getText().trim();
         String dorsal = txtDorsal.getText().trim();
         String posicionStr = txtPosicion.getText().trim();
@@ -322,7 +326,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al añadir jugador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
+        */
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
