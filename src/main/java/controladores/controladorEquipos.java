@@ -13,26 +13,21 @@ import java.util.TreeSet;
  * @author Santiago
  */
 public class controladorEquipos {
-     private TreeSet<Equipo> listadoEquipos = new TreeSet<>();
-    
-    
+
+    private TreeSet<Equipo> listadoEquipos = new TreeSet<>();
+
     public boolean añadir(Equipo equi) {
         return listadoEquipos.add(equi); // si se añadió devuelve true, si ya existía false
     }
-    
-    public boolean anadirEquipo(String nombre, Date añoFundacion, String localidad, String entrenador ) {
-    
-   
-    Equipo nuevo = new Equipo(nombre, añoFundacion, localidad, entrenador);
-    return añadir(nuevo);
-}
 
+    public boolean anadirEquipo(String nombre, Date añoFundacion, String localidad, String entrenador) {
 
-
+        Equipo nuevo = new Equipo(nombre, añoFundacion, localidad, entrenador);
+        return añadir(nuevo);
+    }
 
     public Object[][] convertirAMatrizObject() {
 
-       
         Object[][] matrizObj = new Object[listadoEquipos.size()][5];
 
         int id = 0;
@@ -41,10 +36,9 @@ public class controladorEquipos {
 
             matrizObj[id][0] = equi.getIDEquipo();
             matrizObj[id][1] = equi.getNombre();
-            matrizObj[id][2] = equi.getAñoFundacion()+ ""; 
-            matrizObj[id][3] = equi.getLocalidad()+ ""; 
-            matrizObj[id][3] = equi.getEntrenador()+ ""; 
-
+            matrizObj[id][2] = equi.getAñoFundacion() + "";
+            matrizObj[id][3] = equi.getLocalidad() + "";
+            matrizObj[id][3] = equi.getEntrenador() + "";
 
 //            Equipo equipo = equi.getEquipo();
 //            if (equipo != null) {
@@ -52,7 +46,6 @@ public class controladorEquipos {
 //            } else {
 //                matrizObj[id][4] = "Sin equipo";
 //            }
-
             id++;
 
         }
