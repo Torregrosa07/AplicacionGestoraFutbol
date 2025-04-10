@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionJugadores extends javax.swing.JPanel {
     private controladores.controladorJugadores controladorJug = new controladores.controladorJugadores();
+    private controladores.controladorEquipos controladorEquipos = new controladores.controladorEquipos();
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
     private String[] columnas = {"NOMBRE", "APELLIDOS", "EQUIPO", "DORSAL", "POSICIÓN"};
@@ -30,6 +31,7 @@ public class GestionJugadores extends javax.swing.JPanel {
     public GestionJugadores() {
         initComponents();
         actualizarTabla();
+        cargarEquiposEnCombo(); 
     }
 
     /**
@@ -269,41 +271,47 @@ public class GestionJugadores extends javax.swing.JPanel {
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
         String nombre = txtNombre.getText().trim();
         String apellidos = txtApellidos.getText().trim();
-
-        //String nombreEquipo = txtEquipo.getText().trim();
-
-        //HACER EL CONTROLADOR EQUIPO, ESTO ES UNA PRUEBA
-        Equipo equipo = new Equipo(0, "Barcelona");
-
-        //PARA SELECCIONST EL EQUIPO CON UN JCOMBO
-        //        String nombreEquipo = (String) jComboEquipo.getSelectedItem();
-
-        //        Equipo equipo = controladorJug.getEquipoPorNombre(nombreEquipo);
-
         String dorsal = txtDorsal.getText().trim();
-        String posicion = txtPosicion.getText().trim();
+        String posicionStr = txtPosicion.getText().trim();
 
-        if (nombre.isEmpty() ||apellidos.isEmpty() || posicion.isEmpty() || dorsal.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "No añadido", JOptionPane.WARNING_MESSAGE);
+        if (nombre.isEmpty() || apellidos.isEmpty() || posicionStr.isEmpty() || dorsal.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "No añadido", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        // Obtener el equipo seleccionado
+        String nombreEquipo = (String) jComboEquipo.getSelectedItem();
+        Equipo equipo = controladorEquipos.getEquipoPorNombre(nombreEquipo);
+        
+        if (equipo == null) {
+            JOptionPane.showMessageDialog(this, "Equipo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
+        // Convertir posición de String a enum
+        Jugador.Posicion posicion;
         try {
+            posicion = Jugador.Posicion.valueOf(posicionStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Posición no válida. Use: PORTERO, DEFENSA, MEDIOCENTRO o DELANTERO", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-            Jugador jug = new Jugador(nombre, apellidos, posicion, equipo, dorsal);
+        Jugador nuevo = new Jugador(nombre, apellidos, equipo, posicion, dorsal);
+        boolean añadido = controladorJug.añadir(nuevo);
 
-            boolean añadido = controladorJug.añadir(jug);
+        if (añadido) {
+            actualizaTabla();
+            JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "El jugador ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
+        }
 
-            if (añadido) {
-                actualizaTabla(); // recarga datos desde el TreeSet
-                JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "El jugador ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
-            }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al añadir jugador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }           
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Formato inválido para año o altura.", "Error", JOptionPane.ERROR_MESSAGE);
-        }           
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -335,6 +343,13 @@ public class GestionJugadores extends javax.swing.JPanel {
         TDatos.setModel(dtm);
 
     }
+    
+    private void cargarEquiposEnCombo() {
+    jComboEquipo.removeAllItems();
+    for (Equipo equipo : controladorEquipos.getListadoEquipos()) {
+        jComboEquipo.addItem(equipo.getNombre());
+    }
+}
 
     
     

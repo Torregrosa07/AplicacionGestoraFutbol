@@ -132,7 +132,16 @@ public class Jugador implements Comparable<Jugador>, Serializable{
         this.nacionalidad = nacionalidad;
         this.tipoTarjeta = tipoTarjeta;
     }
-
+    
+    //Nuevo contructor
+      public Jugador(String nombre, String apellidos,Equipo equipo, Posicion posicion, String dorsal){
+      this.nombre = nombre;
+      this.apellidos = apellidos;
+      this.equipo = equipo;
+      this.posicion = posicion;
+      this.dorsal = dorsal;
+              
+      }  
   
     @Override
     public String toString() {

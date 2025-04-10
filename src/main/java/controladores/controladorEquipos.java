@@ -26,6 +26,28 @@ public class controladorEquipos {
         return añadir(nuevo);
     }
 
+    public Equipo buscarEquipoPorNombre(String nombre) {
+        for (Equipo e : listadoEquipos) {
+            if (e.getNombre().equalsIgnoreCase(nombre)) {
+                return e;
+            }
+        }
+        return null; // no encontrado
+    }
+
+    public TreeSet<Equipo> getListadoEquipos() {
+        return listadoEquipos;
+    }
+
+    public Equipo getEquipoPorNombre(String nombre) {
+        for (Equipo equipo : listadoEquipos) {
+            if (equipo.getNombre().equalsIgnoreCase(nombre)) {
+                return equipo;
+            }
+        }
+        return null;
+    }
+
     public Object[][] convertirAMatrizObject() {
 
         Object[][] matrizObj = new Object[listadoEquipos.size()][5];
