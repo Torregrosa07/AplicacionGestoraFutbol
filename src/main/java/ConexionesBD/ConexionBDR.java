@@ -17,14 +17,14 @@ import java.util.logging.Logger;
  */
 public class ConexionBDR {
 
-    String bd = "pruebaaplicacion";
-    String sql;
+    String bd = "kickoff";
+    static String sql;
     String usuario = "root";
     String clave = "";
     String url = "jdbc:mysql://localhost:3306/";
     String driver = "com.mysql.cj.jdbc.Driver";
     Connection con;
-    Statement sentencia;
+   static Statement sentencia;
 
     public ConexionBDR() {
     }
@@ -54,8 +54,9 @@ public class ConexionBDR {
         }
     }
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
         ConexionBDR conexion = new ConexionBDR();
         conexion.conectar();
+      
     }
 }
