@@ -37,7 +37,7 @@ public class GestionPartidos extends javax.swing.JPanel {
         System.out.println("El calendario no está inicializado correctamente.");
          }
 
-    calendario.setDateFormatString("yyyy-MM-dd");  // Asegura que la fecha se muestra correctamente
+    calendario.setDateFormatString("yyyy-MM-dd");  
 
         
         add(new JLabel("Fecha:"));
