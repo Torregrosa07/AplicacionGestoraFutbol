@@ -116,6 +116,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         btnModificar1.setText("Modificar");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1155, 581));
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabel1.setText("Nombre Del Equipo:");
@@ -241,7 +242,7 @@ public class GestionEquipos extends javax.swing.JPanel {
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
@@ -252,7 +253,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
