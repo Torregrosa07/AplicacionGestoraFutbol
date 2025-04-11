@@ -10,8 +10,9 @@ import java.util.Date;
  *
  * @author thomas
  */
-public class Partido {
-     private int idPartido;
+public class Partido implements Comparable<Partido> {
+
+    private int idPartido;
     private Date fechaPartido;
     private Equipo equipoLocal;
     private Equipo equipoVisitante;
@@ -27,8 +28,6 @@ public class Partido {
         this.golesVisitante = golesVisitante;
     }
 
-
-    
     public int getIdPartido() {
         return idPartido;
     }
@@ -53,8 +52,6 @@ public class Partido {
         return golesVisitante;
     }
 
-    
-    
     public void setGolesLocal(int golesLocal) {
         this.golesLocal = golesLocal;
     }
@@ -66,35 +63,28 @@ public class Partido {
     public void setFechaPartido(Date fechaPartido) {
         this.fechaPartido = fechaPartido;
     }
-    
-    
-    
-    
-    //Metodos 
 
+    //Metodos 
     @Override
     public String toString() {
         return "Partido{" + "idPartido=" + idPartido + ", fechaPartido=" + fechaPartido + ", equipoLocal=" + equipoLocal + ", equipoVisitante=" + equipoVisitante + ", golesLocal=" + golesLocal + ", golesVisitante=" + golesVisitante + '}';
     }
-    
-    
+
     /*Este método devuelve true si el partido ha finalizado,
         lo cual se determina porque los goles de ambos equipos son números no negativos.
         Es decir, si los goles son mayores o iguales a cero, se considera que el partido ha finalizado.*/
-
     public boolean haFinalizado() {
         return golesLocal >= 0 && golesVisitante >= 0;
     }
-    
-    
-    
 
     public void registrarResultado(int golesLocal, int golesVisitante) {
         this.golesLocal = golesLocal;
         this.golesVisitante = golesVisitante;
     }
-    
-    
-    
-    
+
+    @Override
+    public int compareTo(Partido o) {
+       return Integer.compare(this.idPartido, o.idPartido);
+    }
+
 }

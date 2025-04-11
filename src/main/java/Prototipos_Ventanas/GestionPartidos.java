@@ -4,9 +4,15 @@
  */
 package Prototipos_Ventanas;
 
+import Modelos.Equipo;
 import com.toedter.calendar.JDateChooser;
 import java.awt.FlowLayout;
 import java.awt.TextField;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,18 +33,10 @@ public class GestionPartidos extends javax.swing.JPanel {
     private int contadorID = 1;
     DefaultTableModel modeloPartidos = new DefaultTableModel(new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
     DefaultTableModel modeloEstadisticas = new DefaultTableModel(new String[]{"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
-//    JComboBox<String> comboEquipoLocal = new JComboBox<>(new String[]{"Equipo 1", "Equipo 2", "Equipo 3"});
-//    JComboBox<String> comboEquipoVisitante = new JComboBox<>(new String[]{"Equipo 1", "Equipo 2", "Equipo 3"});
 
     public GestionPartidos() {
         initComponents();
-//        comboEquipoLocal.addItem("Equipo 1");
-//        comboEquipoLocal.addItem("Equipo 2");
-//        comboEquipoLocal.addItem("Equipo 3");
-//
-//        comboEquipoVisitante.addItem("Equipo 1");
-//        comboEquipoVisitante.addItem("Equipo 2");
-//        comboEquipoVisitante.addItem("Equipo 3");
+        cargarEquiposEnCombos();
 
         modeloPartidos = new DefaultTableModel();
         modeloPartidos.addColumn("ID");
@@ -47,15 +45,6 @@ public class GestionPartidos extends javax.swing.JPanel {
         modeloPartidos.addColumn("Equipo Local");
         modeloPartidos.addColumn("Equipo Visitante");
         tablaPartidos.setModel(modeloPartidos);
-
-        modeloEstadisticas = new DefaultTableModel();
-        modeloEstadisticas.addColumn("GF");
-        modeloEstadisticas.addColumn("GC");
-        modeloEstadisticas.addColumn("PG");
-        modeloEstadisticas.addColumn("PP");
-        modeloEstadisticas.addColumn("PE");
-        modeloEstadisticas.addColumn("PUNTOS");
-        tablaEstadisticas.setModel(modeloEstadisticas);
 
     }
 
@@ -81,6 +70,80 @@ public class GestionPartidos extends javax.swing.JPanel {
         }
     }
 
+    private int obtenerIdEquipo(Connection conn, String nombreEquipo) throws SQLException {
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            String nombreEscapado = nombreEquipo.replace("'", "''");
+            String sql = "SELECT id_equipo FROM equipo WHERE nombre = '" + nombreEscapado + "'";
+
+            rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                return rs.getInt("id_equipo");
+            }
+            return 0;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+    }
+
+    private void cargarEquiposEnCombos() {
+        comboEquipoLocal.removeAllItems();
+        comboEquipoVisitante.removeAllItems();
+
+        comboEquipoLocal.addItem("Seleccione un equipo");
+        comboEquipoVisitante.addItem("Seleccione un equipo");
+
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/kickoff", "root", "");
+            stmt = conn.createStatement();
+            String sql = "SELECT nombre FROM equipo";
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                String nombreEquipo = rs.getString("nombre");
+                comboEquipoLocal.addItem(nombreEquipo);
+                comboEquipoVisitante.addItem(nombreEquipo);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar equipos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void limpiarCampos() {
+        dateChooserFecha.setDate(null);
+        hora2.setText("");
+        comboEquipoLocal.setSelectedIndex(0);
+        comboEquipoVisitante.setSelectedIndex(0);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -90,7 +153,6 @@ public class GestionPartidos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fecha = new java.awt.TextField();
         jLabel1 = new javax.swing.JLabel();
         guargar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -104,14 +166,11 @@ public class GestionPartidos extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaEstadisticas = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        dateChooserFecha = new com.toedter.calendar.JDateChooser();
+        comboEquipoLocal = new javax.swing.JComboBox<>();
+        comboEquipoVisitante = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(153, 153, 153));
-
-        fecha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fechaActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jLabel1.setText("FECHA:");
@@ -179,42 +238,50 @@ public class GestionPartidos extends javax.swing.JPanel {
 
         jButton1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jButton1.setText("PUBLICAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(0, 93, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(205, Short.MAX_VALUE)
-                        .addComponent(golesContra)
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(gc, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(154, 154, 154)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 52, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(golesFavor)
-                                .addGap(39, 39, 39)
-                                .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(hora))
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(hora2, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                    .addComponent(dateChooserFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(hora)
-                                    .addComponent(jLabel1))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(hora2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(golesContra)
+                                    .addComponent(golesFavor))
+                                .addGap(39, 39, 39)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(comboEquipoLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51)
+                                .addComponent(comboEquipoVisitante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 176, Short.MAX_VALUE))
+                .addGap(0, 135, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,15 +296,19 @@ public class GestionPartidos extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(dateChooserFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(hora2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                                     .addComponent(hora, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(198, 198, 198)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboEquipoLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboEquipoVisitante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(143, 143, 143)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(golesFavor, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -252,39 +323,79 @@ public class GestionPartidos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guargarActionPerformed
-//        String equipoLocal = (String) comboEquipoLocal.getSelectedItem();
-//        String equipoVisitante = (String) comboEquipoVisitante.getSelectedItem();
-        String fechaIngresada = fecha.getText().trim();
+        String fechaSeleccionada = "";
+        Date fecha = dateChooserFecha.getDate();
+        if (fecha == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        fechaSeleccionada = sdf.format(fecha);
+
+        if (comboEquipoLocal.getSelectedIndex() == 0 || comboEquipoVisitante.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String equipoLocal = comboEquipoLocal.getSelectedItem().toString();
+        String equipoVisitante = comboEquipoVisitante.getSelectedItem().toString();
+
+        if (equipoLocal.equals(equipoVisitante)) {
+            JOptionPane.showMessageDialog(this, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         String horaStr = hora2.getText().trim();
-
-      
-//        if (equipoLocal.equals(equipoVisitante)) {
-//            JOptionPane.showMessageDialog(this, "No puedes seleccionar el mismo equipo como local y visitante.", "Error", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-
-        if (!validarFecha(fechaIngresada)) {
-            JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato dd/MM/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         if (!validarHora(horaStr)) {
-            JOptionPane.showMessageDialog(this, "Hora inválida. Use el formato HH:mm (ej. 15:30).", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Hora inválida. Use formato HH:mm", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        modelo.addRow(new Object[]{contadorID, fecha, horaStr, golesFavor, golesContra});
-        contadorID++;
-        
-        fecha.setText("");
-        hora2.setText("");
-//        comboEquipoLocal.setSelectedIndex(0);
-//        comboEquipoVisitante.setSelectedIndex(0);
-    }//GEN-LAST:event_guargarActionPerformed
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/kickoff", "root", "");
 
-    private void fechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fechaActionPerformed
+            int idLocal = obtenerIdEquipo(conn, equipoLocal);
+            int idVisitante = obtenerIdEquipo(conn, equipoVisitante);
+            if (idLocal == 0 || idVisitante == 0) {
+                JOptionPane.showMessageDialog(this, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            stmt = conn.createStatement();
+            String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
+                    + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
+            stmt.executeUpdate(sqlInsert);
+
+            modeloPartidos.addRow(new Object[]{
+                contadorID,
+                fechaSeleccionada,
+                horaStr,
+                equipoLocal,
+                equipoVisitante
+            });
+            contadorID++;
+
+           limpiarCampos();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_guargarActionPerformed
 
     private void hora2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hora2ActionPerformed
         // TODO add your handling code here:
@@ -298,9 +409,15 @@ public class GestionPartidos extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_gcActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // calcularEstadisticas();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.TextField fecha;
+    private javax.swing.JComboBox<String> comboEquipoLocal;
+    private javax.swing.JComboBox<String> comboEquipoVisitante;
+    private com.toedter.calendar.JDateChooser dateChooserFecha;
     private java.awt.TextField gc;
     private java.awt.TextField gf;
     private javax.swing.JLabel golesContra;

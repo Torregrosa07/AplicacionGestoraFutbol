@@ -85,6 +85,7 @@ public class Equipo implements Comparable<Equipo>{
         return "Equipo{" + "IDEquipo=" + IDEquipo + ", nombre=" + nombre + ", a\u00f1oFundacion=" + añoFundacion + ", localidad=" + localidad + ", entrenador=" + entrenador + '}';
     }
     
+    
     @Override
     public int compareTo(Equipo otro) {
         return this.nombre.compareToIgnoreCase(otro.getNombre());
