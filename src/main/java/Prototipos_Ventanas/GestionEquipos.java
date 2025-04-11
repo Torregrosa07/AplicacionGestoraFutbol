@@ -52,13 +52,13 @@ public class GestionEquipos extends javax.swing.JPanel {
         TDatos.setModel(dtm);
 
     }
-    
+
     private void limpiarCampos() {
-    txtNombreEquipo.setText("");
-    txtAñoDeFundacion.setText("");
-    txtLocalidad.setText("");
-    txtEntrenador.setText("");
-}
+        txtNombreEquipo.setText("");
+        txtAñoDeFundacion.setText("");
+        txtLocalidad.setText("");
+        txtEntrenador.setText("");
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -319,40 +319,34 @@ public class GestionEquipos extends javax.swing.JPanel {
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
 
         String nombreEquipo = txtNombreEquipo.getText().trim();
-        String añoFundacionString = txtAñoDeFundacion.getText().trim();
+        String añoFundacionStr = txtAñoDeFundacion.getText().trim();
         String localidad = txtLocalidad.getText().trim();
         String entrenador = txtEntrenador.getText().trim();
 
-        if (nombreEquipo.isEmpty() || añoFundacionString.isEmpty() || entrenador.isEmpty()) {
+        if (nombreEquipo.isEmpty() || añoFundacionStr.isEmpty() || localidad.isEmpty() || entrenador.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         int añoFundacion;
         try {
-            añoFundacion = Integer.parseInt(añoFundacionString);
+            añoFundacion = Integer.parseInt(añoFundacionStr);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El año de fundación debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
             txtAñoDeFundacion.setText("");
             return;
         }
 
-        if (controladorUsuarios.existeUsuario(nombreEquipo)) {
-            JOptionPane.showMessageDialog(this, "Ese equipo ya está inscrito.", "Error", JOptionPane.ERROR_MESSAGE);
-            txtNombreEquipo.setText("");
-            return;
-        }
+        Equipo nuevoEquipo = new Equipo(nombreEquipo, añoFundacion, localidad, entrenador);
+        boolean guardadoBD = controladorEquipos.guardarEnBD(nuevoEquipo);
 
-        boolean exito = controladorEquipos.anadirEquipo(nombreEquipo, añoFundacion, localidad, entrenador);
-
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Equipo registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            actualizaTabla(); // <-- esto actualiza la tabla
-            limpiarCampos();  // (opcional) para limpiar los JTextField
+        if (guardadoBD) {
+            JOptionPane.showMessageDialog(this, "Equipo registrado correctamente en la base de datos.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            actualizaTabla();
+            limpiarCampos();
         } else {
-            JOptionPane.showMessageDialog(this, "El equipo ya existe en la lista.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al guardar el equipo en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
 
     }//GEN-LAST:event_btnAnadirActionPerformed
 
