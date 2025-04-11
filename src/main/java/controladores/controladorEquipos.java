@@ -20,7 +20,7 @@ public class controladorEquipos {
         return listadoEquipos.add(equi); // si se añadió devuelve true, si ya existía false
     }
 
-    public boolean anadirEquipo(String nombre, Date añoFundacion, String localidad, String entrenador) {
+    public boolean anadirEquipo(String nombre, int añoFundacion, String localidad, String entrenador) {
 
         Equipo nuevo = new Equipo(nombre, añoFundacion, localidad, entrenador);
         return añadir(nuevo);
@@ -49,30 +49,19 @@ public class controladorEquipos {
     }
 
     public Object[][] convertirAMatrizObject() {
-
-        Object[][] matrizObj = new Object[listadoEquipos.size()][5];
+        Object[][] matrizObj = new Object[listadoEquipos.size()][4];
 
         int id = 0;
 
         for (Equipo equi : this.listadoEquipos) {
-
-            matrizObj[id][0] = equi.getIDEquipo();
-            matrizObj[id][1] = equi.getNombre();
-            matrizObj[id][2] = equi.getAñoFundacion() + "";
-            matrizObj[id][3] = equi.getLocalidad() + "";
-            matrizObj[id][3] = equi.getEntrenador() + "";
-
-//            Equipo equipo = equi.getEquipo();
-//            if (equipo != null) {
-//                matrizObj[id][4] = equipo.getNombre();
-//            } else {
-//                matrizObj[id][4] = "Sin equipo";
-//            }
+            matrizObj[id][0] = equi.getNombre();
+            matrizObj[id][1] = equi.getAñoFundacion();
+            matrizObj[id][2] = equi.getLocalidad();
+            matrizObj[id][3] = equi.getEntrenador();
             id++;
-
         }
 
         return matrizObj;
-
     }
+
 }

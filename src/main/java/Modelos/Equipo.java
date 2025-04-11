@@ -13,7 +13,7 @@ import java.util.Date;
 public class Equipo implements Comparable<Equipo>{
     private int IDEquipo;
     private String nombre;
-    private Date añoFundacion;
+    private int añoFundacion;
     private String localidad;
     private String entrenador;
 
@@ -25,14 +25,14 @@ public class Equipo implements Comparable<Equipo>{
         this.nombre = nombre;
     }
 
-    public Equipo(String nombre, Date añoFundacion, String localidad, String entrenador) {
+    public Equipo(String nombre, int añoFundacion, String localidad, String entrenador) {
         this.IDEquipo = IDEquipo;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;
         this.localidad = localidad;
         this.entrenador = entrenador;
     }
-    public Equipo(int IDEquipo, String nombre, Date añoFundacion, String localidad, String entrenador) {
+    public Equipo(int IDEquipo, String nombre, int sañoFundacion, String localidad, String entrenador) {
         this.IDEquipo = IDEquipo;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;
@@ -64,11 +64,11 @@ public class Equipo implements Comparable<Equipo>{
         this.nombre = nombre;
     }
 
-    public Date getAñoFundacion() {
+    public int getAñoFundacion() {
         return añoFundacion;
     }
 
-    public void setAñoFundacion(Date añoFundacion) {
+    public void setAñoFundacion(int añoFundacion) {
         this.añoFundacion = añoFundacion;
     }
 
