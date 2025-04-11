@@ -25,7 +25,7 @@ public class ConexionBDR {
     String url = "jdbc:mysql://localhost:3306/";
     String driver = "com.mysql.cj.jdbc.Driver";
     Connection con;
-   static Statement sentencia;
+    static Statement sentencia;
 
     public ConexionBDR() {
     }
