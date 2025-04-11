@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,8 +35,10 @@ public class ConexionBDR {
         System.out.println("SE CONECTO A BASE DE DATOS " + bd);
         try {
             con = DriverManager.getConnection(url + bd, usuario, clave);
+            JOptionPane.showMessageDialog(null, "Se conectó a la BD correctamente" ); 
         } catch (SQLException ex) {
             System.out.println("NO SE CONECTO A BASE DE DATOS " + bd);
+            JOptionPane.showMessageDialog(null, "No se pudo conectar a la BD correctamente" ); 
             Logger.getLogger(ConexionBDR.class.getName()).log(Level.SEVERE, null, ex);
 
         }
@@ -48,9 +51,14 @@ public class ConexionBDR {
 
     public void desconectar() {
         try {
+            if (con!= null && !con.isClosed()) {
             con.close();
+            JOptionPane.showMessageDialog(null, "Conexión desconectada");
+                
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ConexionBDR.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "No se pudo desconectar");
         }
     }
 
