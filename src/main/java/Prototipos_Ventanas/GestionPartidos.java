@@ -10,6 +10,7 @@ import java.awt.TextField;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,19 +24,38 @@ import javax.swing.table.DefaultTableModel;
 public class GestionPartidos extends javax.swing.JPanel {
 
     private DefaultTableModel modelo;
+    private int contadorID = 1;
+    DefaultTableModel modeloPartidos = new DefaultTableModel(new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
+    DefaultTableModel modeloEstadisticas = new DefaultTableModel(new String[]{"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
+//    JComboBox<String> comboEquipoLocal = new JComboBox<>(new String[]{"Equipo 1", "Equipo 2", "Equipo 3"});
+//    JComboBox<String> comboEquipoVisitante = new JComboBox<>(new String[]{"Equipo 1", "Equipo 2", "Equipo 3"});
 
     public GestionPartidos() {
         initComponents();
-        modelo = new DefaultTableModel();
-        modelo.addColumn("Fecha");
-        modelo.addColumn("HORA");
-        modelo.addColumn("GF");
-        modelo.addColumn("GC");
-        modelo.addColumn("PG");
-        modelo.addColumn("PP");
-        modelo.addColumn("PE");
-        modelo.addColumn("PUNTOS");
-        tabla.setModel(modelo);
+//        comboEquipoLocal.addItem("Equipo 1");
+//        comboEquipoLocal.addItem("Equipo 2");
+//        comboEquipoLocal.addItem("Equipo 3");
+//
+//        comboEquipoVisitante.addItem("Equipo 1");
+//        comboEquipoVisitante.addItem("Equipo 2");
+//        comboEquipoVisitante.addItem("Equipo 3");
+
+        modeloPartidos = new DefaultTableModel();
+        modeloPartidos.addColumn("ID");
+        modeloPartidos.addColumn("Fecha");
+        modeloPartidos.addColumn("HORA");
+        modeloPartidos.addColumn("Equipo Local");
+        modeloPartidos.addColumn("Equipo Visitante");
+        tablaPartidos.setModel(modeloPartidos);
+
+        modeloEstadisticas = new DefaultTableModel();
+        modeloEstadisticas.addColumn("GF");
+        modeloEstadisticas.addColumn("GC");
+        modeloEstadisticas.addColumn("PG");
+        modeloEstadisticas.addColumn("PP");
+        modeloEstadisticas.addColumn("PE");
+        modeloEstadisticas.addColumn("PUNTOS");
+        tablaEstadisticas.setModel(modeloEstadisticas);
 
     }
 
@@ -74,21 +94,16 @@ public class GestionPartidos extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         guargar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabla = new javax.swing.JTable();
+        tablaPartidos = new javax.swing.JTable();
         hora = new javax.swing.JLabel();
         hora2 = new java.awt.TextField();
         golesFavor = new javax.swing.JLabel();
         gf = new java.awt.TextField();
         golesContra = new javax.swing.JLabel();
         gc = new java.awt.TextField();
-        partidosGanados = new javax.swing.JLabel();
-        pg = new java.awt.TextField();
-        partidosGanados1 = new javax.swing.JLabel();
-        pp = new java.awt.TextField();
-        partidosEmpatados = new javax.swing.JLabel();
-        pe = new java.awt.TextField();
-        p = new javax.swing.JLabel();
-        puntos = new java.awt.TextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaEstadisticas = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(153, 153, 153));
 
@@ -109,7 +124,7 @@ public class GestionPartidos extends javax.swing.JPanel {
             }
         });
 
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPartidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -120,7 +135,7 @@ public class GestionPartidos extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tabla);
+        jScrollPane1.setViewportView(tablaPartidos);
 
         hora.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         hora.setText("HORA:");
@@ -149,41 +164,21 @@ public class GestionPartidos extends javax.swing.JPanel {
             }
         });
 
-        partidosGanados.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        partidosGanados.setText("PG:");
-
-        pg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pgActionPerformed(evt);
+        tablaEstadisticas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        });
+        ));
+        jScrollPane2.setViewportView(tablaEstadisticas);
 
-        partidosGanados1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        partidosGanados1.setText("PP:");
-
-        pp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppActionPerformed(evt);
-            }
-        });
-
-        partidosEmpatados.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        partidosEmpatados.setText("PE:");
-
-        pe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                peActionPerformed(evt);
-            }
-        });
-
-        p.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        p.setText("PUNTOS:");
-
-        puntos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                puntosActionPerformed(evt);
-            }
-        });
+        jButton1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        jButton1.setText("PUBLICAR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -192,114 +187,85 @@ public class GestionPartidos extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(205, Short.MAX_VALUE)
+                        .addComponent(golesContra)
+                        .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(hora)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(hora2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(partidosEmpatados)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pe, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(golesFavor)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(golesContra)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(partidosGanados)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pg, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(partidosGanados1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pp, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(gc, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(p)
+                        .addGap(0, 52, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(golesFavor)
+                                .addGap(39, 39, 39)
+                                .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(hora)
+                                    .addComponent(jLabel1))
+                                .addGap(22, 22, 22)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(hora2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(puntos, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 311, Short.MAX_VALUE))
+                        .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(hora2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(hora, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(golesFavor, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(golesContra, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(partidosGanados, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(partidosGanados1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(partidosEmpatados, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(p, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pg, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pp, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pe, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(puntos, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(92, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(hora2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(hora, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(198, 198, 198)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(golesFavor, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(golesContra, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void guargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guargarActionPerformed
+//        String equipoLocal = (String) comboEquipoLocal.getSelectedItem();
+//        String equipoVisitante = (String) comboEquipoVisitante.getSelectedItem();
         String fechaIngresada = fecha.getText().trim();
-        String horaStr = hora2.getText();
-        int golesFavor = Integer.parseInt(gf.getText());
-        int golesContra = Integer.parseInt(gc.getText());
-        int partidosGanados = (golesFavor > golesContra) ? 1 : 0;
-        int partidosPerdidos = (golesFavor < golesContra) ? 1 : 0;
-        int partidosEmpatados = (golesFavor == golesContra) ? 1 : 0;
-        int puntosCalculados = (partidosGanados * 3) + (partidosEmpatados * 1);
+        String horaStr = hora2.getText().trim();
 
-        pg.setText(String.valueOf(partidosGanados));
-        pp.setText(String.valueOf(partidosPerdidos));
-        pe.setText(String.valueOf(partidosEmpatados));
-        puntos.setText(String.valueOf(puntosCalculados));
+      
+//        if (equipoLocal.equals(equipoVisitante)) {
+//            JOptionPane.showMessageDialog(this, "No puedes seleccionar el mismo equipo como local y visitante.", "Error", JOptionPane.ERROR_MESSAGE);
+//            return;
+//        }
 
-        if (validarFecha(fechaIngresada)) {
-            modelo.addRow(new Object[]{fechaIngresada});
-            fecha.setText("");
-        } else {
+        if (!validarFecha(fechaIngresada)) {
             JOptionPane.showMessageDialog(this, "Fecha inválida. Use el formato dd/MM/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         if (!validarHora(horaStr)) {
@@ -307,7 +273,13 @@ public class GestionPartidos extends javax.swing.JPanel {
             return;
         }
 
-        modelo.addRow(new Object[]{fecha, horaStr, golesFavor, golesContra, partidosGanados, partidosPerdidos, partidosEmpatados, puntosCalculados});
+        modelo.addRow(new Object[]{contadorID, fecha, horaStr, golesFavor, golesContra});
+        contadorID++;
+        
+        fecha.setText("");
+        hora2.setText("");
+//        comboEquipoLocal.setSelectedIndex(0);
+//        comboEquipoVisitante.setSelectedIndex(0);
     }//GEN-LAST:event_guargarActionPerformed
 
     private void fechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaActionPerformed
@@ -326,22 +298,6 @@ public class GestionPartidos extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_gcActionPerformed
 
-    private void pgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pgActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pgActionPerformed
-
-    private void ppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ppActionPerformed
-
-    private void peActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_peActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_peActionPerformed
-
-    private void puntosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puntosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_puntosActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.TextField fecha;
@@ -352,17 +308,12 @@ public class GestionPartidos extends javax.swing.JPanel {
     private javax.swing.JButton guargar;
     private javax.swing.JLabel hora;
     private java.awt.TextField hora2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel p;
-    private javax.swing.JLabel partidosEmpatados;
-    private javax.swing.JLabel partidosGanados;
-    private javax.swing.JLabel partidosGanados1;
-    private java.awt.TextField pe;
-    private java.awt.TextField pg;
-    private java.awt.TextField pp;
-    private java.awt.TextField puntos;
-    private javax.swing.JTable tabla;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tablaEstadisticas;
+    private javax.swing.JTable tablaPartidos;
     // End of variables declaration//GEN-END:variables
 
 }
