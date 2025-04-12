@@ -83,7 +83,6 @@ public class GestionEquipos extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
 
         btnEliminar1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar1.setText("Eliminar");
@@ -153,6 +152,11 @@ public class GestionEquipos extends javax.swing.JPanel {
 
         btnModificar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar.setText("Eliminar");
@@ -169,9 +173,6 @@ public class GestionEquipos extends javax.swing.JPanel {
                 btnBuscarActionPerformed(evt);
             }
         });
-
-        btnActualizar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        btnActualizar.setText("Actualizar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -205,10 +206,7 @@ public class GestionEquipos extends javax.swing.JPanel {
                         .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(147, 147, 147)
-                        .addComponent(btnActualizar)))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                 .addContainerGap())
@@ -240,12 +238,10 @@ public class GestionEquipos extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -352,17 +348,104 @@ public class GestionEquipos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        int filaSeleccionada = TDatos.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un equipo para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String nombreEquipo = TDatos.getValueAt(filaSeleccionada, 0).toString();
+
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas eliminar el equipo '" + nombreEquipo + "'?", "Confirmar", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            boolean exito = controladorEquipos.eliminarEquipo(nombreEquipo);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Equipo eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                actualizaTabla(); // vuelve a cargar la tabla desde la BD
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el equipo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        String nombreBuscar = txtNombreEquipo.getText().trim();
+
+        if (nombreBuscar.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresa el nombre del equipo que deseas buscar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Equipo equipoEncontrado = controladorEquipos.buscarEquipoPorNombre(nombreBuscar);
+
+        if (equipoEncontrado != null) {
+   
+            txtNombreEquipo.setText(equipoEncontrado.getNombre());
+            txtAñoDeFundacion.setText(String.valueOf(equipoEncontrado.getAñoFundacion()));
+            txtLocalidad.setText(equipoEncontrado.getLocalidad());
+            txtEntrenador.setText(equipoEncontrado.getEntrenador());
+
+            for (int i = 0; i < TDatos.getRowCount(); i++) {
+                String nombreEnTabla = TDatos.getValueAt(i, 0).toString();
+                if (nombreEnTabla.equalsIgnoreCase(nombreBuscar)) {
+                    TDatos.setRowSelectionInterval(i, i); 
+                    TDatos.scrollRectToVisible(TDatos.getCellRect(i, 0, true)); 
+                    break;
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Equipo encontrado y seleccionado en la tabla.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró ningún equipo con ese nombre.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int filaSeleccionada = TDatos.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un equipo para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String nombreOriginal = TDatos.getValueAt(filaSeleccionada, 0).toString();
+
+        // Obtener nuevos valores desde los JTextFields
+        String nuevoNombre = txtNombreEquipo.getText().trim();
+        String anioStr = txtAñoDeFundacion.getText().trim();
+        String nuevaLocalidad = txtLocalidad.getText().trim();
+        String nuevoEntrenador = txtEntrenador.getText().trim();
+
+        if (nuevoNombre.isEmpty() || anioStr.isEmpty() || nuevoEntrenador.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int nuevoAnio;
+        try {
+            nuevoAnio = Integer.parseInt(anioStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El año debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        boolean exito = controladorEquipos.modificarEquipo(nombreOriginal, nuevoNombre, nuevoAnio, nuevaLocalidad, nuevoEntrenador);
+
+        if (exito) {
+            JOptionPane.showMessageDialog(this, "Equipo modificado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            actualizaTabla();
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo modificar el equipo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
-    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnActualizar1;
     private javax.swing.JButton btnAnadir;
     private javax.swing.JButton btnAnadir1;

@@ -23,103 +23,190 @@ import java.util.logging.Logger;
 public class controladorEquipos {
 
     public boolean guardarEnBD(Equipo equipo) {
-    ConexionBDR conexionBDR = new ConexionBDR();
-    Connection con = null;
-    Statement st = null;
+        ConexionBDR conexionBDR = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
 
-    try {
-        con = conexionBDR.conectar();
-        st = con.createStatement();
-
-        String sql = "INSERT INTO equipo (nombre, año_fundacion, localidad, entrenador) VALUES (" +
-                "'" + equipo.getNombre().replace("'", "''") + "', " +
-                equipo.getAñoFundacion() + ", " +
-                "'" + equipo.getLocalidad().replace("'", "''") + "', " +
-                "'" + equipo.getEntrenador().replace("'", "''") + "');";
-
-        int resultado = st.executeUpdate(sql);
-        return resultado > 0;
-
-    } catch (SQLException | ClassNotFoundException e) {
-        e.printStackTrace();
-        return false;
-    } finally {
         try {
-            if (st != null) st.close();
-        } catch (SQLException e) {
+            con = conexionBDR.conectar();
+            st = con.createStatement();
+
+            String sql = "INSERT INTO equipo (nombre, año_fundacion, localidad, entrenador) VALUES ("
+                    + "'" + equipo.getNombre().replace("'", "''") + "', "
+                    + equipo.getAñoFundacion() + ", "
+                    + "'" + equipo.getLocalidad().replace("'", "''") + "', "
+                    + "'" + equipo.getEntrenador().replace("'", "''") + "');";
+
+            int resultado = st.executeUpdate(sql);
+            return resultado > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar();
         }
-        conexionBDR.desconectar(); 
     }
-}
 
+    public boolean modificarEquipo(String nombreOriginal, String nuevoNombre, int nuevoAño, String nuevaLocalidad, String nuevoEntrenador) {
+        ConexionBDR conexionBDR = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
 
-   
+        try {
+            con = conexionBDR.conectar();
+            st = con.createStatement();
+
+            String sql = "UPDATE equipo SET "
+                    + "nombre = '" + nuevoNombre.replace("'", "''") + "', "
+                    + "año_fundacion = " + nuevoAño + ", "
+                    + "localidad = '" + nuevaLocalidad.replace("'", "''") + "', "
+                    + "entrenador = '" + nuevoEntrenador.replace("'", "''") + "' "
+                    + "WHERE nombre = '" + nombreOriginal.replace("'", "''") + "'";
+
+            int filas = st.executeUpdate(sql);
+            return filas > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar();
+        }
+    }
+
+    public boolean eliminarEquipo(String nombre) {
+        ConexionBDR conexionBDR = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
+
+        try {
+            con = conexionBDR.conectar();
+            st = con.createStatement();
+
+            String sql = "DELETE FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
+
+            int filasAfectadas = st.executeUpdate(sql);
+            return filasAfectadas > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar();
+        }
+    }
 
     public Equipo buscarEquipoPorNombre(String nombre) {
-//        for (Equipo e : listadoEquipos) {
-//            if (e.getNombre().equalsIgnoreCase(nombre)) {
-//                return e;
-//            }
-//        }
-        return null; // no encontrado
+        ConexionBDR conexionBDR = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            con = conexionBDR.conectar();
+            st = con.createStatement();
+
+            String sql = "SELECT * FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
+            rs = st.executeQuery(sql);
+
+            if (rs.next()) {
+                String nombreEquipo = rs.getString("nombre");
+                int anioFundacion = rs.getInt("año_fundacion");
+                String localidad = rs.getString("localidad");
+                String entrenador = rs.getString("entrenador");
+
+                return new Equipo(nombreEquipo, anioFundacion, localidad, entrenador);
+            } else {
+                return null; 
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar(); 
+        }
     }
 
-//    public TreeSet<Equipo> getListadoEquipos() {
-//        return listadoEquipos;
-//    }
-
-//    public Equipo getEquipoPorNombre(String nombre) {
-//        for (Equipo equipo : listadoEquipos) {
-//            if (equipo.getNombre().equalsIgnoreCase(nombre)) {
-//                return equipo;
-//            }
-//        }
-//        return null;
-//    }
+    
 
     public Object[][] convertirAMatrizObject() {
-    ConexionBDR conexionBDR = new ConexionBDR();
-    Connection con = null;
-    Statement st = null;
-    ResultSet rs = null;
+        ConexionBDR conexionBDR = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
 
-    try {
-        con = conexionBDR.conectar();
-        st = con.createStatement();
-
-        rs = st.executeQuery("SELECT COUNT(*) FROM equipo");
-        rs.next();
-        int cantidad = rs.getInt(1);
-
-        Object[][] matrizObj = new Object[cantidad][4];
-
-        rs = st.executeQuery("SELECT nombre, año_fundacion, localidad, entrenador FROM equipo");
-
-        int id = 0;
-        while (rs.next()) {
-            matrizObj[id][0] = rs.getString("nombre");
-            matrizObj[id][1] = rs.getInt("año_fundacion");
-            matrizObj[id][2] = rs.getString("localidad");
-            matrizObj[id][3] = rs.getString("entrenador");
-            id++;
-        }
-
-        return matrizObj;
-
-    } catch (SQLException | ClassNotFoundException e) {
-        e.printStackTrace();
-        return new Object[0][0];
-    } finally {
         try {
-            if (rs != null) rs.close();
-            if (st != null) st.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        conexionBDR.desconectar(); // ✅ cerramos solo la conexión
-    }
-}
+            con = conexionBDR.conectar();
+            st = con.createStatement();
 
+            rs = st.executeQuery("SELECT COUNT(*) FROM equipo");
+            rs.next();
+            int cantidad = rs.getInt(1);
+
+            Object[][] matrizObj = new Object[cantidad][4];
+
+            rs = st.executeQuery("SELECT nombre, año_fundacion, localidad, entrenador FROM equipo");
+
+            int id = 0;
+            while (rs.next()) {
+                matrizObj[id][0] = rs.getString("nombre");
+                matrizObj[id][1] = rs.getInt("año_fundacion");
+                matrizObj[id][2] = rs.getString("localidad");
+                matrizObj[id][3] = rs.getString("entrenador");
+                id++;
+            }
+
+            return matrizObj;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new Object[0][0];
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar();
+        }
+    }
 
 }
