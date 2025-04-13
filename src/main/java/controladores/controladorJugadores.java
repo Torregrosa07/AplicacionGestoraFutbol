@@ -172,25 +172,62 @@ public class controladorJugadores {
         }
     }
 
-    private TreeSet<Jugador> listadoJugadores = new TreeSet<>();
-
-    public boolean añadir(Jugador jug) {
-        return listadoJugadores.add(jug); // si se añadió devuelve true, si ya existía false
-    }
+//    private TreeSet<Jugador> listadoJugadores = new TreeSet<>();
+//
+//    public boolean añadir(Jugador jug) {
+//        return listadoJugadores.add(jug); // si se añadió devuelve true, si ya existía false
+//    }
 
     public Object[][] convertirAMatrizObject() {
-        Object[][] matrizObj = new Object[listadoJugadores.size()][5];
-        int id = 0;
+        ConexionBDR conexionBDR = new ConexionBDR();
+    Connection con = null;
+    Statement st = null;
+    ResultSet rs = null;
 
-        for (Jugador jug : this.listadoJugadores) {
-            matrizObj[id][0] = jug.getNombre();
-            matrizObj[id][1] = jug.getApellidos();
-            matrizObj[id][2] = jug.getEquipo() != null ? jug.getEquipo().getNombre() : "Sin equipo";
-            matrizObj[id][3] = jug.getDorsal();
-            matrizObj[id][4] = jug.getPosicion().toString();
+    try {
+        con = conexionBDR.conectar();
+        st = con.createStatement();
+
+        rs = st.executeQuery("SELECT COUNT(*) FROM jugador");
+        rs.next();
+        int cantidad = rs.getInt(1);
+
+        Object[][] matrizObj = new Object[cantidad][8]; // Ajusta el tamaño según las columnas
+
+        rs = st.executeQuery("SELECT j.id_jugador, j.nombre, j.apellidos, j.posicion, j.dorsal, e.nombre as equipo, j.edad, j.sexo "
+                + "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo");
+
+        int id = 0;
+        while (rs.next()) {
+            matrizObj[id][0] = rs.getString("id_jugador");
+            matrizObj[id][1] = rs.getString("nombre");
+            matrizObj[id][2] = rs.getString("apellidos");
+            matrizObj[id][3] = rs.getString("posicion");
+            matrizObj[id][4] = rs.getString("dorsal");
+            matrizObj[id][5] = rs.getString("equipo");
+            matrizObj[id][6] = rs.getString("edad");
+            matrizObj[id][7] = rs.getString("sexo");
             id++;
         }
+
         return matrizObj;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new Object[0][0];
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar();
+        }
     }
 
 }

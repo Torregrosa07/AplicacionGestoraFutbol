@@ -7,6 +7,7 @@ package Prototipos_Ventanas;
 import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
 import Modelos.Jugador;
+import controladores.controladorJugadores;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,11 +23,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionJugadores extends javax.swing.JPanel {
 
-//    private controladores.controladorJugadores controladorJug = new controladores.controladorJugadores();
-//    private controladores.controladorEquipos controladorEquipos = new controladores.controladorEquipos();
+    private controladores.controladorJugadores controladorJugadores = new controladores.controladorJugadores();
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
-    private String[] columnas = {"NOMBRE", "APELLIDOS", "EQUIPO", "DORSAL", "POSICIÓN"};
+    private String[] columnas = {"ID","NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
 
     /**
      * Creates new form GestionJugadores
@@ -34,21 +34,30 @@ public class GestionJugadores extends javax.swing.JPanel {
      * @throws java.lang.ClassNotFoundException
      */
     public GestionJugadores() {
-        try {
-            initComponents();
+    try {
+        initComponents();
+        
+        // Usa la variable de clase controladorJugadores
+        controladorJugadores.mostrarEquiposCombo(jComboEquipo);
+        controladorJugadores.MostrarSexoCombo(jComboSexo);
+        controladorJugadores.MostrarPosicionCombo(jComboPosicion);
 
-            //Creación de objetos para instanciar correctamente
-            ConexionesBD.ConexionBDR objetoConexion = new ConexionBDR();
-            controladores.controladorJugadores controlador = new controladores.controladorJugadores();
+        actualizarTabla();
+    } catch (SQLException ex) {
+        Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
 
-            controlador.mostrarEquiposCombo(jComboEquipo);
-            controlador.MostrarSexoCombo(jComboSexo);
-            controlador.MostrarPosicionCombo(jComboPosicion);
-
-            cargarJugadoresEnTabla();
-        } catch (SQLException ex) {
-            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void actualizarTabla() throws SQLException {
+        matrizDatos = controladorJugadores.convertirAMatrizObject();
+        dtm = new DefaultTableModel(matrizDatos, columnas) {
+            //para impedir edición de las celdas
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                return false;
+            }
+        };
+        TDatos.setModel(dtm);
 
     }
 //        // Inicializar controladores
@@ -98,16 +107,19 @@ public class GestionJugadores extends javax.swing.JPanel {
         TDatos.setBackground(new java.awt.Color(204, 204, 204));
         TDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "NOMBRE", "APELLIDOS", "EQUIPO", "DORSAL", "POSICIÓN", "SEXO"
+                "ID", "NOMBRE", "APELLIDOS", "POSICIÓN", "DORSAL", "EQUIPO", "EDAD", "SEXO"
             }
         ));
         jScrollPane1.setViewportView(TDatos);
+        if (TDatos.getColumnModel().getColumnCount() > 0) {
+            TDatos.getColumnModel().getColumn(7).setResizable(false);
+        }
 
         labelNombre.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         labelNombre.setText("Nombre:");
@@ -327,7 +339,7 @@ public class GestionJugadores extends javax.swing.JPanel {
 
         try {
             //conexion.desconectar();
-            cargarJugadoresEnTabla();
+            actualizarTabla();
         } catch (SQLException ex) {
             Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -349,55 +361,6 @@ public class GestionJugadores extends javax.swing.JPanel {
     private void jComboSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSexoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboSexoActionPerformed
-    private void cargarJugadoresEnTabla() throws SQLException {
-        ConexionBDR conexion = new ConexionBDR();
-        try {
-            Connection con = conexion.conectar();
-            String sql = "SELECT j.id_jugador, j.nombre, j.apellidos, e.nombre as equipo, j.dorsal, j.posicion, j.sexo "
-                    + "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo";
-
-            Statement sentencia = con.createStatement();
-            ResultSet rs = sentencia.executeQuery(sql);
-
-            // Crear modelo para la tabla
-            DefaultTableModel modelo = new DefaultTableModel();
-            //modelo.addColumn("ID");
-            modelo.addColumn("NOMBRE");
-            modelo.addColumn("APELLIDOS");
-            modelo.addColumn("EQUIPO");
-            modelo.addColumn("DORSAL");
-            modelo.addColumn("SEXO");
-            modelo.addColumn("POSICIÓN");
-
-            // Rellenar el modelo con los datos
-            while (rs.next()) {
-                Object[] fila = new Object[7];
-                //fila[0] = rs.getInt("id_jugador");
-                fila[0] = rs.getString("nombre");
-                fila[1] = rs.getString("apellidos");
-                fila[2] = rs.getString("equipo");
-                fila[3] = rs.getString("dorsal");
-                fila[5] = rs.getString("sexo");
-                fila[4] = rs.getString("posicion");
-                modelo.addRow(fila);
-            }
-
-            // Aplicar el modelo a la tabla
-            TDatos.setModel(modelo);
-
-            // Cerrar recursos
-            rs.close();
-            sentencia.close();
-            conexion.desconectar();
-
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
-
-        }
-    }
 
 //    private void crearEquiposDePrueba() {
 //        try {
