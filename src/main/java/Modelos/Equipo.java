@@ -32,7 +32,7 @@ public class Equipo implements Comparable<Equipo>{
         this.localidad = localidad;
         this.entrenador = entrenador;
     }
-    public Equipo(int IDEquipo, String nombre, int sañoFundacion, String localidad, String entrenador) {
+    public Equipo(int IDEquipo, String nombre, int añoFundacion, String localidad, String entrenador) {
         this.IDEquipo = IDEquipo;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;

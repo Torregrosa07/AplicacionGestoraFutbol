@@ -36,12 +36,11 @@ public class GestionJugadores extends javax.swing.JPanel {
     public GestionJugadores() {
         try {
             initComponents();
-            
-           //Creación de objetos para instanciar correctamente
-            
+
+            //Creación de objetos para instanciar correctamente
             ConexionesBD.ConexionBDR objetoConexion = new ConexionBDR();
             controladores.controladorJugadores controlador = new controladores.controladorJugadores();
-            
+
             controlador.mostrarEquiposCombo(jComboEquipo);
             controlador.MostrarSexoCombo(jComboSexo);
             controlador.MostrarPosicionCombo(jComboPosicion);
@@ -170,7 +169,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         labelEquipo.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         labelEquipo.setText("Equipo:");
 
-        jComboEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Barcelona", "Atlético de Madrid", "Real Madrid" }));
+        jComboEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin Equipo" }));
         jComboEquipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboEquipoActionPerformed(evt);
@@ -303,6 +302,18 @@ public class GestionJugadores extends javax.swing.JPanel {
         String dorsal = txtDorsal.getText().trim();
         String posicion = (String) jComboPosicion.getSelectedItem();
         String sexo = (String) jComboSexo.getSelectedItem();
+
+        String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
+
+        // Se usa Integer en vez de int debido a que se le puede asignar una valor null
+        Integer idEquipo = null;
+        if (!"Sin equipo".equals(equipoSeleccionado)) {
+            controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
+            Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
+            if (equipo != null) {
+                idEquipo = equipo.getIDEquipo();
+            }
+        }
 
         // Validar que ningún campo esté vacío.
         if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty() || posicion.isEmpty() || sexo == null || sexo.isEmpty()) {

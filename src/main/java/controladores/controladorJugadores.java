@@ -68,6 +68,8 @@ public class controladorJugadores {
             rs = sentencia.executeQuery(sql);
             // Limpiar el JComboBox antes de agregar nuevos elementos.
             jComboEquipo.removeAllItems();
+            jComboEquipo.addItem("Sin equipo");
+
             while (rs.next()) {
                 String nombreEquipo = rs.getString("nombre");
                 jComboEquipo.addItem(nombreEquipo);
