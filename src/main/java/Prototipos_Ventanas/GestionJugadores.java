@@ -24,36 +24,34 @@ public class GestionJugadores extends javax.swing.JPanel {
 
 //    private controladores.controladorJugadores controladorJug = new controladores.controladorJugadores();
 //    private controladores.controladorEquipos controladorEquipos = new controladores.controladorEquipos();
-    
-    
-    
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
     private String[] columnas = {"NOMBRE", "APELLIDOS", "EQUIPO", "DORSAL", "POSICIÓN"};
-    
-    
 
     /**
      * Creates new form GestionJugadores
+     *
      * @throws java.lang.ClassNotFoundException
      */
     public GestionJugadores() {
         try {
             initComponents();
             
+           //Creación de objetos para instanciar correctamente
+            
             ConexionesBD.ConexionBDR objetoConexion = new ConexionBDR();
-            
-            
             controladores.controladorJugadores controlador = new controladores.controladorJugadores();
-            controlador.MostrarSexoCombo(jComboSexo);
             
+            controlador.mostrarEquiposCombo(jComboEquipo);
+            controlador.MostrarSexoCombo(jComboSexo);
+            controlador.MostrarPosicionCombo(jComboPosicion);
+
             cargarJugadoresEnTabla();
         } catch (SQLException ex) {
             Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-        
-   }
+
+    }
 //        // Inicializar controladores
 //        controladorJug = new controladores.controladorJugadores();
 //        controladorEquipos = new controladores.controladorEquipos();
@@ -66,9 +64,6 @@ public class GestionJugadores extends javax.swing.JPanel {
 //
 //        cargarEquiposEnCombo();
 //        actualizaTabla(); // Usa el método que funciona correctamente
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,17 +84,15 @@ public class GestionJugadores extends javax.swing.JPanel {
         txtNombre = new java.awt.TextField();
         txtApellidos = new java.awt.TextField();
         txtDorsal = new java.awt.TextField();
-        txtPosicion = new java.awt.TextField();
         btnAnadir = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         labelEquipo = new javax.swing.JLabel();
         jComboEquipo = new javax.swing.JComboBox<>();
-        txtEquipo = new javax.swing.JTextField();
         labelSexo = new javax.swing.JLabel();
         jComboSexo = new javax.swing.JComboBox<>();
+        jComboPosicion = new javax.swing.JComboBox<>();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -147,12 +140,6 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        txtPosicion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPosicionActionPerformed(evt);
-            }
-        });
-
         btnAnadir.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnAnadir.setText("Añadir");
         btnAnadir.addActionListener(new java.awt.event.ActionListener() {
@@ -160,9 +147,6 @@ public class GestionJugadores extends javax.swing.JPanel {
                 btnAnadirActionPerformed(evt);
             }
         });
-
-        btnActualizar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        btnActualizar.setText("Actualizar");
 
         btnModificar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnModificar.setText("Modificar");
@@ -196,6 +180,12 @@ public class GestionJugadores extends javax.swing.JPanel {
         labelSexo.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         labelSexo.setText("Sexo:");
 
+        jComboSexo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboSexoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -214,38 +204,34 @@ public class GestionJugadores extends javax.swing.JPanel {
                                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(labelEquipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelDorsal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(16, 16, 16))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                                .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtEquipo, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtDorsal, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                        .addContainerGap()
+                                        .addComponent(labelApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(labelDorsal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtDorsal, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addComponent(jComboPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 693, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(89, 89, 89)
-                .addComponent(btnActualizar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,18 +249,15 @@ public class GestionJugadores extends javax.swing.JPanel {
                             .addComponent(labelApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtDorsal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelDorsal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDorsal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelDorsal, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,9 +270,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30)
-                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -316,58 +297,30 @@ public class GestionJugadores extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDorsalActionPerformed
 
-    private void txtPosicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPosicionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPosicionActionPerformed
-
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
-        
-        
-        
-            // PRUEBA CON TREESET Y OBJETOS 
-        /*String nombre = txtNombre.getText().trim();
+        String nombre = txtNombre.getText().trim();
         String apellidos = txtApellidos.getText().trim();
         String dorsal = txtDorsal.getText().trim();
-        String posicionStr = txtPosicion.getText().trim();
+        String posicion = (String) jComboPosicion.getSelectedItem();
+        String sexo = (String) jComboSexo.getSelectedItem();
 
-        if (nombre.isEmpty() || apellidos.isEmpty() || posicionStr.isEmpty() || dorsal.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "No añadido", JOptionPane.WARNING_MESSAGE);
+        // Validar que ningún campo esté vacío.
+        if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty() || posicion.isEmpty() || sexo == null || sexo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        // Llamar al método del controlador para añadir el jugador.
+        controladores.controladorJugadores controlador = new controladores.controladorJugadores();
+        controlador.anadirJugador(nombre, apellidos, dorsal, posicion, sexo);
+
         try {
-            // Obtener el equipo seleccionado
-            String nombreEquipo = (String) jComboEquipo.getSelectedItem();
-            Equipo equipo = controladorEquipos.getEquipoPorNombre(nombreEquipo);
-
-            if (equipo == null) {
-                JOptionPane.showMessageDialog(this, "Equipo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Convertir posición de String a enum
-            Jugador.Posicion posicion;
-            try {
-                posicion = Jugador.Posicion.valueOf(posicionStr.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this, "Posición no válida. Use: PORTERO, DEFENSA, MEDIOCENTRO o DELANTERO", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Jugador nuevo = new Jugador(nombre, apellidos, equipo, posicion, dorsal);
-            boolean añadido = controladorJug.añadir(nuevo);
-
-            if (añadido) {
-                actualizaTabla(); // Asegúrate de usar el método correcto
-                JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "El jugador ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al añadir jugador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            //conexion.desconectar();
+            cargarJugadoresEnTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -381,58 +334,60 @@ public class GestionJugadores extends javax.swing.JPanel {
     private void jComboEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEquipoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboEquipoActionPerformed
-private void cargarJugadoresEnTabla() throws SQLException {
-    ConexionBDR conexion = new ConexionBDR();
-    try {
-        Connection con = conexion.conectar();
-        String sql = "SELECT j.id_jugador, j.nombre, j.apellidos, e.nombre as equipo, j.dorsal, j.posicion, j.sexo " +
-                     "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo";
-        
-        Statement sentencia = con.createStatement();
-        ResultSet rs = sentencia.executeQuery(sql);
-        
-        // Crear modelo para la tabla
-        DefaultTableModel modelo = new DefaultTableModel();
-        //modelo.addColumn("ID");
-        modelo.addColumn("NOMBRE");
-        modelo.addColumn("APELLIDOS");
-        modelo.addColumn("EQUIPO");
-        modelo.addColumn("DORSAL");
-        modelo.addColumn("SEXO");
-        modelo.addColumn("POSICIÓN");
-        
-        // Rellenar el modelo con los datos
-        while (rs.next()) {
-            Object[] fila = new Object[7];
-            //fila[0] = rs.getInt("id_jugador");
-            fila[0] = rs.getString("nombre");
-            fila[1] = rs.getString("apellidos");
-            fila[2] = rs.getString("equipo");
-            fila[3] = rs.getString("dorsal");
-            fila[5] = rs.getString("sexo");
-            fila[4] = rs.getString("posicion");
-            modelo.addRow(fila);
+
+    private void jComboSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSexoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboSexoActionPerformed
+    private void cargarJugadoresEnTabla() throws SQLException {
+        ConexionBDR conexion = new ConexionBDR();
+        try {
+            Connection con = conexion.conectar();
+            String sql = "SELECT j.id_jugador, j.nombre, j.apellidos, e.nombre as equipo, j.dorsal, j.posicion, j.sexo "
+                    + "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo";
+
+            Statement sentencia = con.createStatement();
+            ResultSet rs = sentencia.executeQuery(sql);
+
+            // Crear modelo para la tabla
+            DefaultTableModel modelo = new DefaultTableModel();
+            //modelo.addColumn("ID");
+            modelo.addColumn("NOMBRE");
+            modelo.addColumn("APELLIDOS");
+            modelo.addColumn("EQUIPO");
+            modelo.addColumn("DORSAL");
+            modelo.addColumn("SEXO");
+            modelo.addColumn("POSICIÓN");
+
+            // Rellenar el modelo con los datos
+            while (rs.next()) {
+                Object[] fila = new Object[7];
+                //fila[0] = rs.getInt("id_jugador");
+                fila[0] = rs.getString("nombre");
+                fila[1] = rs.getString("apellidos");
+                fila[2] = rs.getString("equipo");
+                fila[3] = rs.getString("dorsal");
+                fila[5] = rs.getString("sexo");
+                fila[4] = rs.getString("posicion");
+                modelo.addRow(fila);
+            }
+
+            // Aplicar el modelo a la tabla
+            TDatos.setModel(modelo);
+
+            // Cerrar recursos
+            rs.close();
+            sentencia.close();
+            conexion.desconectar();
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        
-        // Aplicar el modelo a la tabla
-        TDatos.setModel(modelo);
-        
-        // Cerrar recursos
-        rs.close();
-        sentencia.close();
-        
-    } catch (ClassNotFoundException ex) {
-        Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-        Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
     }
-}
-    
-    
-    
-    
-    
-    
+
 //    private void crearEquiposDePrueba() {
 //        try {
 //            // Ejemplo: Crear 3 equipos básicos
@@ -480,12 +435,12 @@ private void cargarJugadoresEnTabla() throws SQLException {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
-    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAnadir;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> jComboEquipo;
+    private javax.swing.JComboBox<String> jComboPosicion;
     private javax.swing.JComboBox<String> jComboSexo;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
@@ -497,8 +452,6 @@ private void cargarJugadoresEnTabla() throws SQLException {
     private javax.swing.JLabel labelSexo;
     private java.awt.TextField txtApellidos;
     private java.awt.TextField txtDorsal;
-    private javax.swing.JTextField txtEquipo;
     private java.awt.TextField txtNombre;
-    private java.awt.TextField txtPosicion;
     // End of variables declaration//GEN-END:variables
 }

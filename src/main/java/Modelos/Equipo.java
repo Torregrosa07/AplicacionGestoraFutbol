@@ -86,6 +86,7 @@ public class Equipo implements Comparable<Equipo>{
     }
     
     
+    
     @Override
     public int compareTo(Equipo otro) {
         return this.nombre.compareToIgnoreCase(otro.getNombre());
