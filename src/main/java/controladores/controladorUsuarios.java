@@ -6,6 +6,7 @@ package controladores;
 
 import Modelos.Usuario;
 import java.sql.*;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -75,7 +76,83 @@ public class controladorUsuarios {
             em.close();
         }
     }
-    
-  
+
+    public static Usuario buscarUsuarioPorNombre(String nombre) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Usuario> query = em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.nombre = :nombre", Usuario.class);
+            query.setParameter("nombre", nombre);
+
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public static boolean actualizarUsuario(Usuario usuario) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            TypedQuery<Usuario> query = em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.nombre = :nombre", Usuario.class);
+            query.setParameter("nombre", usuario.getNombre());
+
+            Usuario original = query.getSingleResult();
+
+            if (original != null) {
+                original.setContraseña(usuario.getContraseña());
+                em.merge(original);
+                tx.commit();
+                return true;
+            }
+            return false;
+        } catch (NoResultException e) {
+            return false;
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            em.close();
+        }
+    }
+
+    public static boolean eliminarUsuario(String nombre) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            TypedQuery<Usuario> query = em.createQuery(
+                    "SELECT u FROM Usuario u WHERE u.nombre = :nombre", Usuario.class);
+            query.setParameter("nombre", nombre);
+            Usuario usuario = query.getSingleResult();
+
+            if (usuario != null) {
+                em.remove(usuario);
+                tx.commit();
+                return true;
+            }
+            return false;
+        } catch (NoResultException e) {
+            return false;
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            em.close();
+        }
+    }
+
+    public static List<Usuario> obtenerTodosUsuarios() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
 }
