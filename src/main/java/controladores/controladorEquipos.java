@@ -128,16 +128,17 @@ public class controladorEquipos {
             con = conexionBDR.conectar();
             st = con.createStatement();
 
-            String sql = "SELECT * FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
-            rs = st.executeQuery(sql);
+            String sql = "SELECT id_equipo, nombre, año_fundacion, localidad, entrenador FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
+        rs = st.executeQuery(sql);
 
-            if (rs.next()) {
-                String nombreEquipo = rs.getString("nombre");
-                int anioFundacion = rs.getInt("año_fundacion");
-                String localidad = rs.getString("localidad");
-                String entrenador = rs.getString("entrenador");
+        if (rs.next()) {
+            int idEquipo = rs.getInt("id_equipo"); // Obtener el ID
+            String nombreEquipo = rs.getString("nombre");
+            int anioFundacion = rs.getInt("año_fundacion");
+            String localidad = rs.getString("localidad");
+            String entrenador = rs.getString("entrenador");
 
-                return new Equipo(nombreEquipo, anioFundacion, localidad, entrenador);
+            return new Equipo(idEquipo, nombreEquipo, anioFundacion, localidad, entrenador);
             } else {
                 return null; 
             }
