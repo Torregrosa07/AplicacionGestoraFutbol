@@ -257,47 +257,47 @@ public class controladorPartido {
         }
     }
 
-    public DefaultTableModel cargarPartidos() { //metodoo par que se muestren los partidos establecidos en la ventana de consultasd
-        DefaultTableModel modelo = new DefaultTableModel(
-                new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
-        );
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            conn = conexion.conectar();
-            System.out.println("Conexión a la base de datos exitosa.");
-            stmt = conn.createStatement();
-            String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante "
-                    + "FROM partido p "
-                    + "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo "
-                    + "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo";
-            System.out.println("Ejecutando consulta: " + sql);
-            rs = stmt.executeQuery(sql);
+   public DefaultTableModel cargarPartidos() {
+    DefaultTableModel modelo = new DefaultTableModel(
+        new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
+    );
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    try {
+        conn = conexion.conectar();
+        System.out.println("Conexión a la base de datos exitosa en cargarPartidos.");
+        stmt = conn.createStatement();
+        String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante " +
+                     "FROM partido p " +
+                     "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo " +
+                     "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo";
+        System.out.println("Ejecutando consulta en cargarPartidos: " + sql);
+        rs = stmt.executeQuery(sql);
 
-            int rowCount = 0;
-            while (rs.next()) {
-                modelo.addRow(new Object[]{
-                    rs.getInt("id_partido"),
-                    rs.getString("fecha"),
-                    rs.getString("hora"),
-                    rs.getString("local"),
-                    rs.getString("visitante")
-                });
-                rowCount++;
-            }
-            System.out.println("Se cargaron " + rowCount + " partidos programados.");
-            if (rowCount == 0) {
-                System.out.println("Advertencia: No se encontraron partidos en la base de datos.");
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            System.err.println("Error al cargar partidos: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error al cargar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            cerrarRecursos(rs, stmt, conn);
+        int rowCount = 0;
+        while (rs.next()) {
+            modelo.addRow(new Object[]{
+                rs.getInt("id_partido"),
+                rs.getString("fecha"),
+                rs.getString("hora"),
+                rs.getString("local"),
+                rs.getString("visitante")
+            });
+            rowCount++;
         }
-        return modelo;
+        System.out.println("Se cargaron " + rowCount + " partidos programados en cargarPartidos.");
+        if (rowCount == 0) {
+            System.out.println("Advertencia: No se encontraron partidos en la base de datos en cargarPartidos.");
+        }
+    } catch (SQLException | ClassNotFoundException e) {
+        System.err.println("Error al cargar partidos en cargarPartidos: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error al cargar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        cerrarRecursos(rs, stmt, conn);
     }
+    return modelo;
+}
 
     //METODOS PARA ESTADISTICAS DE LOS PARTIDOS
     public DefaultTableModel cargarEstadisticas() {

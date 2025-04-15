@@ -42,6 +42,31 @@ public class ConsultaPartidos extends javax.swing.JPanel {
         }
     }
 
+    private DefaultTableModel ordenarEstadisticasPorPuntos(DefaultTableModel modelo) {
+        java.util.List<Object[]> filas = new java.util.ArrayList<>();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            Object[] fila = new Object[modelo.getColumnCount()];
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            filas.add(fila);
+        }
+
+        filas.sort((fila1, fila2) -> {
+            Integer puntos1 = (Integer) fila1[6]; // Columna "Puntos"
+            Integer puntos2 = (Integer) fila2[6];
+            return puntos2.compareTo(puntos1); // Orden descendente
+        });
+
+        DefaultTableModel modeloOrdenado = new DefaultTableModel(
+            new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
+        );
+        for (Object[] fila : filas) {
+            modeloOrdenado.addRow(fila);
+        }
+
+        return modeloOrdenado;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +80,8 @@ public class ConsultaPartidos extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ordenarEstadisticasPorPuntos = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -71,21 +98,38 @@ public class ConsultaPartidos extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable2);
 
+        ordenarEstadisticasPorPuntos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(ordenarEstadisticasPorPuntos);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(65, 65, 65)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 795, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(258, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -104,6 +148,8 @@ public class ConsultaPartidos extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable ordenarEstadisticasPorPuntos;
     // End of variables declaration//GEN-END:variables
 }
