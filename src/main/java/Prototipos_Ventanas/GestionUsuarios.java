@@ -25,13 +25,13 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }
 
     private void actualizarTablaUsuarios() {
-        String[] columnas = {"Nombre", "Contraseña"};
+        String[] columnas = {"Nombre", "Correo", "Número", "Contraseña"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         List<Usuario> usuarios = controladorUsuarios.obtenerTodosUsuarios();
 
         for (Usuario u : usuarios) {
-            Object[] fila = {u.getNombre(), u.getContraseña()};
+            Object[] fila = {u.getNombre(), u.getCorreo(), u.getNumero(), u.getContraseña()};
             modelo.addRow(fila);
         }
 
@@ -215,7 +215,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             return;
         }
 
-        Usuario nuevo = new Usuario(nombre, contraseña);
+        Usuario nuevo = new Usuario(nombre, contraseña, nombre, nombre);
         controladorUsuarios.insertarUsuario(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario añadido.");
         actualizarTablaUsuarios();

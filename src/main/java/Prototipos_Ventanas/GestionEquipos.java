@@ -397,7 +397,7 @@ public class GestionEquipos extends javax.swing.JPanel {
                 }
             }
 
-            JOptionPane.showMessageDialog(this, "Equipo encontrado y seleccionado en la tabla.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Equipo encontrado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró ningún equipo con ese nombre.", "Error", JOptionPane.ERROR_MESSAGE);
         }
