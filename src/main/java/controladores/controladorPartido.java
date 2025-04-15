@@ -159,73 +159,63 @@ public class controladorPartido {
         comboVisitante.setSelectedIndex(0);
     }
 
-    public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2,
-            JComboBox<String> comboEquipoLocal, JComboBox<String> comboEquipoVisitante,
-            DefaultTableModel modeloPartidos) {
+ public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, JComboBox<String> comboEquipoLocal, JComboBox<String> comboEquipoVisitante, DefaultTableModel modeloPartidos) {
 
-        Date fecha = dateChooserFecha.getDate();
-        if (fecha == null) {
-            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        String fechaSeleccionada = sdf.format(fecha);
-
-        if (comboEquipoLocal.getSelectedIndex() == 0 || comboEquipoVisitante.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        String equipoLocal = comboEquipoLocal.getSelectedItem().toString();
-        String equipoVisitante = comboEquipoVisitante.getSelectedItem().toString();
-
-        if (equipoLocal.equals(equipoVisitante)) {
-            JOptionPane.showMessageDialog(null, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        String horaStr = hora2.getText().trim();
-        if (!validarHora(horaStr)) {
-            JOptionPane.showMessageDialog(null, "Hora inválida. Use formato HH:mm", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-            conn = conexion.conectar();
-            int idLocal = obtenerIdEquipo(equipoLocal);
-            int idVisitante = obtenerIdEquipo(equipoVisitante);
-
-            if (idLocal == 0 || idVisitante == 0) {
-                JOptionPane.showMessageDialog(null, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-
-            stmt = conn.createStatement();
-            String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
-                    + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
-            stmt.executeUpdate(sqlInsert);
-
-            modeloPartidos.addRow(new Object[]{
-                contadorID++,
-                fechaSeleccionada,
-                horaStr,
-                equipoLocal,
-                equipoVisitante
-            });
-
-            return true;
-
-        } catch (SQLException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            return false;
-        } finally {
-            cerrarRecursos(null, stmt, conn);
-        }
+    Date fecha = dateChooserFecha.getDate();
+    if (fecha == null) {
+        JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+        return false;
     }
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Cambiar a formato con guiones
+    String fechaSeleccionada = sdf.format(fecha);
+
+    if (comboEquipoLocal.getSelectedIndex() == 0 || comboEquipoVisitante.getSelectedIndex() == 0) {
+        JOptionPane.showMessageDialog(null, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    String equipoLocal = comboEquipoLocal.getSelectedItem().toString();
+    String equipoVisitante = comboEquipoVisitante.getSelectedItem().toString();
+
+    if (equipoLocal.equals(equipoVisitante)) {
+        JOptionPane.showMessageDialog(null, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    String horaStr = hora2.getText().trim();
+    if (!validarHora(horaStr)) {
+        JOptionPane.showMessageDialog(null, "Hora inválida. Use formato HH:mm", "Error", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    Connection conn = null;
+    Statement stmt = null;
+    try {
+        conn = conexion.conectar();
+        int idLocal = obtenerIdEquipo(equipoLocal);
+        int idVisitante = obtenerIdEquipo(equipoVisitante);
+
+        if (idLocal == 0 || idVisitante == 0) {
+            JOptionPane.showMessageDialog(null, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        stmt = conn.createStatement();
+        String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
+                        + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
+        stmt.executeUpdate(sqlInsert);
+
+        return true;
+
+    } catch (SQLException | ClassNotFoundException e) {
+        JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+        return false;
+    } finally {
+        cerrarRecursos(null, stmt, conn);
+    }
+}
 
     private void cerrarRecursos(ResultSet rs, Statement stmt, Connection conn) {
         try {
@@ -284,4 +274,23 @@ public class controladorPartido {
     }
     return modelo;
 }
+ public void eliminarPartido(int idPartido) {
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = conexion.conectar();
+            stmt = conn.createStatement();
+            String sql = "DELETE FROM partido WHERE id_partido = " + idPartido;
+            int rowsAffected = stmt.executeUpdate(sql);
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Partido eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el partido con ID: " + idPartido, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar el partido: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            cerrarRecursos(null, stmt, conn);
+        }
+    }
 }
