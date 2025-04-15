@@ -21,6 +21,8 @@ public class Usuario {
 
     private String nombre;
     private String contraseña;
+    private String correo;
+    private String numero;
 
     // Constructores, getters y setters
     public Usuario() {}
@@ -29,6 +31,15 @@ public class Usuario {
         this.nombre = nombre;
         this.contraseña = contraseña;
     }
+
+    public Usuario(String nombre, String contraseña, String correo, String numero) {
+        this.nombre = nombre;
+        this.contraseña = contraseña;
+        this.correo = correo;
+        this.numero = numero;
+    }
+    
+    
 
     public String getNombre() {
         return nombre;
@@ -45,5 +56,24 @@ public class Usuario {
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+    
+    
 }
+
 
