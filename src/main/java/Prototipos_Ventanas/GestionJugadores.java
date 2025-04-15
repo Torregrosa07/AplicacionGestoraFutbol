@@ -26,7 +26,7 @@ public class GestionJugadores extends javax.swing.JPanel {
     private controladores.controladorJugadores controladorJugadores = new controladores.controladorJugadores();
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
-    private String[] columnas = {"ID","NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
+    private String[] columnas = {"ID", "NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
 
     /**
      * Creates new form GestionJugadores
@@ -34,19 +34,19 @@ public class GestionJugadores extends javax.swing.JPanel {
      * @throws java.lang.ClassNotFoundException
      */
     public GestionJugadores() {
-    try {
-        initComponents();
-        
-        // Usa la variable de clase controladorJugadores
-        controladorJugadores.mostrarEquiposCombo(jComboEquipo);
-        controladorJugadores.MostrarSexoCombo(jComboSexo);
-        controladorJugadores.MostrarPosicionCombo(jComboPosicion);
+        try {
+            initComponents();
 
-        actualizarTabla();
-    } catch (SQLException ex) {
-        Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+            // Usa la variable de clase controladorJugadores
+            controladorJugadores.mostrarEquiposCombo(jComboEquipo);
+            controladorJugadores.MostrarSexoCombo(jComboSexo);
+            controladorJugadores.MostrarPosicionCombo(jComboPosicion);
+
+            actualizarTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-}
 
     private void actualizarTabla() throws SQLException {
         matrizDatos = controladorJugadores.convertirAMatrizObject();
@@ -102,7 +102,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         jComboSexo = new javax.swing.JComboBox<>();
         jComboPosicion = new javax.swing.JComboBox<>();
         txtEdad = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        labelEdad = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -199,8 +199,8 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jLabel1.setText("Edad:");
+        labelEdad.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        labelEdad.setText("Edad:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -232,7 +232,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                                 .addComponent(labelDorsal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel1)))
+                                .addComponent(labelEdad)))
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
@@ -287,7 +287,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                             .addComponent(jComboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
+                            .addComponent(labelEdad))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -324,17 +324,15 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_txtDorsalActionPerformed
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
-        
-        
+
         String nombre = txtNombre.getText().trim();
         String apellidos = txtApellidos.getText().trim();
         String dorsal = txtDorsal.getText().trim();
         String posicion = (String) jComboPosicion.getSelectedItem();
         String sexo = (String) jComboSexo.getSelectedItem();
+        String edadTexto = txtEdad.getText().trim();
 
         String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
-
-        // Se usa Integer en vez de int debido a que se le puede asignar una valor null
         Integer idEquipo = null;
         if (!"Sin equipo".equals(equipoSeleccionado)) {
             controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
@@ -344,18 +342,27 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         }
 
-        // Validar que ningún campo esté vacío.
-        if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty() || posicion.isEmpty() || sexo == null || sexo.isEmpty()) {
+        // Validar que ningún campo esté vacío (incluyendo edad)
+        if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty() || posicion.isEmpty() || sexo == null || sexo.isEmpty() || edadTexto.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Llamar al método del controlador para añadir el jugador.
+        // Convertir edad a entero
+        int edad;
+        try {
+            edad = Integer.parseInt(edadTexto);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.", "Error en el campo edad", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Llamar al método del controlador para añadir el jugador
         controladores.controladorJugadores controlador = new controladores.controladorJugadores();
-        controlador.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, idEquipo);
+        controlador.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+        JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.");
 
         try {
-            //conexion.desconectar();
             actualizarTabla();
         } catch (SQLException ex) {
             Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
@@ -364,11 +371,45 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+
+        int filaSeleccionada = TDatos.getSelectedRow();
+
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un jugador para eliminar.", "No se seleccionó nada", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+       //Obtener el id del Jugador
+        int idJugador;
+        try {
+            idJugador = Integer.parseInt(TDatos.getValueAt(filaSeleccionada, 0).toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener el ID del jugador.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener el nombre del jugador 
+        String nombreJugador = TDatos.getValueAt(filaSeleccionada, 1).toString();
+
+        // Confirmación antes de eliminar
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de eliminar al jugador \"" + nombreJugador + "\" con ID " + idJugador + "?","Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            controladores.controladorJugadores controlador = new controladores.controladorJugadores();
+            controlador.eliminarJugador(idJugador);
+
+            // Actualizar la tabla despues de eliminar
+            try {
+                actualizarTabla();
+            } catch (SQLException ex) {
+                Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jComboEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEquipoActionPerformed
@@ -433,12 +474,12 @@ public class GestionJugadores extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboEquipo;
     private javax.swing.JComboBox<String> jComboPosicion;
     private javax.swing.JComboBox<String> jComboSexo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelApellidos;
     private javax.swing.JLabel labelDorsal;
+    private javax.swing.JLabel labelEdad;
     private javax.swing.JLabel labelEquipo;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelSexo;

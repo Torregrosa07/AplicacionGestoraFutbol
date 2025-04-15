@@ -12,10 +12,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,25 +26,25 @@ import javax.swing.JComboBox;
  */
 public class controladorJugadores {
 
-    public void anadirJugador(String nombre, String apellidos, String dorsal, String posicion, String sexo, Integer idEquipo) {
+    public void anadirJugador(String nombre, String apellidos, String dorsal, String posicion, String sexo, int edad, Integer idEquipo) {
     ConexionBDR objetoConexion = new ConexionBDR();
     Connection conn = null;
     Statement sentencia = null;
 
     try {
-        conn = objetoConexion.conectar(); // <-- Asegurar conexión
-        sentencia = conn.createStatement(); // <-- Inicializar aquí
+        conn = objetoConexion.conectar();
+        sentencia = conn.createStatement();
 
         String sql;
         if (idEquipo != null) {
-            sql = "INSERT INTO jugador (nombre, apellidos, dorsal, posicion, sexo, id_equipo) VALUES ('"
-                    + nombre + "', '" + apellidos + "', '" + dorsal + "', '" + posicion + "', '" + sexo + "', " + idEquipo + ")";
+            sql = "INSERT INTO jugador (nombre, apellidos, dorsal, posicion, sexo, edad, id_equipo) VALUES ('"
+                    + nombre + "', '" + apellidos + "', '" + dorsal + "', '" + posicion + "', '" + sexo + "', " + edad + ", " + idEquipo + ")";
         } else {
-            sql = "INSERT INTO jugador (nombre, apellidos, dorsal, posicion, sexo) VALUES ('"
-                    + nombre + "', '" + apellidos + "', '" + dorsal + "', '" + posicion + "', '" + sexo + "')";
+            sql = "INSERT INTO jugador (nombre, apellidos, dorsal, posicion, sexo, edad) VALUES ('"
+                    + nombre + "', '" + apellidos + "', '" + dorsal + "', '" + posicion + "', '" + sexo + "', " + edad + ")";
         }
 
-        int filasAfectadas = sentencia.executeUpdate(sql); // Ahora sentencia no es null
+        int filasAfectadas = sentencia.executeUpdate(sql);
         if (filasAfectadas > 0) {
             System.out.println("Jugador añadido correctamente.");
         }
@@ -49,40 +52,51 @@ public class controladorJugadores {
     } catch (Exception e) {
         e.printStackTrace();
     } finally {
-            try {
-                if (sentencia != null) {
-                    sentencia.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            objetoConexion.desconectar();
-        }
-    }
-
-    /*private int obtenerIdEquipo(Connection conn, String nombreEquipo) throws SQLException {
-        Statement stmt = null;
-        ResultSet rs = null;
         try {
-            stmt = conn.createStatement();
-            String nombreEscapado = nombreEquipo.replace("'", "''");
-            String sql = "SELECT id_equipo FROM equipo WHERE nombre = '" + nombreEscapado + "'";
-
-            rs = stmt.executeQuery(sql);
-
-            if (rs.next()) {
-                return rs.getInt("id_equipo");
+            if (sentencia != null) {
+                sentencia.close();
             }
-            return 0;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-    }*/
+        objetoConexion.desconectar();
+    }
+}
+    public void eliminarJugador(int idJugador) {
+    ConexionBDR objetoConexion = new ConexionBDR();
+    Connection conn = null;
+    Statement sentencia = null;
+
+    try {
+        conn = objetoConexion.conectar();
+        sentencia = conn.createStatement();
+        
+        String sql = "DELETE FROM jugador WHERE id_jugador = " + idJugador;
+        int filasAfectadas = sentencia.executeUpdate(sql);
+        
+        if (filasAfectadas > 0) {
+            System.out.println("Jugador eliminado correctamente.");
+        } else {
+            System.out.println("No se encontró ningún jugador con el ID: " + idJugador);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (sentencia != null) {
+                sentencia.close();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        objetoConexion.desconectar();
+    }
+}
+    
+    
+
+
+    
     public void mostrarEquiposCombo(JComboBox jComboEquipo) {
         ConexionBDR objetoConexion = new ConexionBDR();
         Connection conn = null;
