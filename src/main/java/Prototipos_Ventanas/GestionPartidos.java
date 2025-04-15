@@ -252,8 +252,7 @@ private DefaultTableModel modeloPartidos;
     private void guargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guargarActionPerformed
         controlador.guardarPartido(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante, modeloPartidos);
         controlador.limpiarCampos(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante);
-        gf.setText("");
-        gc.setText("");
+      
     }//GEN-LAST:event_guargarActionPerformed
 
     private void hora2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hora2ActionPerformed

@@ -27,20 +27,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-
 /**
  *
  * @author Keiny
  */
 public class controladorPartido {
 
-  private TreeSet<Partido> listadoPartidos = new TreeSet<>();
+    private TreeSet<Partido> listadoPartidos = new TreeSet<>();
     private ConexionBDR conexion;
     private int contadorID;
 
     public controladorPartido() {
         conexion = new ConexionBDR();
-        contadorID = obtenerUltimoID() + 1; 
+        contadorID = obtenerUltimoID() + 1;
     }
 
     private int obtenerUltimoID() {
@@ -153,7 +152,7 @@ public class controladorPartido {
         }
     }
 
-    public void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) {
+    public void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) { //limpiar campos, para que luego de una inserción queden los campos vacíos ylistos para recibir un nuevo partido
         dateChooser.setDate(null);
         hora2.setText("");
         comboLocal.setSelectedIndex(0);
@@ -243,7 +242,46 @@ public class controladorPartido {
             e.printStackTrace();
         }
     }
+
+ public DefaultTableModel cargarPartidos() { //metodoo par que se muestren los partidos establecidos en la ventana de consultasd
+    DefaultTableModel modelo = new DefaultTableModel(
+        new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
+    );
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    try {
+        conn = conexion.conectar();
+        System.out.println("Conexión a la base de datos exitosa.");
+        stmt = conn.createStatement();
+        String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante " +
+                     "FROM partido p " +
+                     "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo " +
+                     "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo";
+        System.out.println("Ejecutando consulta: " + sql);
+        rs = stmt.executeQuery(sql);
+
+        int rowCount = 0;
+        while (rs.next()) {
+            modelo.addRow(new Object[]{
+                rs.getInt("id_partido"),
+                rs.getString("fecha"),
+                rs.getString("hora"),
+                rs.getString("local"),
+                rs.getString("visitante")
+            });
+            rowCount++;
+        }
+        System.out.println("Se cargaron " + rowCount + " partidos programados.");
+        if (rowCount == 0) {
+            System.out.println("Advertencia: No se encontraron partidos en la base de datos.");
+        }
+    } catch (SQLException | ClassNotFoundException e) {
+        System.err.println("Error al cargar partidos: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error al cargar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        cerrarRecursos(rs, stmt, conn);
+    }
+    return modelo;
 }
-
-
-
+}

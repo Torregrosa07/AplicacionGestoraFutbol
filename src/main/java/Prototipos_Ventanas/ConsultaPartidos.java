@@ -4,18 +4,44 @@
  */
 package Prototipos_Ventanas;
 
+import controladores.controladorPartido;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author keiny
  */
 public class ConsultaPartidos extends javax.swing.JPanel {
+   private controladorPartido controlador;
 
-    /**
-     * Creates new form ConsultaPartidos
-     */
     public ConsultaPartidos() {
+        controlador = new controladorPartido();
         initComponents();
+        
+        //try catch para manejar la comfiguración de la tabla sin acceso a ediciones ni nada, solo visualización
+        try {
+            System.out.println("Configurando jTable2...");
+            DefaultTableModel modelo = controlador.cargarPartidos();
+            jTable2.setModel(modelo);
+
+            jTable2.setEnabled(false);
+            jTable2.setRowSelectionAllowed(false);
+
+            jTable2.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+            jTable2.getColumnModel().getColumn(1).setPreferredWidth(100); // Fecha
+            jTable2.getColumnModel().getColumn(2).setPreferredWidth(80);  // Hora
+            jTable2.getColumnModel().getColumn(3).setPreferredWidth(150); // Equipo Local
+            jTable2.getColumnModel().getColumn(4).setPreferredWidth(150); // Equipo Visitante
+
+            System.out.println("jTable2 configurada correctamente.");
+        } catch (Exception e) {
+            System.err.println("Error al configurar jTable2: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,18 +53,39 @@ public class ConsultaPartidos extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 950, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 795, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(258, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -56,5 +103,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
