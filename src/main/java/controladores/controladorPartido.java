@@ -80,8 +80,9 @@ public class controladorPartido {
         return añadir(nuevo);
     }
 
+    // METODO PARA VALIDAR LA FECHA DEL JDATECHOOSER
     public boolean validarFecha(String fecha) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         sdf.setLenient(false);
         try {
             sdf.parse(fecha);
@@ -91,6 +92,7 @@ public class controladorPartido {
         }
     }
 
+    //METODO PARA VALIDAR LA HORA
     public boolean validarHora(String hora) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         sdf.setLenient(false);
@@ -102,6 +104,7 @@ public class controladorPartido {
         }
     }
 
+    //METODO PARA OBTENER EL ID DE LOS EQUIPOS Y PODER DISTINGUIRLOS PARA CUADNO SE VAYAN A ELIMINAR O SUBIR ESTADISTICAS DE ESTOS    
     public int obtenerIdEquipo(String nombreEquipo) {
         Connection conn = null;
         Statement stmt = null;
@@ -159,122 +162,66 @@ public class controladorPartido {
         comboVisitante.setSelectedIndex(0);
     }
 
- public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, JComboBox<String> comboEquipoLocal, JComboBox<String> comboEquipoVisitante, DefaultTableModel modeloPartidos) {
+    //METODOS PARA ESTABLECER PARTIDOS
+    public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, JComboBox<String> comboEquipoLocal, JComboBox<String> comboEquipoVisitante, DefaultTableModel modeloPartidos) {
 
-    Date fecha = dateChooserFecha.getDate();
-    if (fecha == null) {
-        JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-        return false;
-    }
-
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Cambiar a formato con guiones
-    String fechaSeleccionada = sdf.format(fecha);
-
-    if (comboEquipoLocal.getSelectedIndex() == 0 || comboEquipoVisitante.getSelectedIndex() == 0) {
-        JOptionPane.showMessageDialog(null, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
-        return false;
-    }
-
-    String equipoLocal = comboEquipoLocal.getSelectedItem().toString();
-    String equipoVisitante = comboEquipoVisitante.getSelectedItem().toString();
-
-    if (equipoLocal.equals(equipoVisitante)) {
-        JOptionPane.showMessageDialog(null, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
-        return false;
-    }
-
-    String horaStr = hora2.getText().trim();
-    if (!validarHora(horaStr)) {
-        JOptionPane.showMessageDialog(null, "Hora inválida. Use formato HH:mm", "Error", JOptionPane.ERROR_MESSAGE);
-        return false;
-    }
-
-    Connection conn = null;
-    Statement stmt = null;
-    try {
-        conn = conexion.conectar();
-        int idLocal = obtenerIdEquipo(equipoLocal);
-        int idVisitante = obtenerIdEquipo(equipoVisitante);
-
-        if (idLocal == 0 || idVisitante == 0) {
-            JOptionPane.showMessageDialog(null, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        Date fecha = dateChooserFecha.getDate();
+        if (fecha == null) {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-        stmt = conn.createStatement();
-        String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
-                        + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
-        stmt.executeUpdate(sqlInsert);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Cambiar a formato con guiones
+        String fechaSeleccionada = sdf.format(fecha);
 
-        return true;
+        if (comboEquipoLocal.getSelectedIndex() == 0 || comboEquipoVisitante.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
 
-    } catch (SQLException | ClassNotFoundException e) {
-        JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-        return false;
-    } finally {
-        cerrarRecursos(null, stmt, conn);
-    }
-}
+        String equipoLocal = comboEquipoLocal.getSelectedItem().toString();
+        String equipoVisitante = comboEquipoVisitante.getSelectedItem().toString();
 
-    private void cerrarRecursos(ResultSet rs, Statement stmt, Connection conn) {
+        if (equipoLocal.equals(equipoVisitante)) {
+            JOptionPane.showMessageDialog(null, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String horaStr = hora2.getText().trim();
+        if (!validarHora(horaStr)) {
+            JOptionPane.showMessageDialog(null, "Hora inválida. Use formato HH:mm", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        Connection conn = null;
+        Statement stmt = null;
         try {
-            if (rs != null) {
-                rs.close();
+            conn = conexion.conectar();
+            int idLocal = obtenerIdEquipo(equipoLocal);
+            int idVisitante = obtenerIdEquipo(equipoVisitante);
+
+            if (idLocal == 0 || idVisitante == 0) {
+                JOptionPane.showMessageDialog(null, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (conn != null) {
-                conexion.desconectar();
-            }
-        } catch (SQLException e) {
+
+            stmt = conn.createStatement();
+            String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
+                    + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
+            stmt.executeUpdate(sqlInsert);
+
+            return true;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
+            return false;
+        } finally {
+            cerrarRecursos(null, stmt, conn);
         }
     }
 
- public DefaultTableModel cargarPartidos() { //metodoo par que se muestren los partidos establecidos en la ventana de consultasd
-    DefaultTableModel modelo = new DefaultTableModel(
-        new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
-    );
-    Connection conn = null;
-    Statement stmt = null;
-    ResultSet rs = null;
-    try {
-        conn = conexion.conectar();
-        System.out.println("Conexión a la base de datos exitosa.");
-        stmt = conn.createStatement();
-        String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante " +
-                     "FROM partido p " +
-                     "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo " +
-                     "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo";
-        System.out.println("Ejecutando consulta: " + sql);
-        rs = stmt.executeQuery(sql);
-
-        int rowCount = 0;
-        while (rs.next()) {
-            modelo.addRow(new Object[]{
-                rs.getInt("id_partido"),
-                rs.getString("fecha"),
-                rs.getString("hora"),
-                rs.getString("local"),
-                rs.getString("visitante")
-            });
-            rowCount++;
-        }
-        System.out.println("Se cargaron " + rowCount + " partidos programados.");
-        if (rowCount == 0) {
-            System.out.println("Advertencia: No se encontraron partidos en la base de datos.");
-        }
-    } catch (SQLException | ClassNotFoundException e) {
-        System.err.println("Error al cargar partidos: " + e.getMessage());
-        JOptionPane.showMessageDialog(null, "Error al cargar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } finally {
-        cerrarRecursos(rs, stmt, conn);
-    }
-    return modelo;
-}
- public void eliminarPartido(int idPartido) {
+    public void eliminarPartido(int idPartido) {
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -293,4 +240,185 @@ public class controladorPartido {
             cerrarRecursos(null, stmt, conn);
         }
     }
+
+    private void cerrarRecursos(ResultSet rs, Statement stmt, Connection conn) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (conn != null) {
+                conexion.desconectar();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DefaultTableModel cargarPartidos() { //metodoo par que se muestren los partidos establecidos en la ventana de consultasd
+        DefaultTableModel modelo = new DefaultTableModel(
+                new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
+        );
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = conexion.conectar();
+            System.out.println("Conexión a la base de datos exitosa.");
+            stmt = conn.createStatement();
+            String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante "
+                    + "FROM partido p "
+                    + "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo "
+                    + "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo";
+            System.out.println("Ejecutando consulta: " + sql);
+            rs = stmt.executeQuery(sql);
+
+            int rowCount = 0;
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getInt("id_partido"),
+                    rs.getString("fecha"),
+                    rs.getString("hora"),
+                    rs.getString("local"),
+                    rs.getString("visitante")
+                });
+                rowCount++;
+            }
+            System.out.println("Se cargaron " + rowCount + " partidos programados.");
+            if (rowCount == 0) {
+                System.out.println("Advertencia: No se encontraron partidos en la base de datos.");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Error al cargar partidos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al cargar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            cerrarRecursos(rs, stmt, conn);
+        }
+        return modelo;
+    }
+
+    //METODOS PARA ESTADISTICAS DE LOS PARTIDOS
+    public DefaultTableModel cargarEstadisticas() {
+        DefaultTableModel modelo = new DefaultTableModel(
+                new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
+        );
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = conexion.conectar();
+            stmt = conn.createStatement();
+
+           
+            rs = stmt.executeQuery("SELECT id_equipo, nombre FROM equipo");//obtener todos los equipos
+            while (rs.next()) {
+                int idEquipo = rs.getInt("id_equipo");
+                String nombreEquipo = rs.getString("nombre");
+
+                // inicializaci{on de los contadores para las estad{isticas
+                int gf = 0; // Goles a favor
+                int gc = 0; // Goles en contra
+                int pg = 0; // Partidos ganados
+                int pp = 0; // Partidos perdidos
+                int pe = 0; // Partidos empatados
+                String sqlLocal = "SELECT goles_local, goles_visitante " // calcular estadísticas como equipo local
+                        + "FROM partido "
+                        + "WHERE id_equipo_local = " + idEquipo
+                        + " AND goles_local IS NOT NULL AND goles_visitante IS NOT NULL";
+                Statement stmtLocal = conn.createStatement();
+                ResultSet rsLocal = stmtLocal.executeQuery(sqlLocal);
+                while (rsLocal.next()) {
+                    int golesLocal = rsLocal.getInt("goles_local");
+                    int golesVisitante = rsLocal.getInt("goles_visitante");
+                    gf += golesLocal; // goles a favor (los que anotó el equipo local)
+                    gc += golesVisitante; // goles en contra (los que anotó el visitante)
+                    if (golesLocal > golesVisitante) {
+                        pg++; // si ganó el equipo local
+                    } else if (golesLocal < golesVisitante) {
+                        pp++; // si perdió el equipo local
+                    } else {
+                        pe++; // si hubo empate
+                    }
+                }
+                rsLocal.close();
+                stmtLocal.close();
+
+                // Calcular estadísticas como equipo visitante
+                String sqlVisitante = "SELECT goles_local, goles_visitante "
+                        + "FROM partido "
+                        + "WHERE id_equipo_visitante = " + idEquipo
+                        + " AND goles_local IS NOT NULL AND goles_visitante IS NOT NULL";
+                Statement stmtVisitante = conn.createStatement();
+                ResultSet rsVisitante = stmtVisitante.executeQuery(sqlVisitante);
+                while (rsVisitante.next()) {
+                    int golesLocal = rsVisitante.getInt("goles_local");
+                    int golesVisitante = rsVisitante.getInt("goles_visitante");
+                    gf += golesVisitante; // goles a favor (los que anotó el equipo visitante)
+                    gc += golesLocal; // goles en contra (los que anotó el local)
+                    if (golesVisitante > golesLocal) {
+                        pg++; // ganó el equipo visitante
+                    } else if (golesVisitante < golesLocal) {
+                        pp++; // gerdió el equipo visitante
+                    } else {
+                        pe++; // si hubo empate
+                    }
+                }
+                rsVisitante.close();
+                stmtVisitante.close();
+
+                // Calcular puntos (3 por partido ganado, 1 por empate)
+                int puntos = (pg * 3) + (pe * 1);
+
+                // agregar la fila al modelo
+                modelo.addRow(new Object[]{
+                    nombreEquipo, gf, gc, pg, pp, pe, puntos
+                });
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar estadísticas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } finally {
+            cerrarRecursos(rs, stmt, conn);
+        }
+        return modelo;
+    }
+    
+    public boolean registrarResultado(int idPartido, String golesLocalStr, String golesVisitanteStr) {
+    int golesLocal, golesVisitante;
+    try {
+        golesLocal = Integer.parseInt(golesLocalStr);
+        golesVisitante = Integer.parseInt(golesVisitanteStr);
+        if (golesLocal < 0 || golesVisitante < 0) {
+            JOptionPane.showMessageDialog(null, "Los goles no pueden ser negativos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese valores numéricos válidos para los goles.", "Error", JOptionPane.ERROR_MESSAGE);
+        return false;
+    }
+
+    Connection conn = null;
+    Statement stmt = null;
+    try {
+        conn = conexion.conectar();
+        stmt = conn.createStatement();
+        String sql = "UPDATE partido SET goles_local = " + golesLocal + ", goles_visitante = " + golesVisitante +
+                    " WHERE id_partido = " + idPartido;
+        int rowsAffected = stmt.executeUpdate(sql);
+        if (rowsAffected == 0) {
+            JOptionPane.showMessageDialog(null, "No se encontró el partido con ID: " + idPartido, "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    } catch (SQLException | ClassNotFoundException e) {
+        JOptionPane.showMessageDialog(null, "Error al registrar resultado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+        return false;
+    } finally {
+        cerrarRecursos(null, stmt, conn);
+    }
+}
+
 }
