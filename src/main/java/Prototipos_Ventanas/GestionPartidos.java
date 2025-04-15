@@ -6,6 +6,8 @@ package Prototipos_Ventanas;
 
 import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
+import static Prototipos_Ventanas.GestionInicio.fecha;
+import controladores.controladorPartido;
 import com.toedter.calendar.JDateChooser;
 import java.awt.FlowLayout;
 import java.awt.TextField;
@@ -30,121 +32,22 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionPartidos extends javax.swing.JPanel {
 
-    private DefaultTableModel modelo;
-    private int contadorID = 1;
-    DefaultTableModel modeloPartidos = new DefaultTableModel(new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
-    DefaultTableModel modeloEstadisticas = new DefaultTableModel(new String[]{"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
+private DefaultTableModel modeloPartidos;
+    private DefaultTableModel modeloEstadisticas;
+    private controladorPartido controlador;
 
     public GestionPartidos() {
-        initComponents();
-        cargarEquiposEnCombos();
+        modeloPartidos = new DefaultTableModel(new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
+        modeloEstadisticas = new DefaultTableModel(new String[]{"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
 
-        modeloPartidos = new DefaultTableModel();
-        modeloPartidos.addColumn("ID");
-        modeloPartidos.addColumn("Fecha");
-        modeloPartidos.addColumn("HORA");
-        modeloPartidos.addColumn("Equipo Local");
-        modeloPartidos.addColumn("Equipo Visitante");
+        controlador = new controladorPartido();
+
+        initComponents();
+
         tablaPartidos.setModel(modeloPartidos);
 
+        controlador.cargarEquiposEnCombos(comboEquipoLocal, comboEquipoVisitante);
     }
-
-    public boolean validarFecha(String fecha) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        sdf.setLenient(false);
-        try {
-            Date date = sdf.parse(fecha);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
-    public boolean validarHora(String hora2) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        sdf.setLenient(false);
-        try {
-            Date date = sdf.parse(hora2);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
-    private int obtenerIdEquipo(Connection conn, String nombreEquipo) throws SQLException {
-        Statement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = conn.createStatement();
-            String nombreEscapado = nombreEquipo.replace("'", "''");
-            String sql = "SELECT id_equipo FROM equipo WHERE nombre = '" + nombreEscapado + "'";
-
-            rs = stmt.executeQuery(sql);
-
-            if (rs.next()) {
-                return rs.getInt("id_equipo");
-            }
-            return 0;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-        }
-    }
-
-    private void cargarEquiposEnCombos() {
-        comboEquipoLocal.removeAllItems();
-        comboEquipoVisitante.removeAllItems();
-
-        comboEquipoLocal.addItem("Seleccione un equipo");
-        comboEquipoVisitante.addItem("Seleccione un equipo");
-
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/kickoff", "root", "");
-            stmt = conn.createStatement();
-            String sql = "SELECT nombre FROM equipo";
-            rs = stmt.executeQuery(sql);
-
-            while (rs.next()) {
-                String nombreEquipo = rs.getString("nombre");
-                comboEquipoLocal.addItem(nombreEquipo);
-                comboEquipoVisitante.addItem(nombreEquipo);
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar equipos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void limpiarCampos() {
-        dateChooserFecha.setDate(null);
-        hora2.setText("");
-        comboEquipoLocal.setSelectedIndex(0);
-        comboEquipoVisitante.setSelectedIndex(0);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -347,80 +250,10 @@ public class GestionPartidos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guargarActionPerformed
-        String fechaSeleccionada = "";
-        Date fecha = dateChooserFecha.getDate();
-        if (fecha == null) {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        fechaSeleccionada = sdf.format(fecha);
-
-        if (comboEquipoLocal.getSelectedIndex() == 0 || comboEquipoVisitante.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String equipoLocal = comboEquipoLocal.getSelectedItem().toString();
-        String equipoVisitante = comboEquipoVisitante.getSelectedItem().toString();
-
-        if (equipoLocal.equals(equipoVisitante)) {
-            JOptionPane.showMessageDialog(this, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String horaStr = hora2.getText().trim();
-        if (!validarHora(horaStr)) {
-            JOptionPane.showMessageDialog(this, "Hora inválida. Use formato HH:mm", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        ConexionBDR conexionBD = new ConexionBDR();
-        Connection conn = null;
-        Statement stmt = null;
-
-        try {
-            conn = conexionBD.conectar(); // Usas tu clase
-            int idLocal = obtenerIdEquipo(conn, equipoLocal);
-            int idVisitante = obtenerIdEquipo(conn, equipoVisitante);
-
-            if (idLocal == 0 || idVisitante == 0) {
-                JOptionPane.showMessageDialog(this, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            stmt = conn.createStatement();
-            String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
-                    + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
-            stmt.executeUpdate(sqlInsert);
-
-            modeloPartidos.addRow(new Object[]{
-                contadorID,
-                fechaSeleccionada,
-                horaStr,
-                equipoLocal,
-                equipoVisitante
-            });
-            contadorID++;
-
-            limpiarCampos();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "Error de base de datos: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conexionBD.desconectar(); // Lo cierras con tu método
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        controlador.guardarPartido(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante, modeloPartidos);
+        controlador.limpiarCampos(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante);
+        gf.setText("");
+        gc.setText("");
     }//GEN-LAST:event_guargarActionPerformed
 
     private void hora2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hora2ActionPerformed
