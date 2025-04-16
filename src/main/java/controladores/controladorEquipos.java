@@ -90,33 +90,70 @@ public class controladorEquipos {
     }
 
     public boolean eliminarEquipo(String nombre) {
-        ConexionBDR conexionBDR = new ConexionBDR();
-        Connection con = null;
-        Statement st = null;
+    ConexionBDR conexionBDR = new ConexionBDR();
+    Connection con = null;
+    Statement st = null;
+    ResultSet rs = null;
 
-        try {
-            con = conexionBDR.conectar();
-            st = con.createStatement();
-
-            String sql = "DELETE FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
-
-            int filasAfectadas = st.executeUpdate(sql);
-            return filasAfectadas > 0;
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            conexionBDR.desconectar();
+    try {
+        con = conexionBDR.conectar();
+        con.setAutoCommit(false); // Iniciamos una transacción para garantizar que todo se ejecute o nada
+        st = con.createStatement();
+        
+        // Primero obtenemos el ID del equipo
+        String sqlBuscarId = "SELECT id_equipo FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
+        rs = st.executeQuery(sqlBuscarId);
+        
+        if (!rs.next()) {
+            return false; // El equipo no existe
         }
+        
+        int idEquipo = rs.getInt("id_equipo");
+        
+        // 1. Actualizar los jugadores del equipo para quitar la referencia
+        String sqlActualizarJugadores = "UPDATE jugador SET id_equipo = NULL WHERE id_equipo = " + idEquipo;
+        st.executeUpdate(sqlActualizarJugadores);
+        
+        // 2. Eliminar partidos relacionados con el equipo o actualizar referencias
+        // Opción A: Eliminar los partidos
+        String sqlEliminarPartidos = "DELETE FROM partido WHERE id_equipo_local = " + idEquipo + 
+                                    " OR id_equipo_visitante = " + idEquipo;
+        st.executeUpdate(sqlEliminarPartidos);
+        
+        // 3. Finalmente, eliminar el equipo
+        String sqlEliminarEquipo = "DELETE FROM equipo WHERE id_equipo = " + idEquipo;
+        int filasAfectadas = st.executeUpdate(sqlEliminarEquipo);
+        
+        con.commit(); // Confirmar la transacción
+        return filasAfectadas > 0;
+
+    } catch (SQLException | ClassNotFoundException e) {
+        try {
+            if (con != null) {
+                con.rollback(); // Si hay error, revertir todos los cambios
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        e.printStackTrace();
+        return false;
+    } finally {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.setAutoCommit(true); // Restaurar el comportamiento por defecto
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        conexionBDR.desconectar();
     }
+}
 
     public Equipo buscarEquipoPorNombre(String nombre) {
         ConexionBDR conexionBDR = new ConexionBDR();
