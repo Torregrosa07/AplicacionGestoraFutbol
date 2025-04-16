@@ -15,34 +15,65 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ConsultaPartidos extends javax.swing.JPanel {
    private controladorPartido controlador;
+   private DefaultTableModel modeloPartidos;
+    private DefaultTableModel modeloEstadisticas;
 
     public ConsultaPartidos() {
-        controlador = new controladorPartido();
+     controlador = new controladorPartido();
         initComponents();
-        
-        //try catch para manejar la comfiguración de la tabla sin acceso a ediciones ni nada, solo visualización
+
         try {
             System.out.println("Configurando jTable2...");
             DefaultTableModel modelo = controlador.cargarPartidos();
-            jTable2.setModel(modelo);
+            tablaPartidos.setModel(modelo);
 
-            jTable2.setEnabled(false);
-            jTable2.setRowSelectionAllowed(false);
+            tablaPartidos.setEnabled(false);
+            tablaPartidos.setRowSelectionAllowed(false);
 
-            jTable2.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
-            jTable2.getColumnModel().getColumn(1).setPreferredWidth(100); // Fecha
-            jTable2.getColumnModel().getColumn(2).setPreferredWidth(80);  // Hora
-            jTable2.getColumnModel().getColumn(3).setPreferredWidth(150); // Equipo Local
-            jTable2.getColumnModel().getColumn(4).setPreferredWidth(150); // Equipo Visitante
+            tablaPartidos.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+            tablaPartidos.getColumnModel().getColumn(1).setPreferredWidth(100); // Fecha
+            tablaPartidos.getColumnModel().getColumn(2).setPreferredWidth(80);  // Hora
+            tablaPartidos.getColumnModel().getColumn(3).setPreferredWidth(150); // Equipo Local
+            tablaPartidos.getColumnModel().getColumn(4).setPreferredWidth(150); // Equipo Visitante
 
-            System.out.println("jTable2 configurada correctamente.");
+            System.out.println("jTable2 configurada correctamente. Filas: " + tablaPartidos.getRowCount());
         } catch (Exception e) {
             System.err.println("Error al configurar jTable2: " + e.getMessage());
             e.printStackTrace();
         }
+
+        try {
+            System.out.println("Configurando jTable1...");
+            DefaultTableModel estadisticasModel = controlador.cargarEstadisticas();
+            if (estadisticasModel.getRowCount() == 0) {
+                System.out.println("Advertencia: No se cargaron estadísticas. El modelo está vacío.");
+            } else {
+                System.out.println("Estadísticas cargadas exitosamente. Filas: " + estadisticasModel.getRowCount());
+                estadisticasModel = ordenarEstadisticasPorPuntos(estadisticasModel);
+                System.out.println("Estadísticas ordenadas por puntos. Filas: " + estadisticasModel.getRowCount());
+            }
+
+            tablaEstadisticas.setModel(estadisticasModel);
+
+            tablaEstadisticas.setEnabled(false);
+            tablaEstadisticas.setRowSelectionAllowed(false);
+
+            tablaEstadisticas.getColumnModel().getColumn(0).setPreferredWidth(150); // Equipo
+            tablaEstadisticas.getColumnModel().getColumn(1).setPreferredWidth(50);  // GF
+            tablaEstadisticas.getColumnModel().getColumn(2).setPreferredWidth(50);  // GC
+            tablaEstadisticas.getColumnModel().getColumn(3).setPreferredWidth(50);  // PG
+            tablaEstadisticas.getColumnModel().getColumn(4).setPreferredWidth(50);  // PP
+            tablaEstadisticas.getColumnModel().getColumn(5).setPreferredWidth(50);  // PE
+            tablaEstadisticas.getColumnModel().getColumn(6).setPreferredWidth(80);  // Puntos
+
+            System.out.println("jTable1 configurada correctamente. Filas: " + tablaEstadisticas.getRowCount());
+        } catch (Exception e) {
+            System.err.println("Error al configurar jTable1: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    private DefaultTableModel ordenarEstadisticasPorPuntos(DefaultTableModel modelo) {
+  private DefaultTableModel ordenarEstadisticasPorPuntos(DefaultTableModel modelo) { //metodo de aditamento no realmente necesario, solo para mayor orden visual al momento de ver los puntos de manera "jerarquica"
         java.util.List<Object[]> filas = new java.util.ArrayList<>();
         for (int i = 0; i < modelo.getRowCount(); i++) {
             Object[] fila = new Object[modelo.getColumnCount()];
@@ -67,7 +98,6 @@ public class ConsultaPartidos extends javax.swing.JPanel {
 
         return modeloOrdenado;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,13 +109,15 @@ public class ConsultaPartidos extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaPartidos = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        ordenarEstadisticasPorPuntos = new javax.swing.JTable();
+        tablaEstadisticas = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPartidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -96,9 +128,9 @@ public class ConsultaPartidos extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable2);
+        jScrollPane1.setViewportView(tablaPartidos);
 
-        ordenarEstadisticasPorPuntos.setModel(new javax.swing.table.DefaultTableModel(
+        tablaEstadisticas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -109,27 +141,45 @@ public class ConsultaPartidos extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(ordenarEstadisticasPorPuntos);
+        jScrollPane2.setViewportView(tablaEstadisticas);
+
+        jLabel1.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+        jLabel1.setText("PARTIDOS ESTABLECIDOS");
+
+        jLabel2.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+        jLabel2.setText("ESTADISTICAS DE EQUIPOS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(229, 229, 229)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(281, 281, 281)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -146,10 +196,12 @@ public class ConsultaPartidos extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable ordenarEstadisticasPorPuntos;
+    private javax.swing.JTable tablaEstadisticas;
+    private javax.swing.JTable tablaPartidos;
     // End of variables declaration//GEN-END:variables
 }
