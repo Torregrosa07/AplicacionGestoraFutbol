@@ -29,6 +29,12 @@ public class GestionJugadores extends javax.swing.JPanel {
     private DefaultTableModel dtm;
     private String[] columnas = {"ID", "NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
 
+    private void modificarJugador(int idJugador, String nombre, String apellidos, String dorsal,
+            String posicion, String sexo, int edad, Integer idEquipo) {
+        controladores.controladorJugadores controlador = new controladores.controladorJugadores();
+        controlador.modificarJugador(idJugador, nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+    }
+
     /**
      * Creates new form GestionJugadores
      *
@@ -37,6 +43,8 @@ public class GestionJugadores extends javax.swing.JPanel {
     public GestionJugadores() {
         try {
             initComponents();
+
+            TDatos.getSelectionModel().addListSelectionListener(e -> mostrarDatosJugadorSeleccionado());
 
             // Usa la variable de clase controladorJugadores
             controladorJugadores.mostrarEquiposCombo(jComboEquipo);
@@ -165,6 +173,11 @@ public class GestionJugadores extends javax.swing.JPanel {
 
         btnModificar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar.setText("Eliminar");
@@ -347,23 +360,14 @@ public class GestionJugadores extends javax.swing.JPanel {
         String sexo = (String) jComboSexo.getSelectedItem();
         String edadTexto = txtEdad.getText().trim();
 
-        String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
-        Integer idEquipo = null;
-        if (!"Sin equipo".equals(equipoSeleccionado)) {
-            controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
-            Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
-            if (equipo != null) {
-                idEquipo = equipo.getIDEquipo();
-            }
-        }
-
-        // Validar que ningún campo esté vacío (incluyendo edad)
-        if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty() || posicion.isEmpty() || sexo == null || sexo.isEmpty() || edadTexto.isEmpty()) {
+        // Validación de campos vacíos
+        if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty()
+                || posicion == null || sexo == null || edadTexto.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Convertir edad a entero
+        // Validar edad numérica
         int edad;
         try {
             edad = Integer.parseInt(edadTexto);
@@ -372,16 +376,34 @@ public class GestionJugadores extends javax.swing.JPanel {
             return;
         }
 
-        // Llamar al método del controlador para añadir el jugador
-        controladores.controladorJugadores controlador = new controladores.controladorJugadores();
-        controlador.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
-        JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.");
-
-        try {
-            actualizarTabla();
-        } catch (SQLException ex) {
-            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+        // Obtener ID del equipo
+        Integer idEquipo = null;
+        String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
+        if (!"Sin equipo".equals(equipoSeleccionado)) {
+            controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
+            Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
+            if (equipo != null) {
+                idEquipo = equipo.getIDEquipo();
+            }
         }
+
+        // Paso 1: Verificar duplicados en la interfaz
+        Jugador jugadorExistente = controladorJugadores.buscarJugadorPorNombreApellidos(nombre, apellidos);
+        if (jugadorExistente != null) {
+            JOptionPane.showMessageDialog(this, "El jugador '" + nombre + " " + apellidos + "' ya existe.",
+                    "Jugador duplicado", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Paso 2: Insertar en BD (manejar error de BD si falla)
+        try {
+            controladorJugadores.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+            JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.");
+            actualizarTabla();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al añadir jugador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
 
     }//GEN-LAST:event_btnAnadirActionPerformed
 
@@ -394,7 +416,7 @@ public class GestionJugadores extends javax.swing.JPanel {
             return;
         }
 
-       //Obtener el id del Jugador
+        //Obtener el id del Jugador
         int idJugador;
         try {
             idJugador = Integer.parseInt(TDatos.getValueAt(filaSeleccionada, 0).toString());
@@ -408,7 +430,7 @@ public class GestionJugadores extends javax.swing.JPanel {
 
         // Confirmación antes de eliminar
         int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Estás seguro de eliminar al jugador \"" + nombreJugador + "\" con ID " + idJugador + "?","Confirmar eliminación",
+                "¿Estás seguro de eliminar al jugador \"" + nombreJugador + "\" con ID " + idJugador + "?", "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION);
         if (confirmacion == JOptionPane.YES_OPTION) {
             controladores.controladorJugadores controlador = new controladores.controladorJugadores();
@@ -424,7 +446,60 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-       
+        String nombre = txtNombre.getText().trim();
+        String apellidos = txtApellidos.getText().trim();
+
+        if (nombre.isEmpty() || apellidos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, introduce nombre y apellidos para realizar la búsqueda.",
+                    "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        controladorJugadores controlador = new controladorJugadores();
+        Jugador jugadorEncontrado = controlador.buscarJugadorPorNombreApellidos(nombre, apellidos);
+
+        if (jugadorEncontrado != null) {
+            // Llenar los campos con los datos del jugador encontrado
+            txtNombre.setText(jugadorEncontrado.getNombre());
+            txtApellidos.setText(jugadorEncontrado.getApellidos());
+            txtDorsal.setText(jugadorEncontrado.getDorsal());
+
+            // Seleccionar posición en el combo box
+            if (jugadorEncontrado.getPosicion() != null) {
+                jComboPosicion.setSelectedItem(jugadorEncontrado.getPosicion().toString());
+            }
+
+            // Seleccionar sexo en el combo box
+            if (jugadorEncontrado.getSexo() != null) {
+                jComboSexo.setSelectedItem(jugadorEncontrado.getSexo().toString());
+            }
+
+            // Establecer edad
+            txtEdad.setText(String.valueOf(jugadorEncontrado.getEdad()));
+
+            // Seleccionar equipo en el combo box si existe
+            if (jugadorEncontrado.getEquipo() != null) {
+                jComboEquipo.setSelectedItem(jugadorEncontrado.getEquipo().getNombre());
+            } else {
+                jComboEquipo.setSelectedItem("Sin equipo");
+            }
+
+            // Resaltar la fila en la tabla
+            for (int i = 0; i < TDatos.getRowCount(); i++) {
+                // Asumiendo que el ID está en la primera columna
+                if (TDatos.getValueAt(i, 0).toString().equals(String.valueOf(jugadorEncontrado.getIDjugador()))) {
+                    TDatos.setRowSelectionInterval(i, i);
+                    TDatos.scrollRectToVisible(TDatos.getCellRect(i, 0, true));
+                    break;
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Jugador encontrado correctamente.",
+                    "Búsqueda exitosa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró ningún jugador con el nombre y apellidos proporcionados.",
+                    "Búsqueda sin resultados", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jComboEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEquipoActionPerformed
@@ -436,7 +511,7 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboSexoActionPerformed
 
     private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
-       XmlExporter exporter = new XmlExporter();
+        XmlExporter exporter = new XmlExporter();
         try {
             exporter.exportarEquiposYJugadoresAXml("equipos_y_jugadores.xml");
             JOptionPane.showMessageDialog(this, "Exportación a XML exitosa!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -446,50 +521,132 @@ public class GestionJugadores extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnExportarAXmlActionPerformed
 
-//    private void crearEquiposDePrueba() {
-//        try {
-//            // Ejemplo: Crear 3 equipos básicos
-//            controladorEquipos.añadir(new Equipo(1, "Barcelona"));
-//            controladorEquipos.añadir(new Equipo(2, "Real Madrid"));
-//            controladorEquipos.añadir(new Equipo(3, "Atlético de Madrid"));
-//
-//            JOptionPane.showMessageDialog(
-//                    this,
-//                    "Se crearon equipos de prueba automáticamente.",
-//                    "Aviso",
-//                    JOptionPane.INFORMATION_MESSAGE
-//            );
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(
-//                    this,
-//                    "Error al crear equipos de prueba: " + e.getMessage(),
-//                    "Error",
-//                    JOptionPane.ERROR_MESSAGE
-//            );
-//        }
-//    }
-//
-//    private void actualizaTabla() {
-//        //miniAgenda.añadir(new Deportista("Ana","Futbol",2011, 1.76f)); // registro de ejemplo directo
-//        matrizDatos = controladorJug.convertirAMatrizObject();
-//         dtm = new DefaultTableModel(matrizDatos, columnas) {
-//            //para impedir edición de las celdas
-//            @Override
-//            public boolean isCellEditable(int fila, int columna) {
-//                return false;
-//            }
-//        };
-//        TDatos.setModel(dtm);
-//
-//    }
-//
-//    private void cargarEquiposEnCombo() {
-//        jComboEquipo.removeAllItems(); // Limpiar antes de cargar
-//
-//        for (Equipo equipo : controladorEquipos.getListadoEquipos()) {
-//            jComboEquipo.addItem(equipo.getNombre());
-//        }
-//    }
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // Verificar que se haya seleccionado una fila en la tabla
+        int filaSeleccionada = TDatos.getSelectedRow();
+
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona un jugador para modificar.",
+                    "No se seleccionó ningún jugador", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener el ID del jugador seleccionado
+        int idJugador;
+        try {
+            idJugador = Integer.parseInt(TDatos.getValueAt(filaSeleccionada, 0).toString());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener el ID del jugador.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validar todos los campos de entrada
+        String nombre = txtNombre.getText().trim();
+        String apellidos = txtApellidos.getText().trim();
+        String dorsal = txtDorsal.getText().trim();
+        String posicion = (String) jComboPosicion.getSelectedItem();
+        String sexo = (String) jComboSexo.getSelectedItem();
+        String edadTexto = txtEdad.getText().trim();
+
+        // Validar que ningún campo esté vacío
+        if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty()
+                || posicion == null || sexo == null || edadTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.",
+                    "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Convertir edad a entero
+        int edad;
+        try {
+            edad = Integer.parseInt(edadTexto);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.",
+                    "Error en el campo edad", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener el ID del equipo seleccionado
+        String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
+        Integer idEquipo = null;
+        if (!"Sin equipo".equals(equipoSeleccionado)) {
+            controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
+            Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
+            if (equipo != null) {
+                idEquipo = equipo.getIDEquipo();
+            }
+        }
+
+        // Confirmar la modificación
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de modificar los datos del jugador \"" + nombre + " " + apellidos + "\"?",
+                "Confirmar modificación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // Llamar al método para modificar el jugador
+            modificarJugador(idJugador, nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+
+            try {
+                actualizarTabla();
+                JOptionPane.showMessageDialog(this, "Jugador modificado correctamente.");
+            } catch (SQLException ex) {
+                Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error al actualizar la tabla: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+   private void mostrarDatosJugadorSeleccionado() {
+    int filaSeleccionada = TDatos.getSelectedRow();
+    
+    if (filaSeleccionada >= 0) { 
+        try {
+            // Convertir valores a String de forma segura
+            String nombre = String.valueOf(TDatos.getValueAt(filaSeleccionada, 1));
+            String apellidos = String.valueOf(TDatos.getValueAt(filaSeleccionada, 2));
+            String posicion = String.valueOf(TDatos.getValueAt(filaSeleccionada, 3));
+            String dorsal = String.valueOf(TDatos.getValueAt(filaSeleccionada, 4));
+            String equipo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 5));
+            String edad = String.valueOf(TDatos.getValueAt(filaSeleccionada, 6));
+            String sexo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 7));
+
+            // Reemplazar "null" por cadena vacía 
+            if (nombre.equals("null")) nombre = "";
+            if (apellidos.equals("null")) apellidos = "";
+            if (posicion.equals("null")) posicion = "";
+            if (dorsal.equals("null")) dorsal = "";
+            if (equipo.equals("null")) equipo = "";
+            if (edad.equals("null")) edad = "";
+            if (sexo.equals("null")) sexo = "";
+
+            // Llenar campos de texto
+            txtNombre.setText(nombre);
+            txtApellidos.setText(apellidos);
+            txtDorsal.setText(dorsal);
+            txtEdad.setText(edad);
+
+            // Seleccionar posición y sexo en combos (solo si no están vacíos)
+            if (!posicion.isEmpty()) {
+                jComboPosicion.setSelectedItem(posicion);
+            }
+            if (!sexo.isEmpty()) {
+                jComboSexo.setSelectedItem(sexo);
+            }
+
+            // Manejar equipo
+            if (equipo.isEmpty()) {
+                jComboEquipo.setSelectedItem("Sin equipo");
+            } else {
+                jComboEquipo.setSelectedItem(equipo);
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Error al mostrar datos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;

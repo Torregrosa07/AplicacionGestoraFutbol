@@ -112,6 +112,12 @@ public class Jugador implements Comparable<Jugador>, Serializable{
         return this.getNombre().toLowerCase().compareTo(otro.getNombre().toLowerCase());
     }
 
+    public Jugador() {
+    }
+    
+    
+    
+
     public Jugador(int idJugador, String nombreJugador, String apellidos1, Posicion valueOf, Equipo equipo1, String dorsal1, Sexo valueOf1, int edad1, String nacionalidad1) {
     }
 
