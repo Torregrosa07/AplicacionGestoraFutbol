@@ -16,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author thomas
  */
-
 public class GestionUsuarios extends javax.swing.JFrame {
 
- String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
+    String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
     String regTelefono = "^[\\+]?\\d{9,14}$";
+
     /**
      * Creates new form GestionUsuarios
      */
@@ -41,6 +41,13 @@ public class GestionUsuarios extends javax.swing.JFrame {
         }
 
         jTable1.setModel(modelo);
+    }
+
+    private void limpiarCampos() {
+        txtNombreUsuario.setText("");
+        txtContraseña.setText("");
+        txtNúmero.setText("");
+        txtCorreo.setText("");
     }
 
     /**
@@ -240,10 +247,14 @@ public class GestionUsuarios extends javax.swing.JFrame {
     private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
         String nuevoUsuario = txtNombreUsuario.getText().trim();
         String nuevaContraseña = txtContraseña.getText().trim();
-    
 
         String correo = txtCorreo.getText().trim();
         String telefono = txtNúmero.getText().trim();
+
+        if (nuevoUsuario.isEmpty() || nuevaContraseña.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         Pattern patternCorreo = Pattern.compile(regCorreo);
         Matcher matcherCorreo = patternCorreo.matcher(correo);
@@ -260,22 +271,18 @@ public class GestionUsuarios extends javax.swing.JFrame {
             txtNúmero.setText("");
             return;
         }
-
-        if (nuevoUsuario.isEmpty() || nuevaContraseña.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         if (controladorUsuarios.existeUsuario(nuevoUsuario)) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
             txtNombreUsuario.setText("");
             return;
         }
 
-        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña);
+        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono);
         controladorUsuarios.insertarUsuario(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        dispose();
+
+        actualizarTablaUsuarios();
+        limpiarCampos();
     }//GEN-LAST:event_btnAñadirActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
