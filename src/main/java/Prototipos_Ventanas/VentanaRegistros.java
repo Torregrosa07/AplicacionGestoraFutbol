@@ -223,7 +223,7 @@ public class VentanaRegistros extends javax.swing.JFrame {
             return;
         }
 
-        if (nuevoUsuario.isEmpty() || nuevaContraseña.isEmpty() || confirmarContraseña.isEmpty()) {
+        if (nuevoUsuario.isEmpty() || nuevaContraseña.isEmpty() || confirmarContraseña.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
