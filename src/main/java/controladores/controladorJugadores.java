@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
  */
 public class controladorJugadores {
 
+    
     public void anadirJugador(String nombre, String apellidos, String dorsal, String posicion, String sexo, int edad, Integer idEquipo) {
     ConexionBDR objetoConexion = new ConexionBDR();
     Connection conn = null;
@@ -267,6 +268,7 @@ public class controladorJugadores {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            
             conexionBDR.desconectar();
         }
     }
