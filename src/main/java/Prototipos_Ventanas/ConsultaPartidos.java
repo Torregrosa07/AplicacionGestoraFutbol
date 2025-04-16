@@ -14,12 +14,13 @@ import javax.swing.table.DefaultTableModel;
  * @author keiny
  */
 public class ConsultaPartidos extends javax.swing.JPanel {
-   private controladorPartido controlador;
-   private DefaultTableModel modeloPartidos;
+
+    private controladorPartido controlador;
+    private DefaultTableModel modeloPartidos;
     private DefaultTableModel modeloEstadisticas;
 
     public ConsultaPartidos() {
-     controlador = new controladorPartido();
+        controlador = new controladorPartido();
         initComponents();
 
         try {
@@ -51,6 +52,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
                 System.out.println("Estadísticas cargadas exitosamente. Filas: " + estadisticasModel.getRowCount());
                 estadisticasModel = ordenarEstadisticasPorPuntos(estadisticasModel);
                 System.out.println("Estadísticas ordenadas por puntos. Filas: " + estadisticasModel.getRowCount());
+
             }
 
             tablaEstadisticas.setModel(estadisticasModel);
@@ -73,7 +75,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
         }
     }
 
-  private DefaultTableModel ordenarEstadisticasPorPuntos(DefaultTableModel modelo) { //metodo de aditamento no realmente necesario, solo para mayor orden visual al momento de ver los puntos de manera "jerarquica"
+    private DefaultTableModel ordenarEstadisticasPorPuntos(DefaultTableModel modelo) { //metodo de aditamento no realmente necesario, solo para mayor orden visual al momento de ver los puntos de manera "jerarquica"
         java.util.List<Object[]> filas = new java.util.ArrayList<>();
         for (int i = 0; i < modelo.getRowCount(); i++) {
             Object[] fila = new Object[modelo.getColumnCount()];
@@ -90,7 +92,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
         });
 
         DefaultTableModel modeloOrdenado = new DefaultTableModel(
-            new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
+                new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
         );
         for (Object[] fila : filas) {
             modeloOrdenado.addRow(fila);
@@ -98,6 +100,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
 
         return modeloOrdenado;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
