@@ -31,7 +31,7 @@ public class controladorEquipos {
             con = conexionBDR.conectar();
             st = con.createStatement();
 
-            String sql = "INSERT INTO equipo (nombre, año_fundacion, localidad, entrenador) VALUES ("
+            String sql = "INSERT INTO equipo (nombre, anio_fundacion, localidad, entrenador) VALUES ("
                     + "'" + equipo.getNombre().replace("'", "''") + "', "
                     + equipo.getAñoFundacion() + ", "
                     + "'" + equipo.getLocalidad().replace("'", "''") + "', "
@@ -66,7 +66,7 @@ public class controladorEquipos {
 
             String sql = "UPDATE equipo SET "
                     + "nombre = '" + nuevoNombre.replace("'", "''") + "', "
-                    + "año_fundacion = " + nuevoAño + ", "
+                    + "anio_fundacion = " + nuevoAño + ", "
                     + "localidad = '" + nuevaLocalidad.replace("'", "''") + "', "
                     + "entrenador = '" + nuevoEntrenador.replace("'", "''") + "' "
                     + "WHERE nombre = '" + nombreOriginal.replace("'", "''") + "'";
@@ -165,13 +165,13 @@ public class controladorEquipos {
             con = conexionBDR.conectar();
             st = con.createStatement();
 
-            String sql = "SELECT id_equipo, nombre, año_fundacion, localidad, entrenador FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
+            String sql = "SELECT id_equipo, nombre, anio_fundacion, localidad, entrenador FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
         rs = st.executeQuery(sql);
 
         if (rs.next()) {
             int idEquipo = rs.getInt("id_equipo"); // Obtener el ID
             String nombreEquipo = rs.getString("nombre");
-            int anioFundacion = rs.getInt("año_fundacion");
+            int anioFundacion = rs.getInt("anio_fundacion");
             String localidad = rs.getString("localidad");
             String entrenador = rs.getString("entrenador");
 
@@ -216,12 +216,12 @@ public class controladorEquipos {
 
             Object[][] matrizObj = new Object[cantidad][4];
 
-            rs = st.executeQuery("SELECT nombre, año_fundacion, localidad, entrenador FROM equipo");
+            rs = st.executeQuery("SELECT nombre, anio_fundacion, localidad, entrenador FROM equipo");
 
             int id = 0;
             while (rs.next()) {
                 matrizObj[id][0] = rs.getString("nombre");
-                matrizObj[id][1] = rs.getInt("año_fundacion");
+                matrizObj[id][1] = rs.getInt("anio_fundacion");
                 matrizObj[id][2] = rs.getString("localidad");
                 matrizObj[id][3] = rs.getString("entrenador");
                 id++;
