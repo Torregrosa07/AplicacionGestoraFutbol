@@ -53,7 +53,6 @@ public class Gestion extends javax.swing.JFrame {
         equipos = new javax.swing.JButton();
         partidos = new javax.swing.JButton();
         cerrarSesion = new javax.swing.JButton();
-        accesoGesorBDR = new javax.swing.JButton();
         content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -106,14 +105,6 @@ public class Gestion extends javax.swing.JFrame {
             }
         });
 
-        accesoGesorBDR.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        accesoGesorBDR.setText("Acceso BD");
-        accesoGesorBDR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accesoGesorBDRActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -125,8 +116,7 @@ public class Gestion extends javax.swing.JFrame {
                     .addComponent(partidos, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(accesoGesorBDR, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -134,17 +124,15 @@ public class Gestion extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addComponent(inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(46, 46, 46)
                 .addComponent(jugadores, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(equipos, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(53, 53, 53)
                 .addComponent(partidos, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(50, 50, 50)
                 .addComponent(cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(accesoGesorBDR, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
         );
 
         content.setBackground(new java.awt.Color(255, 255, 255));
@@ -225,10 +213,6 @@ public class Gestion extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cerrarSesionActionPerformed
 
-    private void accesoGesorBDRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesoGesorBDRActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_accesoGesorBDRActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -244,7 +228,6 @@ public class Gestion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton accesoGesorBDR;
     private javax.swing.JButton cerrarSesion;
     private javax.swing.JPanel content;
     private javax.swing.JButton equipos;

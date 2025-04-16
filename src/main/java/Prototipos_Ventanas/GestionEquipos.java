@@ -4,18 +4,21 @@
  */
 package Prototipos_Ventanas;
 
+import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
 import controladores.controladorEquipos;
 import controladores.controladorUsuarios;
+import java.sql.Connection;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import util.XmlExporter;
 
 /**
  *
  * @author thomas
  */
 public class GestionEquipos extends javax.swing.JPanel {
-
+ 
     private controladores.controladorEquipos controladorEquipos = new controladores.controladorEquipos();
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
@@ -83,6 +86,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        btnExportarAXml = new javax.swing.JButton();
 
         btnEliminar1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar1.setText("Eliminar");
@@ -174,6 +178,14 @@ public class GestionEquipos extends javax.swing.JPanel {
             }
         });
 
+        btnExportarAXml.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnExportarAXml.setText("Exportar a XML");
+        btnExportarAXml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarAXmlActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -206,7 +218,10 @@ public class GestionEquipos extends javax.swing.JPanel {
                         .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                 .addContainerGap())
@@ -238,6 +253,8 @@ public class GestionEquipos extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -443,6 +460,18 @@ public class GestionEquipos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
+    private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
+                                                 
+        XmlExporter exporter = new XmlExporter();
+        try {
+            exporter.exportarEquiposYJugadoresAXml("equipos_y_jugadores.xml");
+            JOptionPane.showMessageDialog(this, "Exportación a XML exitosa!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, " Error al exportar a XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportarAXmlActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
@@ -453,6 +482,7 @@ public class GestionEquipos extends javax.swing.JPanel {
     private javax.swing.JButton btnBuscar1;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminar1;
+    private javax.swing.JButton btnExportarAXml;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JLabel jLabel1;

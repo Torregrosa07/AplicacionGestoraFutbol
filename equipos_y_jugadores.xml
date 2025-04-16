@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<teams>
+    <team anioFundacion="1897" entrenador="Massimiliano Allegri" id="10" localidad="Turín" nombre="Juventus">
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </team>
+    <team anioFundacion="1903" entrenador="Diego Simeone" id="11" localidad="Madrid" nombre="Atlético de Madrid">
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </team>
+    <team anioFundacion="1924" entrenador="Arturo Reyes" id="12" localidad="Barranquilla" nombre="Junior de Barranquilla">
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </team>
+    <team anioFundacion="1878" entrenador="Erik ten Hag" id="13" localidad="Mánchester" nombre="Manchester United">
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </team>
+    <team anioFundacion="1900" entrenador="Thomas Tuchel" id="14" localidad="Múnich" nombre="Bayern Múnich">
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </team>
+    <team anioFundacion="1907" entrenador="Manuel Pellegrini" id="15" localidad="Sevilla" nombre="Real Betis">
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </team>
+</teams>
