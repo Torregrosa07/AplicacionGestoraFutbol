@@ -40,7 +40,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             modelo.addRow(fila);
         }
 
-        jTable1.setModel(modelo);
+        TDatos.setModel(modelo);
     }
 
     private void limpiarCampos() {
@@ -67,7 +67,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         txtContraseña = new javax.swing.JPasswordField();
         btnAñadir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TDatos = new javax.swing.JTable();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
@@ -94,7 +94,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -105,7 +105,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TDatos);
 
         btnModificar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnModificar.setText("Modificar");
@@ -328,22 +328,26 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        String nombre = txtNombreUsuario.getText().trim();
+        int filaSeleccionada = TDatos.getSelectedRow();
 
-        if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingresa un nombre.");
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un usuario para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        boolean eliminado = controladorUsuarios.eliminarUsuario(nombre);
+        String nombreUsuario = TDatos.getValueAt(filaSeleccionada, 0).toString();
 
-        if (eliminado) {
-            JOptionPane.showMessageDialog(this, "Usuario eliminado.");
-            txtNombreUsuario.setText("");
-            txtContraseña.setText("");
-            actualizarTablaUsuarios();
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró el usuario.");
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas eliminar el usuario '" + nombreUsuario + "'?", "Confirmar", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            boolean exito = controladorUsuarios.eliminarUsuario(nombreUsuario);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                actualizarTablaUsuarios(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el equipo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -385,12 +389,12 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }
 
     private void seleccionarFilaPorNombre(String nombre) {
-        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) TDatos.getModel();
 
         for (int i = 0; i < modelo.getRowCount(); i++) {
             if (modelo.getValueAt(i, 0).toString().equals(nombre)) {
-                jTable1.setRowSelectionInterval(i, i);
-                jTable1.scrollRectToVisible(jTable1.getCellRect(i, 0, true));
+                TDatos.setRowSelectionInterval(i, i);
+                TDatos.scrollRectToVisible(TDatos.getCellRect(i, 0, true));
                 break;
             }
         }
@@ -398,6 +402,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TDatos;
     private javax.swing.JButton btnAñadir;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
@@ -409,7 +414,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtNombreUsuario;
