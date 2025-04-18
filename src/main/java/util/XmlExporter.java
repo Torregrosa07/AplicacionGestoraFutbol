@@ -60,7 +60,7 @@ public class XmlExporter {
                 while (rsEquipos.next()) {
                     int idEquipo = rsEquipos.getInt("id_equipo");
                     String nombre = rsEquipos.getString("nombre");
-                    int anioFundacion = rsEquipos.getInt("año_fundacion");
+                    int anioFundacion = rsEquipos.getInt("anio_fundacion");
                     String localidad = rsEquipos.getString("localidad");
                     String entrenador = rsEquipos.getString("entrenador");
 

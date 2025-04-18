@@ -8,6 +8,7 @@
     </team>
     <team anioFundacion="1999" entrenador="Luis Enrique" id="6" localidad="Villanueva de La Jara" nombre="Torregrosa FC">
         <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
     </team>
     <team anioFundacion="0" entrenador="Carlo Ancelotti" id="10" localidad="Madrid" nombre="Real Madrid">
         <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
