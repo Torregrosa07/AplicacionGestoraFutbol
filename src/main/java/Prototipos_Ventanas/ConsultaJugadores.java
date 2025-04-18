@@ -4,17 +4,34 @@
  */
 package Prototipos_Ventanas;
 
+import Modelos.Jugador;
+import controladores.controladorJugadores;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author keiny
  */
 public class ConsultaJugadores extends javax.swing.JPanel {
+    private controladores.controladorJugadores controladorJugadores = new controladores.controladorJugadores();
+    private Object[][] matrizDatos;
+    private DefaultTableModel dtm;
+    private String[] columnas = {"ID", "NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
 
     /**
      * Creates new form ConsultaJugadores
      */
     public ConsultaJugadores() {
         initComponents();
+        try {
+            actualizarTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaJugadores.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -28,16 +45,16 @@ public class ConsultaJugadores extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TDatos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        textField1 = new java.awt.TextField();
-        textField2 = new java.awt.TextField();
-        jButton1 = new javax.swing.JButton();
+        txtNombre = new java.awt.TextField();
+        txtApellidos = new java.awt.TextField();
+        btnBuscar = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -48,7 +65,7 @@ public class ConsultaJugadores extends javax.swing.JPanel {
                 "NOMBRE", "APELLIDOS", "EQUIPO", "DORSAL", "POSICION"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TDatos);
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel1.setText("Nombre: ");
@@ -56,8 +73,13 @@ public class ConsultaJugadores extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel2.setText("Apellidos: ");
 
-        jButton1.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        jButton1.setText("Buscar");
+        btnBuscar.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -73,10 +95,10 @@ public class ConsultaJugadores extends javax.swing.JPanel {
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(textField2, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
-                            .addComponent(textField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(98, 98, 98)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -85,13 +107,13 @@ public class ConsultaJugadores extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(textField1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(textField2, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+                    .addComponent(txtApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -109,15 +131,63 @@ public class ConsultaJugadores extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String nombre = txtNombre.getText().trim();
+        String apellidos = txtApellidos.getText().trim();
 
+        if (nombre.isEmpty() || apellidos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, introduce nombre y apellidos para realizar la búsqueda.",
+                    "Datos incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        controladorJugadores controlador = new controladorJugadores();
+        Jugador jugadorEncontrado = controlador.buscarJugadorPorNombreApellidos(nombre, apellidos);
+
+        if (jugadorEncontrado != null) {
+            // Llenar los campos con los datos del jugador encontrado
+            txtNombre.setText(jugadorEncontrado.getNombre());
+            txtApellidos.setText(jugadorEncontrado.getApellidos());
+            
+
+            // Resaltar la fila en la tabla
+            for (int i = 0; i < TDatos.getRowCount(); i++) {
+                // Asumiendo que el ID está en la primera columna
+                if (TDatos.getValueAt(i, 0).toString().equals(String.valueOf(jugadorEncontrado.getIDjugador()))) {
+                    TDatos.setRowSelectionInterval(i, i);
+                    TDatos.scrollRectToVisible(TDatos.getCellRect(i, 0, true));
+                    break;
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Jugador encontrado correctamente.",
+                    "Búsqueda exitosa", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró ningún jugador con el nombre y apellidos proporcionados.",
+                    "Búsqueda sin resultados", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+private void actualizarTabla() throws SQLException {
+        matrizDatos = controladorJugadores.convertirAMatrizObject();
+        dtm = new DefaultTableModel(matrizDatos, columnas) {
+            //para impedir edición de las celdas
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                return false;
+            }
+        };
+        TDatos.setModel(dtm);
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable TDatos;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private java.awt.TextField textField1;
-    private java.awt.TextField textField2;
+    private java.awt.TextField txtApellidos;
+    private java.awt.TextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
