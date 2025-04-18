@@ -54,22 +54,22 @@ public class XmlExporter {
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document doc = builder.newDocument();
 
-                Element rootElement = doc.createElement("teams");
+                Element rootElement = doc.createElement("equipos");
                 doc.appendChild(rootElement);
 
                 while (rsEquipos.next()) {
                     int idEquipo = rsEquipos.getInt("id_equipo");
                     String nombre = rsEquipos.getString("nombre");
-                    int anioFundacion = rsEquipos.getInt("año_fundacion");
+                    int anioFundacion = rsEquipos.getInt("anio_fundacion");
                     String localidad = rsEquipos.getString("localidad");
                     String entrenador = rsEquipos.getString("entrenador");
 
                     Equipo equipo = new Equipo(idEquipo, nombre, anioFundacion, localidad, entrenador);
 
-                    Element equipoElement = doc.createElement("team");
+                    Element equipoElement = doc.createElement("equipo");
                     equipoElement.setAttribute("id", String.valueOf(equipo.getIDEquipo()));
                     equipoElement.setAttribute("nombre", nombre != null ? nombre : "");
-                    equipoElement.setAttribute("anioFundacion", String.valueOf(anioFundacion));
+                    equipoElement.setAttribute("anio_fundacion", String.valueOf(anioFundacion));
                     equipoElement.setAttribute("localidad", localidad != null ? localidad : "");
                     equipoElement.setAttribute("entrenador", entrenador != null ? entrenador : "");
 
@@ -126,7 +126,7 @@ public class XmlExporter {
                             nacionalidad != null ? nacionalidad : ""
                         );
 
-                        Element jugadorElement = doc.createElement("player");
+                        Element jugadorElement = doc.createElement("jugador");
                         jugadorElement.setAttribute("id", String.valueOf(jugador.getIDjugador()));
                         jugadorElement.setAttribute("nombre", jugador.getNombre());
                         jugadorElement.setAttribute("apellidos", jugador.getApellidos());
