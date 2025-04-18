@@ -420,7 +420,78 @@ public class controladorPartido {
         cerrarRecursos(null, stmt, conn);
     }
 }
-    
-   
+  
+  // Método para buscar un partido por ID (versión simplificada y ajustada)
+public Partido buscarPartidoPorId(int id) {
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    try {
+        conn = conexion.conectar();
+        if (conn != null && !conn.isClosed()) {
+            stmt = conn.createStatement();
+            String sql = "SELECT * FROM partido WHERE id_partido = " + id;
+            rs = stmt.executeQuery(sql);
 
+            if (rs.next()) {
+                // Obtener los IDs de los equipos
+                int idEquipoLocal = rs.getInt("id_equipo_local");
+                int idEquipoVisitante = rs.getInt("id_equipo_visitante");
+
+                // Obtener los nombres de los equipos directamente
+                String nombreLocal = "";
+                String nombreVisitante = "";
+                
+                Statement stmtEquipos = conn.createStatement();
+                ResultSet rsLocal = stmtEquipos.executeQuery("SELECT nombre FROM equipo WHERE id_equipo = " + idEquipoLocal);
+                if (rsLocal.next()) {
+                    nombreLocal = rsLocal.getString("nombre");
+                }
+                rsLocal.close();
+                
+                ResultSet rsVisitante = stmtEquipos.executeQuery("SELECT nombre FROM equipo WHERE id_equipo = " + idEquipoVisitante);
+                if (rsVisitante.next()) {
+                    nombreVisitante = rsVisitante.getString("nombre");
+                }
+                rsVisitante.close();
+                stmtEquipos.close();
+
+                // Crear los objetos Equipo
+                Equipo equipoLocal = new Equipo(idEquipoLocal, nombreLocal);
+                Equipo equipoVisitante = new Equipo(idEquipoVisitante, nombreVisitante);
+
+                // Combinar fecha y hora en un objeto Date
+                String fechaStr = rs.getString("fecha") + " " + rs.getString("hora");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date fechaPartido = sdf.parse(fechaStr);
+
+                // Manejo de goles (si son NULL, asignamos -1 como valor por defecto)
+                int golesLocal = rs.getInt("goles_local");
+                if (rs.wasNull()) golesLocal = -1;
+                int golesVisitante = rs.getInt("goles_visitante");
+                if (rs.wasNull()) golesVisitante = -1;
+
+                // Crear el objeto Partido
+                Partido partido = new Partido(
+                    rs.getInt("id_partido"),
+                    fechaPartido,
+                    equipoLocal,
+                    equipoVisitante,
+                    golesLocal,
+                    golesVisitante
+                );
+                return partido;
+            }
+        }
+    } catch (SQLException | ClassNotFoundException e) {
+        System.err.println("Error al buscar partido por ID: " + e.getMessage());
+        e.printStackTrace();
+    } catch (ParseException e) {
+        System.err.println("Error al parsear la fecha: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        cerrarRecursos(rs, stmt, conn);
+    }
+    return null;
+}
 }
