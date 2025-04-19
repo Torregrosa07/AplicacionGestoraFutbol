@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<teams>
-    <team anioFundacion="2000" entrenador="Santiago Torregrosa" id="2" localidad="Villanueva de La Jara" nombre="Prueba">
-        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
-    </team>
-    <team anioFundacion="1920" entrenador="Juan Pruebas" id="3" localidad="Ciudad de Prueba" nombre="Real Prueba CF">
-        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
-    </team>
-    <team anioFundacion="1999" entrenador="Luis Enrique" id="6" localidad="Villanueva de La Jara" nombre="Torregrosa FC">
-        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
-        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
-    </team>
-    <team anioFundacion="0" entrenador="Carlo Ancelotti" id="10" localidad="Madrid" nombre="Real Madrid">
-        <player apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
-    </team>
-    <team anioFundacion="0" entrenador="Diego Simeone" id="11" localidad="Madrid" nombre="Atlético de Madrid"/>
-    <team anioFundacion="2000" entrenador="Don pollo" id="14" localidad="aqui" nombre="Team wasaaaaaaaaaaaaaaaa"/>
-    <team anioFundacion="2022" entrenador="aaaaa" id="15" localidad="aaaaa" nombre="Aaaaa"/>
-</teams>
+<equipos>
+    <equipo anio_fundacion="2000" entrenador="Santiago Torregrosa" id="2" localidad="Villanueva de La Jara" nombre="Prueba">
+        <jugador apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </equipo>
+    <equipo anio_fundacion="1920" entrenador="Juan Pruebas" id="3" localidad="Ciudad de Prueba" nombre="Real Prueba CF">
+        <jugador apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </equipo>
+    <equipo anio_fundacion="1999" entrenador="Luis Enrique" id="6" localidad="Villanueva de La Jara" nombre="Torregrosa FC">
+        <jugador apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+        <jugador apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </equipo>
+    <equipo anio_fundacion="0" entrenador="Carlo Ancelotti" id="10" localidad="Madrid" nombre="Real Madrid">
+        <jugador apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </equipo>
+    <equipo anio_fundacion="0" entrenador="Diego Simeone" id="11" localidad="Madrid" nombre="Atlético de Madrid"/>
+    <equipo anio_fundacion="2000" entrenador="Don pollo" id="14" localidad="aqui" nombre="Team wasaaaaaaaaaaaaaaaa"/>
+    <equipo anio_fundacion="2022" entrenador="aaaaa" id="15" localidad="aaaaa" nombre="Aaaaa"/>
+</equipos>

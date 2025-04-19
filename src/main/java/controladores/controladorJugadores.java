@@ -398,4 +398,112 @@ public class controladorJugadores {
         }
     }
 
+    public Object[][] convertirAMatrizObjectPorEquipo(int idEquipo) {
+        ConexionBDR conexion = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            con = conexion.conectar();
+            st = con.createStatement();
+
+            // Consulta para contar cuántos jugadores hay del equipo
+            rs = st.executeQuery("SELECT COUNT(*) FROM jugador WHERE id_equipo = " + idEquipo);
+            rs.next();
+            int cantidad = rs.getInt(1);
+
+            Object[][] datos = new Object[cantidad][8];
+
+            rs = st.executeQuery("SELECT j.id_jugador, j.nombre, j.apellidos, j.posicion, j.dorsal, e.nombre AS equipo, j.edad, j.sexo "
+                    + "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo "
+                    + "WHERE j.id_equipo = " + idEquipo);
+
+            int i = 0;
+            while (rs.next()) {
+                datos[i][0] = rs.getInt("id_jugador");
+                datos[i][1] = rs.getString("nombre");
+                datos[i][2] = rs.getString("apellidos");
+                datos[i][3] = rs.getString("posicion");
+                datos[i][4] = rs.getString("dorsal");
+                datos[i][5] = rs.getString("equipo");
+                datos[i][6] = rs.getInt("edad");
+                datos[i][7] = rs.getString("sexo");
+                i++;
+            }
+
+            return datos;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[0][8];
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexion.desconectar();
+        }
+    }
+
+    public Object[][] convertirAMatrizObjectPorPosicion(String posicion) {
+        ConexionBDR conexion = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            con = conexion.conectar();
+            st = con.createStatement();
+
+            // Consulta para contar cuántos jugadores hay con esa posición
+            rs = st.executeQuery("SELECT COUNT(*) FROM jugador WHERE posicion = '" + posicion + "'");
+            rs.next();
+            int cantidad = rs.getInt(1);
+
+            Object[][] datos = new Object[cantidad][8];
+
+            rs = st.executeQuery("SELECT j.id_jugador, j.nombre, j.apellidos, j.posicion, j.dorsal, e.nombre AS equipo, j.edad, j.sexo "
+                    + "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo "
+                    + "WHERE j.posicion = '" + posicion + "'");
+
+            int i = 0;
+            while (rs.next()) {
+                datos[i][0] = rs.getInt("id_jugador");
+                datos[i][1] = rs.getString("nombre");
+                datos[i][2] = rs.getString("apellidos");
+                datos[i][3] = rs.getString("posicion");
+                datos[i][4] = rs.getString("dorsal");
+                datos[i][5] = rs.getString("equipo");
+                datos[i][6] = rs.getInt("edad");
+                datos[i][7] = rs.getString("sexo");
+                i++;
+            }
+
+            return datos;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[0][8];
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexion.desconectar();
+        }
+    }
+
 }

@@ -43,10 +43,13 @@ public class GestionJugadores extends javax.swing.JPanel {
     public GestionJugadores() {
         try {
             initComponents();
-
+            jComboPosicion.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jComboPosicionActionPerformed(evt);
+                }
+            });
             TDatos.getSelectionModel().addListSelectionListener(e -> mostrarDatosJugadorSeleccionado());
 
-            // Usa la variable de clase controladorJugadores
             controladorJugadores.mostrarEquiposCombo(jComboEquipo);
             controladorJugadores.MostrarSexoCombo(jComboSexo);
             controladorJugadores.MostrarPosicionCombo(jComboPosicion);
@@ -69,18 +72,6 @@ public class GestionJugadores extends javax.swing.JPanel {
         TDatos.setModel(dtm);
 
     }
-//        // Inicializar controladores
-//        controladorJug = new controladores.controladorJugadores();
-//        controladorEquipos = new controladores.controladorEquipos();
-//
-//        // Cargar equipos (si no hay, crea equipos de prueba)
-//        if (controladorEquipos.getListadoEquipos().isEmpty()) {
-//            // Crear equipos de prueba si no hay ninguno
-//            crearEquiposDePrueba();
-//        }
-//
-//        cargarEquiposEnCombo();
-//        actualizaTabla(); // Usa el método que funciona correctamente
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -113,6 +104,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         txtEdad = new javax.swing.JTextField();
         labelEdad = new javax.swing.JLabel();
         btnExportarAXml = new javax.swing.JButton();
+        btnLimpiarCampos = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -163,6 +155,7 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
+        btnAnadir.setBackground(new java.awt.Color(102, 255, 102));
         btnAnadir.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnAnadir.setText("Añadir");
         btnAnadir.addActionListener(new java.awt.event.ActionListener() {
@@ -171,6 +164,7 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
+        btnModificar.setBackground(new java.awt.Color(255, 255, 102));
         btnModificar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +173,7 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
+        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
         btnEliminar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -187,6 +182,7 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
+        btnBuscar.setBackground(new java.awt.Color(51, 153, 255));
         btnBuscar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -214,14 +210,30 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
+        jComboPosicion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboPosicionActionPerformed(evt);
+            }
+        });
+
         labelEdad.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         labelEdad.setText("Edad:");
 
+        btnExportarAXml.setBackground(new java.awt.Color(255, 153, 0));
         btnExportarAXml.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnExportarAXml.setText("Exportar a XML");
         btnExportarAXml.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportarAXmlActionPerformed(evt);
+            }
+        });
+
+        btnLimpiarCampos.setBackground(new java.awt.Color(255, 102, 102));
+        btnLimpiarCampos.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnLimpiarCampos.setText("LIMPIAR CAMPOS");
+        btnLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarCamposActionPerformed(evt);
             }
         });
 
@@ -278,17 +290,18 @@ public class GestionJugadores extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jComboSexo, 0, 101, Short.MAX_VALUE)
-                                    .addComponent(jComboPosicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 693, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboPosicion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btnLimpiarCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(47, 47, 47)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -314,6 +327,8 @@ public class GestionJugadores extends javax.swing.JPanel {
                             .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelEdad))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpiarCampos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -324,7 +339,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                             .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -379,6 +394,8 @@ public class GestionJugadores extends javax.swing.JPanel {
         // Obtener ID del equipo
         Integer idEquipo = null;
         String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
+        
+        
         if (!"Sin equipo".equals(equipoSeleccionado)) {
             controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
             Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
@@ -503,11 +520,39 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jComboEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEquipoActionPerformed
-        // TODO add your handling code here:
+        String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
+
+        try {
+            if (equipoSeleccionado != null && !"Sin equipo".equals(equipoSeleccionado)) {
+                // Buscar el equipo por nombre
+                controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
+                Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
+
+                if (equipo != null) {
+                    // Obtener jugadores de ese equipo
+                    Object[][] jugadoresPorEquipo = controladorJugadores.convertirAMatrizObjectPorEquipo(equipo.getIDEquipo());
+
+                    // Actualizar modelo de la tabla
+                    dtm = new DefaultTableModel(jugadoresPorEquipo, columnas) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    TDatos.setModel(dtm);
+                }
+            } else {
+                // Mostrar todos los jugadores si se elige "Sin equipo"
+                actualizarTabla();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al filtrar jugadores: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_jComboEquipoActionPerformed
 
     private void jComboSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSexoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jComboSexoActionPerformed
 
     private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
@@ -597,56 +642,107 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnModificarActionPerformed
-   private void mostrarDatosJugadorSeleccionado() {
-    int filaSeleccionada = TDatos.getSelectedRow();
-    
-    if (filaSeleccionada >= 0) { 
+
+    private void jComboPosicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboPosicionActionPerformed
+
+        String posicionSeleccionada = (String) jComboPosicion.getSelectedItem();
         try {
-            // Convertir valores a String de forma segura
-            String nombre = String.valueOf(TDatos.getValueAt(filaSeleccionada, 1));
-            String apellidos = String.valueOf(TDatos.getValueAt(filaSeleccionada, 2));
-            String posicion = String.valueOf(TDatos.getValueAt(filaSeleccionada, 3));
-            String dorsal = String.valueOf(TDatos.getValueAt(filaSeleccionada, 4));
-            String equipo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 5));
-            String edad = String.valueOf(TDatos.getValueAt(filaSeleccionada, 6));
-            String sexo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 7));
-
-            // Reemplazar "null" por cadena vacía 
-            if (nombre.equals("null")) nombre = "";
-            if (apellidos.equals("null")) apellidos = "";
-            if (posicion.equals("null")) posicion = "";
-            if (dorsal.equals("null")) dorsal = "";
-            if (equipo.equals("null")) equipo = "";
-            if (edad.equals("null")) edad = "";
-            if (sexo.equals("null")) sexo = "";
-
-            // Llenar campos de texto
-            txtNombre.setText(nombre);
-            txtApellidos.setText(apellidos);
-            txtDorsal.setText(dorsal);
-            txtEdad.setText(edad);
-
-            // Seleccionar posición y sexo en combos (solo si no están vacíos)
-            if (!posicion.isEmpty()) {
-                jComboPosicion.setSelectedItem(posicion);
-            }
-            if (!sexo.isEmpty()) {
-                jComboSexo.setSelectedItem(sexo);
-            }
-
-            // Manejar equipo
-            if (equipo.isEmpty()) {
-                jComboEquipo.setSelectedItem("Sin equipo");
+            if (posicionSeleccionada != null && !posicionSeleccionada.isEmpty()) {
+                Object[][] jugadoresPorPosicion = controladorJugadores.convertirAMatrizObjectPorPosicion(posicionSeleccionada);
+                dtm = new DefaultTableModel(jugadoresPorPosicion, columnas) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                TDatos.setModel(dtm);
             } else {
-                jComboEquipo.setSelectedItem(equipo);
+                actualizarTabla();
             }
-            
-        } catch (Exception e) {
-            System.err.println("Error al mostrar datos: " + e.getMessage());
-            e.printStackTrace();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al filtrar por posición: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jComboPosicionActionPerformed
+
+    private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
+       
+        txtNombre.setText("");
+        txtApellidos.setText("");
+        txtDorsal.setText("");
+        txtEdad.setText("");
+        
+        try {
+            actualizarTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnLimpiarCamposActionPerformed
+    private void mostrarDatosJugadorSeleccionado() {
+        int filaSeleccionada = TDatos.getSelectedRow();
+
+        if (filaSeleccionada >= 0) {
+            try {
+                // Convertir valores a String de forma segura
+                String nombre = String.valueOf(TDatos.getValueAt(filaSeleccionada, 1));
+                String apellidos = String.valueOf(TDatos.getValueAt(filaSeleccionada, 2));
+                String posicion = String.valueOf(TDatos.getValueAt(filaSeleccionada, 3));
+                String dorsal = String.valueOf(TDatos.getValueAt(filaSeleccionada, 4));
+                String equipo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 5));
+                String edad = String.valueOf(TDatos.getValueAt(filaSeleccionada, 6));
+                String sexo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 7));
+
+                // Reemplazar "null" por cadena vacía 
+                if (nombre.equals("null")) {
+                    nombre = "";
+                }
+                if (apellidos.equals("null")) {
+                    apellidos = "";
+                }
+                if (posicion.equals("null")) {
+                    posicion = "";
+                }
+                if (dorsal.equals("null")) {
+                    dorsal = "";
+                }
+                if (equipo.equals("null")) {
+                    equipo = "";
+                }
+                if (edad.equals("null")) {
+                    edad = "";
+                }
+                if (sexo.equals("null")) {
+                    sexo = "";
+                }
+
+                // Llenar campos de texto
+                txtNombre.setText(nombre);
+                txtApellidos.setText(apellidos);
+                txtDorsal.setText(dorsal);
+                txtEdad.setText(edad);
+
+                // Seleccionar posición y sexo en combos (solo si no están vacíos)
+                if (!posicion.isEmpty()) {
+                    jComboPosicion.setSelectedItem(posicion);
+                }
+                if (!sexo.isEmpty()) {
+                    jComboSexo.setSelectedItem(sexo);
+                }
+
+                // Manejar equipo
+                if (equipo.isEmpty()) {
+                    jComboEquipo.setSelectedItem("Sin equipo");
+                } else {
+                    jComboEquipo.setSelectedItem(equipo);
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error al mostrar datos: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
@@ -654,6 +750,7 @@ public class GestionJugadores extends javax.swing.JPanel {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportarAXml;
+    private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> jComboEquipo;
     private javax.swing.JComboBox<String> jComboPosicion;
