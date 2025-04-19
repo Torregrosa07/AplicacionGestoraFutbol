@@ -29,9 +29,9 @@ public class controladorJugadores {
 
     public void anadirJugador(String nombre, String apellidos, String dorsal,
             String posicion, String sexo, int edad, Integer idEquipo) {
-        ConexionBDR objetoConexion = new ConexionBDR();
-        Connection conn = null;
-        Statement sentencia = null;
+            ConexionBDR objetoConexion = new ConexionBDR();
+            Connection conn = null;
+            Statement sentencia = null;
 
         try {
             conn = objetoConexion.conectar();
