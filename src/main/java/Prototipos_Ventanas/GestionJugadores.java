@@ -519,7 +519,7 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jComboEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEquipoActionPerformed
-        String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
+        /*String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
 
         try {
             if (equipoSeleccionado != null && !"Sin equipo".equals(equipoSeleccionado)) {
@@ -547,7 +547,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al filtrar jugadores: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
-        }
+        }*/
     }//GEN-LAST:event_jComboEquipoActionPerformed
 
     private void jComboSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSexoActionPerformed
@@ -643,7 +643,7 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void jComboPosicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboPosicionActionPerformed
-
+/*
         String posicionSeleccionada = (String) jComboPosicion.getSelectedItem();
         try {
             if (posicionSeleccionada != null && !posicionSeleccionada.isEmpty()) {
@@ -661,7 +661,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al filtrar por posición: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
+*/
     }//GEN-LAST:event_jComboPosicionActionPerformed
 
     private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
