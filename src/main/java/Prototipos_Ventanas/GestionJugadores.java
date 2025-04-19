@@ -394,8 +394,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         // Obtener ID del equipo
         Integer idEquipo = null;
         String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
-        
-        
+
         if (!"Sin equipo".equals(equipoSeleccionado)) {
             controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
             Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
@@ -624,9 +623,9 @@ public class GestionJugadores extends javax.swing.JPanel {
         }
 
         // Confirmar la modificación
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Estás seguro de modificar los datos del jugador \"" + nombre + " " + apellidos + "\"?",
-                "Confirmar modificación", JOptionPane.YES_NO_OPTION);
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Modificar a " + nombre + " " + apellidos + "?\nID: " + idJugador, "Confirmar", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             // Llamar al método para modificar el jugador
@@ -666,18 +665,18 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboPosicionActionPerformed
 
     private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
-       
+
         txtNombre.setText("");
         txtApellidos.setText("");
         txtDorsal.setText("");
         txtEdad.setText("");
-        
+
         try {
             actualizarTabla();
         } catch (SQLException ex) {
             Logger.getLogger(GestionJugadores.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btnLimpiarCamposActionPerformed
     private void mostrarDatosJugadorSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
