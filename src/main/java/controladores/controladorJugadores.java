@@ -398,7 +398,7 @@ public class controladorJugadores {
         }
     }
 
-    /*public Object[][] convertirAMatrizObjectPorEquipo(int idEquipo) {
+/*    public Object[][] convertirAMatrizObjectPorEquipo(int idEquipo) {
         ConexionBDR conexion = new ConexionBDR();
         Connection con = null;
         Statement st = null;
