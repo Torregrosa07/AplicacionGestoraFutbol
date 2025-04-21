@@ -50,7 +50,9 @@ public class GestionPartidos extends javax.swing.JPanel {
         tablaPartidos.setModel(controlador.cargarPartidos());
         System.out.println("Filas en tablaPartidos al inicializar: " + tablaPartidos.getRowCount());
 
-        tablaEstadisticas.setModel(controlador.cargarEstadisticas());
+        DefaultTableModel modeloEstadisticas = controlador.cargarEstadisticas();
+        modeloEstadisticas = controlador.ordenarEstadisticasPorPuntos(modeloEstadisticas);
+        tablaEstadisticas.setModel(modeloEstadisticas);
         controlador.cargarEquiposEnCombos(comboEquipoLocal, comboEquipoVisitante);
 
         tablaPartidos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -71,6 +73,7 @@ public class GestionPartidos extends javax.swing.JPanel {
                 }
             }
         });
+
     }
 
     /**

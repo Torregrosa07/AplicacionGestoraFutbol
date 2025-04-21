@@ -18,7 +18,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -623,5 +627,43 @@ public class controladorPartido {
             cerrarRecursos(rs, sentencia, conn);
         }
         return modelo;
+    }
+
+    /**
+     * MÉTODO PARA ORDENAR ESTADISTICAS POR PUNTOS DE MAYOR A MENOR
+     *
+     * @param modelo El DefaultTableModel con las estadísticas a ordenar.
+     * @return Un nuevo DefaultTableModel ordenado por puntos.
+     */
+    public DefaultTableModel ordenarEstadisticasPorPuntos(DefaultTableModel modelo) {
+        // se convierte el modelo a una lista de filas
+        List<Object[]> filas = new ArrayList<>();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            Object[] fila = new Object[modelo.getColumnCount()];
+            for (int j = 0; j < modelo.getColumnCount(); j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            filas.add(fila);
+        }
+
+        // esto ordena las filas por puntos de mayor a menor
+        Collections.sort(filas, new Comparator<Object[]>() {
+            @Override
+            public int compare(Object[] fila1, Object[] fila2) {
+                Integer puntos1 = (Integer) fila1[6]; // colummna "Puntos"
+                Integer puntos2 = (Integer) fila2[6];
+                return puntos2.compareTo(puntos1); // orden descendente
+            }
+        });
+
+        // se crea un nuevo modelo con las filas ordenadas
+        DefaultTableModel modeloOrdenado = new DefaultTableModel(
+                new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
+        );
+        for (Object[] fila : filas) {
+            modeloOrdenado.addRow(fila);
+        }
+
+        return modeloOrdenado;
     }
 }
