@@ -82,8 +82,9 @@ public class controladorPartido {
 
     /**
      * MÉTODO PARA VALIDAR LA FECHA DEL JDATECHOOSER
+     *
      * @param fecha
-     * @return 
+     * @return
      */
     public boolean validarFecha(String fecha) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");//nuevo objeto de SimpleDateFormat estableciendo el formato de fecha que será aceptado
@@ -98,8 +99,9 @@ public class controladorPartido {
 
     /**
      * MÉTODO PARA VALIDAR LA HORA
+     *
      * @param hora
-     * @return 
+     * @return
      */
     public boolean validarHora(String hora) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");//nuevo objeto de SimpleDateFormat estableciendo el formato de hora que será aceptado
@@ -113,10 +115,12 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODO PARA OBTENER EL ID DE LOS EQUIPOS Y PODER DISTINGUIRLOS PARA CUADNO SE VAYAN A ELIMINAR O SUBIR ESTADISTICAS DE ESTOS 
+     * MÉTODO PARA OBTENER EL ID DE LOS EQUIPOS Y PODER DISTINGUIRLOS PARA
+     * CUADNO SE VAYAN A ELIMINAR O SUBIR ESTADISTICAS DE ESTOS
+     *
      * @param nombreEquipo
-     * @return 
-     */   
+     * @return
+     */
     public int obtenerIdEquipo(String nombreEquipo) {
         Connection conn = null;
         Statement sentencia = null;
@@ -141,9 +145,11 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODO PARA QUE SE CARGUENN LOS EQUIPOS EN COMBOS Y QUE AYUDEN A QUE LUZCA UN DISEÑO MUCHO MAS INTUITIVO
+     * MÉTODO PARA QUE SE CARGUENN LOS EQUIPOS EN COMBOS Y QUE AYUDEN A QUE
+     * LUZCA UN DISEÑO MUCHO MAS INTUITIVO
+     *
      * @param comboLocal
-     * @param comboVisitante 
+     * @param comboVisitante
      */
     public void cargarEquiposEnCombos(JComboBox<String> comboLocal, JComboBox<String> comboVisitante) {
         comboLocal.removeAllItems();
@@ -174,10 +180,11 @@ public class controladorPartido {
 
     /**
      * MÉTODO PARA LIMPIAR CAMPOS LUEGO DE HACER UNA INSERCIÓN
+     *
      * @param dateChooser
      * @param hora2
      * @param comboLocal
-     * @param comboVisitante 
+     * @param comboVisitante
      */
     public static void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) { //limpiar campos, para que luego de una inserción queden los campos vacíos ylistos para recibir un nuevo partido
         dateChooser.setDate(null);
@@ -188,12 +195,13 @@ public class controladorPartido {
 
     /**
      * MÉTODO PARA ESTABLECER PARTIDOS
+     *
      * @param dateChooserFecha
      * @param hora2
      * @param comboEquipoLocal
      * @param comboEquipoVisitante
      * @param modeloPartidos
-     * @return 
+     * @return
      */
     public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, JComboBox<String> comboEquipoLocal, JComboBox<String> comboEquipoVisitante, DefaultTableModel modeloPartidos) {
 
@@ -254,8 +262,9 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODO PARA ELIMINAR PARTIDOS    
-     * @param idPartido 
+     * MÉTODO PARA ELIMINAR PARTIDOS
+     *
+     * @param idPartido
      */
     public void eliminarPartido(int idPartido) {
         Connection conn = null;
@@ -276,12 +285,14 @@ public class controladorPartido {
             cerrarRecursos(null, sentencia, conn);
         }
     }
- 
+
     /**
-     * MÉTODO PARA CERRAR RECURSOS DE LA BASE DE DATOS (esto para evitar fugas de recursos, limites de conexiones y posibles errores futuros)
+     * MÉTODO PARA CERRAR RECURSOS DE LA BASE DE DATOS (esto para evitar fugas
+     * de recursos, limites de conexiones y posibles errores futuros)
+     *
      * @param rs
      * @param stmt
-     * @param conn 
+     * @param conn
      */
     private void cerrarRecursos(ResultSet rs, Statement sentencia, Connection conn) {
         try {
@@ -301,7 +312,8 @@ public class controladorPartido {
 
     /**
      * MÉTODO PARA CARGAR PARTIDOS EN LA TABLA DE LA VENTANA DE CONSULTAS
-     * @return 
+     *
+     * @return
      */
     public DefaultTableModel cargarPartidos() {
         DefaultTableModel modelo = new DefaultTableModel(
@@ -346,8 +358,10 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODOS PARA CARGAR ESTADISTICAS DE LOS PARTIDOS EN LA VENTANA DE CONSULTAS
-     * @return 
+     * MÉTODOS PARA CARGAR ESTADISTICAS DE LOS PARTIDOS EN LA VENTANA DE
+     * CONSULTAS
+     *
+     * @return
      */
     public DefaultTableModel cargarEstadisticas() {
         DefaultTableModel modelo = new DefaultTableModel(
@@ -435,10 +449,11 @@ public class controladorPartido {
 
     /**
      * MÉTODO PARA QCALCULAR ESTADISTÍCAS
+     *
      * @param idPartido
      * @param golesLocalStr
      * @param golesVisitanteStr
-     * @return 
+     * @return
      */
     public boolean registrarResultado(int idPartido, String golesLocalStr, String golesVisitanteStr) {
         int golesLocal, golesVisitante;
@@ -477,9 +492,12 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODO PARA BUSCAR UN PARTIDO POR SU ID (teniendo en cuenta que la intención del contador con id y que se muestre en la tabla es un identificador mas no un contador de partidos)
+     * MÉTODO PARA BUSCAR UN PARTIDO POR SU ID (teniendo en cuenta que la
+     * intención del contador con id y que se muestre en la tabla es un
+     * identificador mas no un contador de partidos)
+     *
      * @param id
-     * @return 
+     * @return
      */
     public Partido buscarPartidoPorId(int id) {
         Connection conn = null;
@@ -555,5 +573,55 @@ public class controladorPartido {
             cerrarRecursos(rs, sentencia, conn);
         }
         return null;
+    }
+
+    /**
+     * MÉTODO PARA BUSCAR PARTIDOS POR FECHA (se consultan en la base de datos)
+     *
+     * @param fecha La fecha en formato "yyyy-MM-dd" para buscar los partidos.
+     * @return Un DefaultTableModel con los partidos encontrados.
+     */
+    public DefaultTableModel buscarPartidosPorFecha(String fecha) {
+        DefaultTableModel modelo = new DefaultTableModel(
+                new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
+        );
+        Connection conn = null;
+        Statement sentencia = null;
+        ResultSet rs = null;
+        try {
+            conn = conexion.conectar();
+            System.out.println("Conexión a la base de datos exitosa en buscarPartidosPorFecha.");
+            sentencia = conn.createStatement();
+            // consulta SQL para buscar partidos por fecha
+            String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante "
+                    + "FROM partido p "
+                    + "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo "
+                    + "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo "
+                    + "WHERE p.fecha = '" + fecha + "'";
+            System.out.println("Ejecutando consulta en buscarPartidosPorFecha: " + sql);
+            rs = sentencia.executeQuery(sql);
+
+            int rowCount = 0;
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getInt("id_partido"),
+                    rs.getString("fecha"),
+                    rs.getString("hora"),
+                    rs.getString("local"),
+                    rs.getString("visitante")
+                });
+                rowCount++;
+            }
+            System.out.println("Se encontraron " + rowCount + " partidos para la fecha " + fecha + " en buscarPartidosPorFecha.");
+            if (rowCount == 0) {
+                System.out.println("Advertencia: No se encontraron partidos para la fecha " + fecha + " en buscarPartidosPorFecha.");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println("Error al buscar partidos por fecha: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al buscar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            cerrarRecursos(rs, sentencia, conn);
+        }
+        return modelo;
     }
 }

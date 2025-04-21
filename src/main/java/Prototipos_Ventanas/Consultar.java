@@ -24,7 +24,7 @@ public class Consultar extends javax.swing.JFrame {
     }
 
     private void ShowPanel(JPanel p){
-        p.setSize(950, 530);
+        p.setSize(970, 530);
         p.setLocation(0, 0);
         
         content.removeAll();
