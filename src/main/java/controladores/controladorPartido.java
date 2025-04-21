@@ -62,12 +62,12 @@ public class controladorPartido {
 
     private int obtenerUltimoID() {
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         ResultSet rs = null;
         try {
             conn = conexion.conectar();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT MAX(id_partido) AS max_id FROM partido");
+            sentencia = conn.createStatement();
+            rs = sentencia.executeQuery("SELECT MAX(id_partido) AS max_id FROM partido");
             if (rs.next()) {
                 return rs.getInt("max_id");
             }
@@ -76,7 +76,7 @@ public class controladorPartido {
             e.printStackTrace();
             return 0;
         } finally {
-            cerrarRecursos(rs, stmt, conn);
+            cerrarRecursos(rs, sentencia, conn);
         }
     }
 
@@ -119,14 +119,14 @@ public class controladorPartido {
      */   
     public int obtenerIdEquipo(String nombreEquipo) {
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         ResultSet rs = null;
         try {
             conn = conexion.conectar(); //se establece la conexión con la base de datos
-            stmt = conn.createStatement();
+            sentencia = conn.createStatement();
             String nombreEscapado = nombreEquipo.replace("'", "''");//variable de 
             String sql = "SELECT id_equipo FROM equipo WHERE nombre = '" + nombreEscapado + "'";
-            rs = stmt.executeQuery(sql);
+            rs = sentencia.executeQuery(sql);
 
             if (rs.next()) {
                 return rs.getInt("id_equipo");
@@ -136,7 +136,7 @@ public class controladorPartido {
             e.printStackTrace();
             return 0;
         } finally {
-            cerrarRecursos(rs, stmt, conn);
+            cerrarRecursos(rs, sentencia, conn);
         }
     }
 
@@ -153,12 +153,12 @@ public class controladorPartido {
         comboVisitante.addItem("Seleccione un equipo");
 
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         ResultSet rs = null;
         try {
             conn = conexion.conectar();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT nombre FROM equipo");
+            sentencia = conn.createStatement();
+            rs = sentencia.executeQuery("SELECT nombre FROM equipo");
 
             while (rs.next()) {
                 String nombreEquipo = rs.getString("nombre");
@@ -168,7 +168,7 @@ public class controladorPartido {
         } catch (SQLException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar equipos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            cerrarRecursos(rs, stmt, conn);
+            cerrarRecursos(rs, sentencia, conn);
         }
     }
 
@@ -226,7 +226,7 @@ public class controladorPartido {
         }
 
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         try {
             conn = conexion.conectar();
             int idLocal = obtenerIdEquipo(equipoLocal);
@@ -237,10 +237,10 @@ public class controladorPartido {
                 return false;
             }
 
-            stmt = conn.createStatement();
+            sentencia = conn.createStatement();
             String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
                     + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
-            stmt.executeUpdate(sqlInsert);
+            sentencia.executeUpdate(sqlInsert);
 
             return true;
 
@@ -249,7 +249,7 @@ public class controladorPartido {
             e.printStackTrace();
             return false;
         } finally {
-            cerrarRecursos(null, stmt, conn);
+            cerrarRecursos(null, sentencia, conn);
         }
     }
 
@@ -259,12 +259,12 @@ public class controladorPartido {
      */
     public void eliminarPartido(int idPartido) {
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         try {
             conn = conexion.conectar();
-            stmt = conn.createStatement();
+            sentencia = conn.createStatement();
             String sql = "DELETE FROM partido WHERE id_partido = " + idPartido;
-            int rowsAffected = stmt.executeUpdate(sql);
+            int rowsAffected = sentencia.executeUpdate(sql);
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(null, "Partido eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             } else {
@@ -273,7 +273,7 @@ public class controladorPartido {
         } catch (SQLException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error al eliminar el partido: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            cerrarRecursos(null, stmt, conn);
+            cerrarRecursos(null, sentencia, conn);
         }
     }
  
@@ -283,13 +283,13 @@ public class controladorPartido {
      * @param stmt
      * @param conn 
      */
-    private void cerrarRecursos(ResultSet rs, Statement stmt, Connection conn) {
+    private void cerrarRecursos(ResultSet rs, Statement sentencia, Connection conn) {
         try {
             if (rs != null) {
                 rs.close();
             }
-            if (stmt != null) {
-                stmt.close();
+            if (sentencia != null) {
+                sentencia.close();
             }
             if (conn != null) {
                 conexion.desconectar();
@@ -308,18 +308,18 @@ public class controladorPartido {
                 new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
         );
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         ResultSet rs = null;
         try {
             conn = conexion.conectar();
             System.out.println("Conexión a la base de datos exitosa en cargarPartidos.");//mensaje de depuración para saber que está funcionando
-            stmt = conn.createStatement();
+            sentencia = conn.createStatement();
             String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante " //se hace la consulta
                     + "FROM partido p "
                     + "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo "
                     + "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo";
             System.out.println("Ejecutando consulta en cargarPartidos: " + sql);
-            rs = stmt.executeQuery(sql); //y se ejecuta
+            rs = sentencia.executeQuery(sql); //y se ejecuta
 
             int rowCount = 0;
             while (rs.next()) {
@@ -340,7 +340,7 @@ public class controladorPartido {
             System.err.println("Error al cargar partidos en cargarPartidos: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al cargar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            cerrarRecursos(rs, stmt, conn);
+            cerrarRecursos(rs, sentencia, conn);
         }
         return modelo;
     }
@@ -354,13 +354,13 @@ public class controladorPartido {
                 new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
         );
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         ResultSet rs = null;
         try {
             conn = conexion.conectar();
-            stmt = conn.createStatement();
+            sentencia = conn.createStatement();
 
-            rs = stmt.executeQuery("SELECT id_equipo, nombre FROM equipo");//obtener todos los equipos
+            rs = sentencia.executeQuery("SELECT id_equipo, nombre FROM equipo");//obtener todos los equipos
             while (rs.next()) {
                 int idEquipo = rs.getInt("id_equipo");
                 String nombreEquipo = rs.getString("nombre");
@@ -375,8 +375,8 @@ public class controladorPartido {
                         + "FROM partido "
                         + "WHERE id_equipo_local = " + idEquipo
                         + " AND goles_local IS NOT NULL AND goles_visitante IS NOT NULL";
-                Statement stmtLocal = conn.createStatement();
-                ResultSet rsLocal = stmtLocal.executeQuery(sqlLocal);
+                Statement sentenciaLocal = conn.createStatement();
+                ResultSet rsLocal = sentenciaLocal.executeQuery(sqlLocal);
                 while (rsLocal.next()) {
                     int golesLocal = rsLocal.getInt("goles_local");
                     int golesVisitante = rsLocal.getInt("goles_visitante");
@@ -391,15 +391,15 @@ public class controladorPartido {
                     }
                 }
                 rsLocal.close();
-                stmtLocal.close();
+                sentenciaLocal.close();
 
                 // Calcular estadísticas como equipo visitante
                 String sqlVisitante = "SELECT goles_local, goles_visitante "
                         + "FROM partido "
                         + "WHERE id_equipo_visitante = " + idEquipo
                         + " AND goles_local IS NOT NULL AND goles_visitante IS NOT NULL";
-                Statement stmtVisitante = conn.createStatement();
-                ResultSet rsVisitante = stmtVisitante.executeQuery(sqlVisitante);
+                Statement sentenciaVisitante = conn.createStatement();
+                ResultSet rsVisitante = sentenciaVisitante.executeQuery(sqlVisitante);
                 while (rsVisitante.next()) {
                     int golesLocal = rsVisitante.getInt("goles_local");
                     int golesVisitante = rsVisitante.getInt("goles_visitante");
@@ -414,7 +414,7 @@ public class controladorPartido {
                     }
                 }
                 rsVisitante.close();
-                stmtVisitante.close();
+                sentenciaVisitante.close();
 
                 // Calcular puntos (3 por partido ganado, 1 por empate)
                 int puntos = (pg * 3) + (pe * 1);
@@ -428,7 +428,7 @@ public class controladorPartido {
             JOptionPane.showMessageDialog(null, "Error al cargar estadísticas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         } finally {
-            cerrarRecursos(rs, stmt, conn);
+            cerrarRecursos(rs, sentencia, conn);
         }
         return modelo;
     }
@@ -455,13 +455,13 @@ public class controladorPartido {
         }
 
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         try {
             conn = conexion.conectar();
-            stmt = conn.createStatement();
+            sentencia = conn.createStatement();
             String sql = "UPDATE partido SET goles_local = " + golesLocal + ", goles_visitante = " + golesVisitante
                     + " WHERE id_partido = " + idPartido;
-            int rowsAffected = stmt.executeUpdate(sql);
+            int rowsAffected = sentencia.executeUpdate(sql);
             if (rowsAffected == 0) {
                 JOptionPane.showMessageDialog(null, "No se encontró el partido con ID: " + idPartido, "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
@@ -472,7 +472,7 @@ public class controladorPartido {
             e.printStackTrace();
             return false;
         } finally {
-            cerrarRecursos(null, stmt, conn);
+            cerrarRecursos(null, sentencia, conn);
         }
     }
 
@@ -483,14 +483,14 @@ public class controladorPartido {
      */
     public Partido buscarPartidoPorId(int id) {
         Connection conn = null;
-        Statement stmt = null;
+        Statement sentencia = null;
         ResultSet rs = null;
         try {
             conn = conexion.conectar();
             if (conn != null && !conn.isClosed()) {
-                stmt = conn.createStatement();
+                sentencia = conn.createStatement();
                 String sql = "SELECT * FROM partido WHERE id_partido = " + id;
-                rs = stmt.executeQuery(sql);
+                rs = sentencia.executeQuery(sql);
 
                 if (rs.next()) {
                     int idEquipoLocal = rs.getInt("id_equipo_local");
@@ -552,7 +552,7 @@ public class controladorPartido {
             System.err.println("Error al parsear la fecha: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            cerrarRecursos(rs, stmt, conn);
+            cerrarRecursos(rs, sentencia, conn);
         }
         return null;
     }
