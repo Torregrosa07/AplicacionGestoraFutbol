@@ -25,6 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -50,6 +52,25 @@ public class GestionPartidos extends javax.swing.JPanel {
 
         tablaEstadisticas.setModel(controlador.cargarEstadisticas());
         controlador.cargarEquiposEnCombos(comboEquipoLocal, comboEquipoVisitante);
+
+        tablaPartidos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = tablaPartidos.getSelectedRow();
+                    if (selectedRow != -1) {
+                        String equipoLocal = (String) tablaPartidos.getModel().getValueAt(selectedRow, 3);
+                        String equipoVisitante = (String) tablaPartidos.getModel().getValueAt(selectedRow, 4);
+
+                        equipoLocalCampoTxt.setText(equipoLocal);
+                        equipoVisitanteCampoTxt.setText(equipoVisitante);
+                    } else {
+                        equipoLocalCampoTxt.setText("");
+                        equipoVisitanteCampoTxt.setText("");
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -67,9 +88,7 @@ public class GestionPartidos extends javax.swing.JPanel {
         tablaPartidos = new javax.swing.JTable();
         hora = new javax.swing.JLabel();
         hora2 = new java.awt.TextField();
-        golesFavor = new javax.swing.JLabel();
         gf = new java.awt.TextField();
-        golesContra = new javax.swing.JLabel();
         gc = new java.awt.TextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaEstadisticas = new javax.swing.JTable();
@@ -86,6 +105,8 @@ public class GestionPartidos extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         buscarEquipoPorID = new javax.swing.JButton();
         idPartido = new javax.swing.JTextField();
+        equipoLocalCampoTxt = new javax.swing.JTextField();
+        equipoVisitanteCampoTxt = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(102, 102, 102));
         setPreferredSize(new java.awt.Dimension(1155, 560));
@@ -123,17 +144,11 @@ public class GestionPartidos extends javax.swing.JPanel {
             }
         });
 
-        golesFavor.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        golesFavor.setText("Goles Equipo Local:");
-
         gf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gfActionPerformed(evt);
             }
         });
-
-        golesContra.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        golesContra.setText("Goles Equipo Visitante:");
 
         gc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,18 +257,18 @@ public class GestionPartidos extends javax.swing.JPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(publicar)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(golesFavor)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(golesContra)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(equipoVisitanteCampoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                                    .addComponent(equipoLocalCampoTxt))
+                                .addGap(35, 35, 35)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(publicar)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 39, Short.MAX_VALUE))
@@ -302,13 +317,13 @@ public class GestionPartidos extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(golesFavor, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(equipoLocalCampoTxt)
+                            .addComponent(gf, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
                         .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(golesContra, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(gc, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                            .addComponent(equipoVisitanteCampoTxt))
                         .addGap(18, 18, 18)
                         .addComponent(publicar, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -335,7 +350,7 @@ public class GestionPartidos extends javax.swing.JPanel {
     }//GEN-LAST:event_gcActionPerformed
 
     private void publicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publicarActionPerformed
-       try {
+        try {
             int selectedRow = tablaPartidos.getSelectedRow();
             if (selectedRow == -1) {
                 JOptionPane.showMessageDialog(null, "Por favor, seleccione un partido de la tabla.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -353,12 +368,18 @@ public class GestionPartidos extends javax.swing.JPanel {
 
             boolean exito = controlador.registrarResultado(idPartido, golesLocalStr, golesVisitanteStr);
             if (exito) {
-                tablaEstadisticas.setModel(controlador.cargarEstadisticas());
-                gf.setText("");
-                gc.setText("");
+                tablaEstadisticas.setModel(controlador.cargarEstadisticas()); // se actualiza la tabla de estadísticas
+                tablaPartidos.setModel(controlador.cargarPartidos()); // y la de partidos
+                gf.setText(""); //  se limpia el campo de goles local
+                gc.setText(""); // se limpia el campo de goles visitante
+                equipoLocalCampoTxt.setText(""); // se limpia el nombre del equipo local
+                equipoVisitanteCampoTxt.setText(""); // se limpia el nombre del equipo visitante
+                JOptionPane.showMessageDialog(null, "Resultado registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo registrar el resultado. Revisa los datos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al publicar resultado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al registrar resultado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }//GEN-LAST:event_publicarActionPerformed
@@ -383,47 +404,47 @@ public class GestionPartidos extends javax.swing.JPanel {
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void refrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarActionPerformed
-       tablaPartidos.setModel(controlador.cargarPartidos());
-       System.out.println("Filas en tablaPartidos después de refrescar: " + tablaPartidos.getRowCount());
+        tablaPartidos.setModel(controlador.cargarPartidos());
+        System.out.println("Filas en tablaPartidos después de refrescar: " + tablaPartidos.getRowCount());
     }//GEN-LAST:event_refrescarActionPerformed
 
     private void buscarEquipoPorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarEquipoPorIDActionPerformed
-      String idBuscarStr = idPartido.getText().trim();
+        String idBuscarStr = idPartido.getText().trim();
 
-    if (idBuscarStr.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Ingresa el ID del partido.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        if (idBuscarStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresa el ID del partido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    int idBuscar;
-    try {
-        idBuscar = Integer.parseInt(idBuscarStr);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El ID debe ser un número.", "Error", JOptionPane.ERROR_MESSAGE);
-        idPartido.setText("");
-        return;
-    }
+        int idBuscar;
+        try {
+            idBuscar = Integer.parseInt(idBuscarStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El ID debe ser un número.", "Error", JOptionPane.ERROR_MESSAGE);
+            idPartido.setText("");
+            return;
+        }
 
-    controladorPartido controlador = new controladorPartido();
-    Partido partido = controlador.buscarPartidoPorId(idBuscar);
+        controladorPartido controlador = new controladorPartido();
+        Partido partido = controlador.buscarPartidoPorId(idBuscar);
 
-    if (partido != null) {
-        idPartido.setText(String.valueOf(partido.getIdPartido()));
-        
-        dateChooserFecha.setDate(partido.getFechaPartido());
-        String hora = new SimpleDateFormat("HH:mm").format(partido.getFechaPartido());
-        hora2.setText(hora);
+        if (partido != null) {
+            idPartido.setText(String.valueOf(partido.getIdPartido()));
 
-        comboEquipoLocal.setSelectedItem(partido.getEquipoLocal().getNombre());
-        comboEquipoVisitante.setSelectedItem(partido.getEquipoVisitante().getNombre());
+            dateChooserFecha.setDate(partido.getFechaPartido());
+            String hora = new SimpleDateFormat("HH:mm").format(partido.getFechaPartido());
+            hora2.setText(hora);
 
-        gf.setText(partido.getGolesLocal() >= 0 ? String.valueOf(partido.getGolesLocal()) : "");   // goles (si son -1, significa que no hay resultado)
-        gc.setText(partido.getGolesVisitante() >= 0 ? String.valueOf(partido.getGolesVisitante()) : "");
+            comboEquipoLocal.setSelectedItem(partido.getEquipoLocal().getNombre());
+            comboEquipoVisitante.setSelectedItem(partido.getEquipoVisitante().getNombre());
 
-        JOptionPane.showMessageDialog(this, "Partido encontrado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        JOptionPane.showMessageDialog(this, "No se encontró el partido con ID: " + idBuscar, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+            gf.setText(partido.getGolesLocal() >= 0 ? String.valueOf(partido.getGolesLocal()) : "");   // goles (si son -1, significa que no hay resultado)
+            gc.setText(partido.getGolesVisitante() >= 0 ? String.valueOf(partido.getGolesVisitante()) : "");
+
+            JOptionPane.showMessageDialog(this, "Partido encontrado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se encontró el partido con ID: " + idBuscar, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_buscarEquipoPorIDActionPerformed
 
 
@@ -433,10 +454,10 @@ public class GestionPartidos extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> comboEquipoVisitante;
     private com.toedter.calendar.JDateChooser dateChooserFecha;
     private javax.swing.JButton eliminar;
+    private javax.swing.JTextField equipoLocalCampoTxt;
+    private javax.swing.JTextField equipoVisitanteCampoTxt;
     private java.awt.TextField gc;
     private java.awt.TextField gf;
-    private javax.swing.JLabel golesContra;
-    private javax.swing.JLabel golesFavor;
     private javax.swing.JButton guargar;
     private javax.swing.JLabel hora;
     private java.awt.TextField hora2;

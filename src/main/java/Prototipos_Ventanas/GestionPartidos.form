@@ -70,22 +70,22 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Component id="publicar" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="golesFavor" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="gf" min="-2" pref="68" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="golesContra" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="gc" min="-2" pref="68" max="-2" attributes="0"/>
-                                  </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="equipoVisitanteCampoTxt" pref="205" max="32767" attributes="0"/>
+                                  <Component id="equipoLocalCampoTxt" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="gc" min="-2" pref="68" max="-2" attributes="0"/>
+                                  <Component id="gf" min="-2" pref="68" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="jLabel4" alignment="0" min="-2" pref="328" max="-2" attributes="0"/>
+                          <Component id="jLabel4" min="-2" pref="328" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                              <Component id="publicar" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="717" max="-2" attributes="0"/>
@@ -150,14 +150,14 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel4" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="gf" min="-2" pref="33" max="-2" attributes="0"/>
-                          <Component id="golesFavor" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="equipoLocalCampoTxt" max="32767" attributes="0"/>
+                          <Component id="gf" pref="33" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="golesContra" min="-2" pref="33" max="-2" attributes="0"/>
-                          <Component id="gc" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="gc" pref="33" max="32767" attributes="0"/>
+                          <Component id="equipoVisitanteCampoTxt" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="publicar" min="-2" pref="57" max="-2" attributes="0"/>
@@ -250,26 +250,10 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hora2ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="golesFavor">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Verdana" size="18" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Goles Equipo Local:"/>
-      </Properties>
-    </Component>
     <Component class="java.awt.TextField" name="gf">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gfActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="golesContra">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Verdana" size="18" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Goles Equipo Visitante:"/>
-      </Properties>
     </Component>
     <Component class="java.awt.TextField" name="gc">
       <Events>
@@ -431,6 +415,10 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="idPartido">
+    </Component>
+    <Component class="javax.swing.JTextField" name="equipoLocalCampoTxt">
+    </Component>
+    <Component class="javax.swing.JTextField" name="equipoVisitanteCampoTxt">
     </Component>
   </SubComponents>
 </Form>

@@ -80,7 +80,11 @@ public class controladorPartido {
         }
     }
 
-    // MÉTODO PARA VALIDAR LA FECHA DEL JDATECHOOSER
+    /**
+     * MÉTODO PARA VALIDAR LA FECHA DEL JDATECHOOSER
+     * @param fecha
+     * @return 
+     */
     public boolean validarFecha(String fecha) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");//nuevo objeto de SimpleDateFormat estableciendo el formato de fecha que será aceptado
         sdf.setLenient(false);//se establece en false
@@ -92,7 +96,11 @@ public class controladorPartido {
         }
     }
 
-    //METODO PARA VALIDAR LA HORA
+    /**
+     * MÉTODO PARA VALIDAR LA HORA
+     * @param hora
+     * @return 
+     */
     public boolean validarHora(String hora) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");//nuevo objeto de SimpleDateFormat estableciendo el formato de hora que será aceptado
         sdf.setLenient(false);//se establece en false
@@ -104,7 +112,11 @@ public class controladorPartido {
         }
     }
 
-    //MÉTODO PARA OBTENER EL ID DE LOS EQUIPOS Y PODER DISTINGUIRLOS PARA CUADNO SE VAYAN A ELIMINAR O SUBIR ESTADISTICAS DE ESTOS    
+    /**
+     * MÉTODO PARA OBTENER EL ID DE LOS EQUIPOS Y PODER DISTINGUIRLOS PARA CUADNO SE VAYAN A ELIMINAR O SUBIR ESTADISTICAS DE ESTOS 
+     * @param nombreEquipo
+     * @return 
+     */   
     public int obtenerIdEquipo(String nombreEquipo) {
         Connection conn = null;
         Statement stmt = null;
@@ -128,7 +140,11 @@ public class controladorPartido {
         }
     }
 
-    //MÉTODO PARA QUE SE CARGUENN LOS EQUIPOS EN COMBOS Y QUE AYUDEN A QUE LUZCA UN DISEÑO MUCHO MAS INTUITIVO
+    /**
+     * MÉTODO PARA QUE SE CARGUENN LOS EQUIPOS EN COMBOS Y QUE AYUDEN A QUE LUZCA UN DISEÑO MUCHO MAS INTUITIVO
+     * @param comboLocal
+     * @param comboVisitante 
+     */
     public void cargarEquiposEnCombos(JComboBox<String> comboLocal, JComboBox<String> comboVisitante) {
         comboLocal.removeAllItems();
         comboVisitante.removeAllItems();
@@ -156,7 +172,13 @@ public class controladorPartido {
         }
     }
 
-    //MÉTODO PARA LIMPIAR CAMPOS LUEGO DE HACER UNA INSERCIÓN
+    /**
+     * MÉTODO PARA LIMPIAR CAMPOS LUEGO DE HACER UNA INSERCIÓN
+     * @param dateChooser
+     * @param hora2
+     * @param comboLocal
+     * @param comboVisitante 
+     */
     public static void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) { //limpiar campos, para que luego de una inserción queden los campos vacíos ylistos para recibir un nuevo partido
         dateChooser.setDate(null);
         hora2.setText("");
@@ -164,7 +186,15 @@ public class controladorPartido {
         comboVisitante.setSelectedIndex(0);
     }
 
-    //MÉTODO PARA ESTABLECER PARTIDOS
+    /**
+     * MÉTODO PARA ESTABLECER PARTIDOS
+     * @param dateChooserFecha
+     * @param hora2
+     * @param comboEquipoLocal
+     * @param comboEquipoVisitante
+     * @param modeloPartidos
+     * @return 
+     */
     public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, JComboBox<String> comboEquipoLocal, JComboBox<String> comboEquipoVisitante, DefaultTableModel modeloPartidos) {
 
         Date fecha = dateChooserFecha.getDate();
@@ -223,7 +253,10 @@ public class controladorPartido {
         }
     }
 
-    //MÉTODO PARA ELIMINAR PARTIDOS    
+    /**
+     * MÉTODO PARA ELIMINAR PARTIDOS    
+     * @param idPartido 
+     */
     public void eliminarPartido(int idPartido) {
         Connection conn = null;
         Statement stmt = null;
@@ -244,7 +277,12 @@ public class controladorPartido {
         }
     }
  
-    //MÉTODO PARA CERRAR RECURSOS DE LA BASE DE DATOS (esto para evitar fugas de recursos, limites de conexiones y posibles errores futuros)
+    /**
+     * MÉTODO PARA CERRAR RECURSOS DE LA BASE DE DATOS (esto para evitar fugas de recursos, limites de conexiones y posibles errores futuros)
+     * @param rs
+     * @param stmt
+     * @param conn 
+     */
     private void cerrarRecursos(ResultSet rs, Statement stmt, Connection conn) {
         try {
             if (rs != null) {
@@ -261,7 +299,10 @@ public class controladorPartido {
         }
     }
 
-    //MÉTODO PARA CARGAR PARTIDOS EN LA TABLA DE LA VENTANA DE CONSULTAS
+    /**
+     * MÉTODO PARA CARGAR PARTIDOS EN LA TABLA DE LA VENTANA DE CONSULTAS
+     * @return 
+     */
     public DefaultTableModel cargarPartidos() {
         DefaultTableModel modelo = new DefaultTableModel(
                 new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
@@ -304,7 +345,10 @@ public class controladorPartido {
         return modelo;
     }
 
-    //MÉTODOS PARA CARGAR ESTADISTICAS DE LOS PARTIDOS EN LA VENTANA DE CONSULTAS
+    /**
+     * MÉTODOS PARA CARGAR ESTADISTICAS DE LOS PARTIDOS EN LA VENTANA DE CONSULTAS
+     * @return 
+     */
     public DefaultTableModel cargarEstadisticas() {
         DefaultTableModel modelo = new DefaultTableModel(
                 new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
@@ -389,7 +433,13 @@ public class controladorPartido {
         return modelo;
     }
 
-    //MÉTODO PARA QCALCULAR ESTADISTÍCAS
+    /**
+     * MÉTODO PARA QCALCULAR ESTADISTÍCAS
+     * @param idPartido
+     * @param golesLocalStr
+     * @param golesVisitanteStr
+     * @return 
+     */
     public boolean registrarResultado(int idPartido, String golesLocalStr, String golesVisitanteStr) {
         int golesLocal, golesVisitante;
         try {
@@ -426,7 +476,11 @@ public class controladorPartido {
         }
     }
 
-    //MÉTODO PARA BUSCAR UN PARTIDO POR SU ID (teniendo en cuenta que la intención del contador con id y que se muestre en la tabla es un identificador mas no un contador de partidos)
+    /**
+     * MÉTODO PARA BUSCAR UN PARTIDO POR SU ID (teniendo en cuenta que la intención del contador con id y que se muestre en la tabla es un identificador mas no un contador de partidos)
+     * @param id
+     * @return 
+     */
     public Partido buscarPartidoPorId(int id) {
         Connection conn = null;
         Statement stmt = null;
