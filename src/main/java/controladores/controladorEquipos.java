@@ -146,7 +146,7 @@ public class controladorEquipos {
                 st.close();
             }
             if (con != null) {
-                con.setAutoCommit(true); // Restaurar el comportamiento por defecto
+                con.setAutoCommit(true); 
             }
         } catch (SQLException e) {
             e.printStackTrace();

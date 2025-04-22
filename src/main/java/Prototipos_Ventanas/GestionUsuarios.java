@@ -18,8 +18,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionUsuarios extends javax.swing.JFrame {
 
-    String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
-    String regTelefono = "^[\\+]?\\d{9,14}$";
+    final String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
+    final String regTelefono = "^[\\+]?\\d{9,14}$";
 
     /**
      * Creates new form GestionUsuarios

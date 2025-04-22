@@ -284,50 +284,6 @@ public class GestionEquipos extends javax.swing.JPanel {
 
     private void btnAnadir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadir1ActionPerformed
 
-        // PRUEBA CON TREESET Y OBJETOS
-        /*String nombre = txtNombre.getText().trim();
-        String apellidos = txtApellidos.getText().trim();
-        String dorsal = txtDorsal.getText().trim();
-        String posicionStr = txtPosicion.getText().trim();
-
-        if (nombre.isEmpty() || apellidos.isEmpty() || posicionStr.isEmpty() || dorsal.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "No añadido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        try {
-            // Obtener el equipo seleccionado
-            String nombreEquipo = (String) jComboEquipo.getSelectedItem();
-            Equipo equipo = controladorEquipos.getEquipoPorNombre(nombreEquipo);
-
-            if (equipo == null) {
-                JOptionPane.showMessageDialog(this, "Equipo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Convertir posición de String a enum
-            Jugador.Posicion posicion;
-            try {
-                posicion = Jugador.Posicion.valueOf(posicionStr.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this, "Posición no válida. Use: PORTERO, DEFENSA, MEDIOCENTRO o DELANTERO", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Jugador nuevo = new Jugador(nombre, apellidos, equipo, posicion, dorsal);
-            boolean añadido = controladorJug.añadir(nuevo);
-
-            if (añadido) {
-                actualizaTabla(); // Asegúrate de usar el método correcto
-                JOptionPane.showMessageDialog(this, "Jugador añadido correctamente.", "Añadido", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "El jugador ya existe.", "No añadido", JOptionPane.WARNING_MESSAGE);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al añadir jugador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-         */
     }//GEN-LAST:event_btnAnadir1ActionPerformed
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
