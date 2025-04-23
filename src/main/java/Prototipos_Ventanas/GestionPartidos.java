@@ -515,10 +515,10 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void exportarAXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarAXMLActionPerformed
         try {
-            // Obtener el modelo actual de la tabla
+            // obtener el modelo actual de la tabla
             DefaultTableModel modeloActual = (DefaultTableModel) tablaPartidos.getModel();
 
-            // Verificar si hay datos en la tabla
+            // verificar si hay datos en la tabla
             int rowCount = modeloActual.getRowCount();
             System.out.println("Filas en modeloActual (tablaPartidos.getModel()): " + rowCount);
             System.out.println("Filas en modeloPartidos: " + modeloPartidos.getRowCount());
@@ -528,12 +528,12 @@ public class GestionPartidos extends javax.swing.JPanel {
                 return;
             }
 
-            // Convertir los datos de la tabla a una lista
+            // convertir los datos de la tabla a una lista
             ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
             System.out.println("Número de filas exportadas: " + lista.size());
 
-            // Guardar la lista en un archivo XML
-            FileOutputStream fos = new FileOutputStream("partidos.xml");
+            // guardar la lista en un archivo XML
+            FileOutputStream fos = new FileOutputStream("partidOs.xml");
             XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(fos));
             encoder.writeObject(lista);
             encoder.close();
@@ -597,12 +597,19 @@ public class GestionPartidos extends javax.swing.JPanel {
         }
         return lista;
     }
+    
+    /**
+     * MÉTODO PARA PASAR LISTA A TABLA
+     * @param lista
+     * @param columnas
+     * @return 
+     */
 
-//    private DefaultTableModel pasarListaATabla(ArrayList<Object[]> lista, String[] columnas) {
-//        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-//        for (Object[] fila : lista) {
-//            modelo.addRow(fila);
-//        }
-//        return modelo;
-//    }
+    private DefaultTableModel pasarListaATabla(ArrayList<Object[]> lista, String[] columnas) {
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        for (Object[] fila : lista) {
+            modelo.addRow(fila);
+        }
+        return modelo;
+    }
 }
