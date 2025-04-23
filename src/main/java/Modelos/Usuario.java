@@ -23,9 +23,9 @@ public class Usuario {
     private String contraseña;
     private String correo;
     private String numero;
-//    private 
+    private boolean admin;
 
-    // Constructores, getters y setters
+    
     public Usuario() {}
 
     public Usuario(String nombre, String contraseña) {
@@ -39,6 +39,17 @@ public class Usuario {
         this.correo = correo;
         this.numero = numero;
     }
+
+    public Usuario(Long id, String nombre, String contraseña, String correo, String numero, boolean admin) {
+        this.id = id;
+        this.nombre = nombre;
+        this.contraseña = contraseña;
+        this.correo = correo;
+        this.numero = numero;
+        this.admin = admin;
+    }
+    
+    
     
     
 
@@ -72,6 +83,22 @@ public class Usuario {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
     
     
