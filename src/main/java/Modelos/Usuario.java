@@ -23,6 +23,7 @@ public class Usuario {
     private String contraseña;
     private String correo;
     private String numero;
+//    private 
 
     // Constructores, getters y setters
     public Usuario() {}

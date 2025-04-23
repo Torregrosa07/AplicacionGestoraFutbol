@@ -6,7 +6,10 @@ package Prototipos_Ventanas;
 
 import Modelos.Usuario;
 import controladores.controladorUsuarios;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -27,6 +30,8 @@ public class GestionUsuarios extends javax.swing.JFrame {
     public GestionUsuarios() {
         initComponents();
         actualizarTablaUsuarios();
+
+        TDatos.getSelectionModel().addListSelectionListener(e -> mostrarDatosUsuarioSeleccionado());
     }
 
     private void actualizarTablaUsuarios() {
@@ -39,6 +44,8 @@ public class GestionUsuarios extends javax.swing.JFrame {
             Object[] fila = {u.getNombre(), u.getCorreo(), u.getNumero(), u.getContraseña()};
             modelo.addRow(fila);
         }
+        
+       
 
         TDatos.setModel(modelo);
     }
@@ -75,6 +82,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         txtCorreo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtNúmero = new javax.swing.JTextField();
+        btnLimpiarCampos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,7 +112,15 @@ public class GestionUsuarios extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(TDatos);
 
         btnModificar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
@@ -136,6 +152,15 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         jLabel4.setText("Número de teléfono:");
+
+        btnLimpiarCampos.setBackground(new java.awt.Color(255, 102, 102));
+        btnLimpiarCampos.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnLimpiarCampos.setText("LIMPIAR CAMPOS");
+        btnLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarCamposActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -175,7 +200,10 @@ public class GestionUsuarios extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(btnLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
                 .addContainerGap())
@@ -201,7 +229,9 @@ public class GestionUsuarios extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtNúmero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
-                        .addGap(87, 87, 87)
+                        .addGap(44, 44, 44)
+                        .addComponent(btnLimpiarCampos)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -344,12 +374,23 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
             if (exito) {
                 JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                actualizarTablaUsuarios(); 
+                actualizarTablaUsuarios();
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo eliminar el equipo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
+
+        txtNombreUsuario.setText("");
+        txtCorreo.setText("");
+        txtNúmero.setText("");
+        txtContraseña.setText("");
+
+        actualizarTablaUsuarios();
+
+    }//GEN-LAST:event_btnLimpiarCamposActionPerformed
 
     /**
      * @param args the command line arguments
@@ -400,12 +441,51 @@ public class GestionUsuarios extends javax.swing.JFrame {
         }
     }
 
+    private void mostrarDatosUsuarioSeleccionado() {
+        int filaSeleccionada = TDatos.getSelectedRow();
+
+        if (filaSeleccionada >= 0) {
+            try {
+                // Convertir valores a String de forma segura
+                String nombre = String.valueOf(TDatos.getValueAt(filaSeleccionada, 0));
+                String correo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 1));
+                String numero = String.valueOf(TDatos.getValueAt(filaSeleccionada, 2));
+                String contraseña = String.valueOf(TDatos.getValueAt(filaSeleccionada, 3));
+
+                // Reemplazar "null" por cadena vacía 
+                if (nombre.equals("null")) {
+                    nombre = "";
+                }
+                if (correo.equals("null")) {
+                    correo = "";
+                }
+                if (numero.equals("null")) {
+                    numero = "";
+                }
+                if (contraseña.equals("null")) {
+                    contraseña = "";
+                }
+
+                // Llenar campos de texto
+                txtNombreUsuario.setText(nombre);
+                txtCorreo.setText(correo);
+                txtNúmero.setText(numero);
+                txtContraseña.setText(contraseña);
+
+            } catch (Exception e) {
+                System.err.println("Error al mostrar datos: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
     private javax.swing.JButton btnAñadir;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
