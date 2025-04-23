@@ -12,11 +12,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.XmlExporter;
+import java.lang.String;
 
 /**
  *
@@ -67,7 +70,9 @@ public class GestionJugadores extends javax.swing.JPanel {
             @Override
             public boolean isCellEditable(int fila, int columna) {
                 return false;
+
             }
+
         };
         TDatos.setModel(dtm);
 
@@ -675,7 +680,7 @@ public class GestionJugadores extends javax.swing.JPanel {
 
     private void jComboPosicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboPosicionActionPerformed
 
-       /* String posicionSeleccionada = (String) jComboPosicion.getSelectedItem();
+        /* String posicionSeleccionada = (String) jComboPosicion.getSelectedItem();
         try {
             if (posicionSeleccionada != null && !posicionSeleccionada.isEmpty()) {
                 Object[][] jugadoresPorPosicion = controladorJugadores.convertirAMatrizObjectPorPosicion(posicionSeleccionada);
@@ -806,4 +811,33 @@ public class GestionJugadores extends javax.swing.JPanel {
     private javax.swing.JTextField txtEdad;
     private java.awt.TextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+/**
+ * Convierte un DefaultTableModel a List
+ * @param dtm
+ * @return 
+ */
+    private List pasarTablaALista(DefaultTableModel dtm) {
+        List<String> listadoJugadores = new ArrayList<>();
+        int max = dtm.getRowCount();
+        for (int i = 0; i < max; i++) {
+            listadoJugadores.add((String) dtm.getValueAt(max, 1));
+
+        }
+        return (List) dtm;
+    }
+/**
+ * Convierte un List a DefaultTableModel
+ * @param listadoJugadores
+ * @return 
+ */
+    private DefaultTableModel pasarListaATabla(List listadoJugadores) {
+        DefaultTableModel dtm = this.dtm;
+        int max = listadoJugadores.size();
+        for (int i = 0; i < max; i++) {
+            dtm.addRow((Object[]) listadoJugadores.get(i));
+        }
+        return dtm;
+    }
+
 }
