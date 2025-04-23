@@ -14,6 +14,8 @@
         <jugador apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
     </equipo>
     <equipo anio_fundacion="0" entrenador="Diego Simeone" id="11" localidad="Madrid" nombre="Atlético de Madrid"/>
-    <equipo anio_fundacion="2000" entrenador="Don pollo" id="14" localidad="aqui" nombre="Team wasaaaaaaaaaaaaaaaa"/>
+    <equipo anio_fundacion="2000" entrenador="Don pollo" id="14" localidad="aqui" nombre="Team wasaaaaaaaaaaaaaaaa">
+        <jugador apellidos="" edad="0" genero="NO_DEFINIDO" id="0" nacionalidad="" nombre="" numero="" posicion="DESCONOCIDO"/>
+    </equipo>
     <equipo anio_fundacion="2022" entrenador="aaaaa" id="15" localidad="aaaaa" nombre="Aaaaa"/>
 </equipos>
