@@ -27,7 +27,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
         initComponents();
 
         try {
-            System.out.println("Configurando jTable2...");
+            System.out.println("Configurando Tabla de Partidos...");
             DefaultTableModel modelo = controlador.cargarPartidos();
             tablaPartidos.setModel(modelo);
 
@@ -40,14 +40,14 @@ public class ConsultaPartidos extends javax.swing.JPanel {
             tablaPartidos.getColumnModel().getColumn(3).setPreferredWidth(150); // Equipo Local
             tablaPartidos.getColumnModel().getColumn(4).setPreferredWidth(150); // Equipo Visitante
 
-            System.out.println("jTable2 configurada correctamente. Filas: " + tablaPartidos.getRowCount());
+            System.out.println("Tabla de Partidos configurada correctamente. Filas: " + tablaPartidos.getRowCount());
         } catch (Exception e) {
             System.err.println("Error al configurar jTable2: " + e.getMessage());
             e.printStackTrace();
         }
 
         try {
-            System.out.println("Configurando jTable1...");
+            System.out.println("Configurando Tabla de Estadistícas...");
             DefaultTableModel estadisticasModel = controlador.cargarEstadisticas();
             if (estadisticasModel.getRowCount() == 0) {
                 System.out.println("Advertencia: No se cargaron estadísticas. El modelo está vacío.");
@@ -71,7 +71,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
             tablaEstadisticas.getColumnModel().getColumn(5).setPreferredWidth(50);  // PE
             tablaEstadisticas.getColumnModel().getColumn(6).setPreferredWidth(80);  // Puntos
 
-            System.out.println("jTable1 configurada correctamente. Filas: " + tablaEstadisticas.getRowCount());
+            System.out.println("Tabla de Estadistícas onfigurada correctamente. Filas: " + tablaEstadisticas.getRowCount());
         } catch (Exception e) {
             System.err.println("Error al configurar jTable1: " + e.getMessage());
             e.printStackTrace();
