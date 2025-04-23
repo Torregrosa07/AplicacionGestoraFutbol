@@ -40,7 +40,7 @@ public class Usuario {
         this.numero = numero;
     }
 
-    public Usuario(Long id, String nombre, String contraseña, String correo, String numero, boolean admin) {
+    public Usuario(String nombre, String contraseña, String correo, String numero, boolean admin) {
         this.id = id;
         this.nombre = nombre;
         this.contraseña = contraseña;

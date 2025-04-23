@@ -4,6 +4,7 @@
  */
 package Prototipos_Ventanas;
 
+import Modelos.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.sql.Connection;
@@ -19,25 +20,32 @@ import javax.swing.JPanel;
  * @author Santiago
  */
 public class Gestion extends javax.swing.JFrame {
-  
-    public Gestion() {
+
+    private Usuario usuarioActual;
+    
+    public Gestion(Usuario usuario) {
         initComponents();
-        
+        this.usuarioActual = usuario;
+
+        // Si no es admin, desactiva el botón
+        if (!usuarioActual.isAdmin()) {
+            btnUsuarios.setEnabled(false);
+        }
+
         GestionInicio i1 = new GestionInicio();
         ShowPanel(i1);
     }
 
-    private void ShowPanel(JPanel p){
+    private void ShowPanel(JPanel p) {
         p.setSize(1155, 581);
         p.setLocation(0, 0);
-        
+
         content.removeAll();
         content.add(p, BorderLayout.CENTER);
         content.revalidate();
-        content.repaint();  
+        content.repaint();
     }
-    
-  
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,7 +62,7 @@ public class Gestion extends javax.swing.JFrame {
         equipos = new javax.swing.JButton();
         partidos = new javax.swing.JButton();
         cerrarSesion = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnUsuarios = new javax.swing.JButton();
         content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -107,12 +115,12 @@ public class Gestion extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user-profile-icon-free-vector.jpg"))); // NOI18N
-        jButton1.setText("Usuarios");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnUsuarios.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/user-profile-icon-free-vector.jpg"))); // NOI18N
+        btnUsuarios.setText("Usuarios");
+        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnUsuariosActionPerformed(evt);
             }
         });
 
@@ -123,7 +131,7 @@ public class Gestion extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(equipos, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .addComponent(partidos, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .addComponent(cerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
@@ -143,7 +151,7 @@ public class Gestion extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(partidos, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -204,7 +212,7 @@ public class Gestion extends javax.swing.JFrame {
     }//GEN-LAST:event_inicioActionPerformed
 
     private void jugadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugadoresActionPerformed
-       
+
         GestionJugadores j2 = new GestionJugadores();
         ShowPanel(j2);
     }//GEN-LAST:event_jugadoresActionPerformed
@@ -220,42 +228,42 @@ public class Gestion extends javax.swing.JFrame {
     }//GEN-LAST:event_partidosActionPerformed
 
     private void cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesionActionPerformed
-      this.dispose();
-      Login ventanaLogin = new Login ();
-      ventanaLogin.setVisible(true);
-      ventanaLogin.setLocationRelativeTo(null);
-      
+        this.dispose();
+        Login ventanaLogin = new Login();
+        ventanaLogin.setVisible(true);
+        ventanaLogin.setLocationRelativeTo(null);
+
 
     }//GEN-LAST:event_cerrarSesionActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         this.dispose();
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         gestionUsuarios.setVisible(true);
         gestionUsuarios.setLocationRelativeTo(null);
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_btnUsuariosActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-    new GestionPartidos();
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Gestion().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        new GestionPartidos();
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Gestion().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnUsuarios;
     private javax.swing.JButton cerrarSesion;
     private javax.swing.JPanel content;
     private javax.swing.JButton equipos;
     private javax.swing.JButton inicio;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JButton jugadores;

@@ -290,7 +290,8 @@ public class Login extends javax.swing.JFrame {
 
         if (usuario != null) {
             JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-            Gestion nuevaVentana = new Gestion();
+
+            Gestion nuevaVentana = new Gestion(usuario); 
             nuevaVentana.setVisible(true);
             nuevaVentana.setLocationRelativeTo(null);
             this.dispose();
