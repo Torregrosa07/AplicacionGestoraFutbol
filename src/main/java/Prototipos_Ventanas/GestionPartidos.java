@@ -18,6 +18,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,6 +28,7 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Vector;
 import javax.swing.JComboBox;
@@ -497,20 +499,62 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void cargarDeFicheroXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarDeFicheroXMLActionPerformed
         // cargarDeFicheroXMLActionPerformed();
-//        try {
-//            FileInputStream fis = new FileInputStream("partidos.xml");
-//            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
-//            ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
-//            decoder.close();
-//
-//            String[] columnas = {"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"};
-//            modeloPartidos = pasarListaATabla(lista, columnas);
-//            tablaPartidos.setModel(modeloPartidos);
-//
-//            JOptionPane.showMessageDialog(this, "Partidos cargados desde XML correctamente.");
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, "Error al cargar XML: " + e.getMessage());
-//        }
+        try {
+            // leer XML
+            FileInputStream fis = new FileInputStream("partidOs.xml");
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
+            ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
+            decoder.close();
+
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "XML vacío.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            int cargados = 0;
+
+            for (Object[] fila : lista) {
+                try {
+                    // extraer datos
+                    Integer id = (Integer) fila[0];
+                    String fechaStr = (String) fila[1];
+                    String hora = (String) fila[2];
+                    String equipoLocal = (String) fila[3];
+                    String equipoVisitante = (String) fila[4];
+
+                    // se valida fecha y equipos
+                    Date fecha = dateFormat.parse(fechaStr);
+                    if (!controlador.existeEquipo(equipoLocal) || !controlador.existeEquipo(equipoVisitante)) {
+                        continue;
+                    }
+
+                    // se crean componentes temporales
+                    JDateChooser dateTemporal = new JDateChooser(fecha);
+                    TextField horaTemporal = new TextField(hora);
+                    JComboBox<String> comboTemporalLocal = new JComboBox<>(new String[]{equipoLocal});
+                    JComboBox<String> comboTemporalVisitante = new JComboBox<>(new String[]{equipoVisitante});
+
+                    // se guardan en la base de datos
+                    if (controlador.guardarPartido(dateTemporal, horaTemporal, comboTemporalLocal, comboTemporalVisitante, modeloPartidos)) {
+                        cargados++;
+                    }
+
+                } catch (Exception e) {
+                    continue; // ignorar filas con errores
+                }
+            }
+
+            // se actualiza en la tabla
+            modeloPartidos = controlador.cargarPartidos();
+            tablaPartidos.setModel(modeloPartidos);
+            JOptionPane.showMessageDialog(this, "Partidos cargados con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Archivo partidOs.xml no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar XML.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_cargarDeFicheroXMLActionPerformed
 
     private void exportarAXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarAXMLActionPerformed
@@ -597,14 +641,14 @@ public class GestionPartidos extends javax.swing.JPanel {
         }
         return lista;
     }
-    
+
     /**
      * MÉTODO PARA PASAR LISTA A TABLA
+     *
      * @param lista
      * @param columnas
-     * @return 
+     * @return
      */
-
     private DefaultTableModel pasarListaATabla(ArrayList<Object[]> lista, String[] columnas) {
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
         for (Object[] fila : lista) {

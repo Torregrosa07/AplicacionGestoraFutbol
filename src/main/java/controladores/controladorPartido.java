@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+         * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+         * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controladores;
 
@@ -667,6 +667,25 @@ public class controladorPartido {
         return modeloOrdenado;
     }
     
-    //HOLAHOLAHOLA
-    //JHASGDJHASGDH
+    /**
+     * M{ETODO PARA VERIFICAR QUE EXISTTE UN EQUIPO
+     * @param nombre
+     * @return 
+     */
+    public boolean existeEquipo(String nombre) {
+        Connection conn = null;
+        Statement sentencia = null;
+        ResultSet rs = null;
+        try {
+            conn = conexion.conectar();
+            sentencia = conn.createStatement();
+            String sql = "SELECT COUNT(*) FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
+            rs = sentencia.executeQuery(sql);
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException | ClassNotFoundException e) {
+            return false;
+        } finally {
+            cerrarRecursos(rs, sentencia, conn);
+        }
+    }
 }
