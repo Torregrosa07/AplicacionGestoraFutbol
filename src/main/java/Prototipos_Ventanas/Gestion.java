@@ -237,8 +237,7 @@ public class Gestion extends javax.swing.JFrame {
     }//GEN-LAST:event_cerrarSesionActionPerformed
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
-        this.dispose();
-        GestionUsuarios gestionUsuarios = new GestionUsuarios();
+         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         gestionUsuarios.setVisible(true);
         gestionUsuarios.setLocationRelativeTo(null);
 

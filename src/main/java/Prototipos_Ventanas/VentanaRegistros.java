@@ -241,7 +241,7 @@ public class VentanaRegistros extends javax.swing.JFrame {
             return;
         }
 
-        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, true);
+        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, false);
         controladorUsuarios.insertarUsuario(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         dispose();
