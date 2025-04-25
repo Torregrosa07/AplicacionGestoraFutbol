@@ -224,93 +224,11 @@ public class controladorPartido {
      * @param comboLocal
      * @param comboVisitante
      */
-    public static void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) { //limpiar campos, para que luego de una inserción queden los campos vacíos ylistos para recibir un nuevo partido
+    public static void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) {
         dateChooser.setDate(null);
         hora2.setText("");
         comboLocal.setSelectedIndex(0);
         comboVisitante.setSelectedIndex(0);
-    }
-
-    /**
-     * MÉTODO PARA ESTABLECER PARTIDOS
-     *
-     * @param dateChooserFecha
-     * @param hora2
-     * @param comboEquipoLocal
-     * @param comboEquipoVisitante
-     * @param modeloPartidos
-     * @return
-     */
-    public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, JComboBox<String> comboEquipoLocal, JComboBox<String> comboEquipoVisitante, DefaultTableModel modeloPartidos) {
-        Date fecha = dateChooserFecha.getDate();
-        if (fecha == null) {
-            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaSeleccionada = sdf.format(fecha);
-
-        if (comboEquipoLocal.getSelectedIndex() == 0 || comboEquipoVisitante.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        String equipoLocal = comboEquipoLocal.getSelectedItem().toString();
-        String equipoVisitante = comboEquipoVisitante.getSelectedItem().toString();
-
-        if (equipoLocal.equals(equipoVisitante)) {
-            JOptionPane.showMessageDialog(null, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        String horaStr = hora2.getText().trim();
-        if (!validarHora(horaStr)) {
-            JOptionPane.showMessageDialog(null, "Hora inválida. Use formato HH:mm", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (horaStr.length() == 5) {
-            horaStr += ":00"; // Asegurar formato HH:mm:ss
-        }
-
-        // Verificar si el partido ya existe
-        if (existePartido(fechaSeleccionada, horaStr, equipoLocal, equipoVisitante)) {
-            JOptionPane.showMessageDialog(null, "El partido ya existe en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        Connection conn = null;
-        Statement sentencia = null;
-        try {
-            conn = conexion.conectar();
-            int idLocal = obtenerIdEquipo(equipoLocal);
-            int idVisitante = obtenerIdEquipo(equipoVisitante);
-
-            if (idLocal == 0 || idVisitante == 0) {
-                JOptionPane.showMessageDialog(null, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-
-            sentencia = conn.createStatement();
-            String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
-                    + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
-            sentencia.executeUpdate(sqlInsert);
-
-            return true;
-        } catch (SQLException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (sentencia != null) {
-                    sentencia.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            conexion.desconectar();
-        }
     }
 
     /**
