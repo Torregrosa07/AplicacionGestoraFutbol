@@ -4,13 +4,14 @@
  */
 package Modelos;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author thomas
  */
-public class Partido implements Comparable<Partido> {
+public class Partido implements Comparable<Partido>, Serializable {
 
     private int idPartido;
     private Date fechaPartido;

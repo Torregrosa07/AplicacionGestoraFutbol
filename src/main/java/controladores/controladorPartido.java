@@ -112,16 +112,15 @@ public class controladorPartido {
             con = conexionBDR.conectar();
             st = con.createStatement();
 
-            // Contar los registros
+            // contar los registros
             rs = st.executeQuery("SELECT COUNT(*) FROM partido");
             rs.next();
             int cantidad = rs.getInt(1);
             rs.close();
 
-            // Crear matriz con el tamaño adecuado
+            // se crea matriz con el tamaño adecuado
             Object[][] matrizObj = new Object[cantidad][7];
 
-            // Consulta SQL corregida (usar 'nombre' en lugar de 'nombre_equipo')
             rs = st.executeQuery("SELECT p.id_partido, p.fecha, p.hora, el.nombre AS equipo_local, ev.nombre AS equipo_visitante, p.goles_local, p.goles_visitante "
                     + "FROM partido p "
                     + "LEFT JOIN equipo el ON p.id_equipo_local = el.id_equipo "
