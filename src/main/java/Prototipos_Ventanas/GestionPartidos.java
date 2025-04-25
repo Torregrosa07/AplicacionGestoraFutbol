@@ -49,10 +49,14 @@ public class GestionPartidos extends javax.swing.JPanel {
     private DefaultTableModel modeloPartidos;
     private DefaultTableModel modeloEstadisticas;
     private controladorPartido controlador;
-
+    private Object[][] matrizDatos;
+    private String [] columnas = {"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"};
     public GestionPartidos() {
-        modeloPartidos = new DefaultTableModel(new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
-        modeloEstadisticas = new DefaultTableModel(new String[]{"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
+        //modeloPartidos = new DefaultTableModel(new String columnas []{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
+        
+        //private String[] columnas = {"ID", "NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
+        
+        modeloEstadisticas = new DefaultTableModel(new String[] {"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
         controlador = new controladorPartido();
 
         initComponents();
@@ -84,7 +88,29 @@ public class GestionPartidos extends javax.swing.JPanel {
                 }
             }
         });
+    }
 
+    private void actualizarTabla() {
+        try {
+            
+            matrizDatos = controlador.convertirAMatrizObject();
+
+            modeloPartidos = new DefaultTableModel(matrizDatos, columnas) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Impedir edición de celdas
+                }
+            };
+
+             tablaPartidos.setModel(modeloPartidos);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "Error al actualizar la tabla: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -385,6 +411,7 @@ public class GestionPartidos extends javax.swing.JPanel {
         String equipoVisitante = comboEquipoVisitante.getSelectedItem() != null ? comboEquipoVisitante.getSelectedItem().toString() : null;
         controlador.guardarPartido2(dateChooserFecha, hora2, equipoLocal, equipoVisitante, modeloPartidos);
         controlador.limpiarCampos(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante);
+        actualizarTabla();
     }//GEN-LAST:event_guargarActionPerformed
 
     private void hora2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hora2ActionPerformed

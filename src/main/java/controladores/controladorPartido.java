@@ -98,6 +98,64 @@ public class controladorPartido {
         }
     }
 
+    public Object[][] convertirAMatrizObject() {
+        ConexionBDR conexionBDR = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            con = conexionBDR.conectar();
+            st = con.createStatement();
+
+            // contar los registros
+            rs = st.executeQuery("SELECT COUNT(*) FROM partido");
+            rs.next();
+            int cantidad = rs.getInt(1);
+            rs.close();
+
+            // crear matriz con el tamaño adecuado
+            Object[][] matrizObj = new Object[cantidad][7];
+
+            // corregir la consulta SQL (el JOIN original era incorrecto)
+            rs = st.executeQuery("SELECT id_partido, fecha, hora, id_equipo_local, id_equipo_visitante, goles_local, goles_visitante "
+                    + "FROM partido");
+
+            int id = 0;
+            while (rs.next()) {
+                matrizObj[id][0] = rs.getInt("id_partido");     
+                matrizObj[id][1] = rs.getDate("fecha");          
+                matrizObj[id][2] = rs.getTime("hora");          
+                matrizObj[id][3] = rs.getInt("id_equipo_local"); 
+                matrizObj[id][4] = rs.getInt("id_equipo_visitante");
+                matrizObj[id][5] = rs.getInt("goles_local");    
+                matrizObj[id][6] = rs.getInt("goles_visitante"); 
+                id++;
+            }
+
+            return matrizObj;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new Object[0][7]; // mantener número de columnas en caso de error
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar();
+        }
+    }
+
     /**
      * MÉTODO PARA VALIDAR LA FECHA DEL JDATECHOOSER
      *
