@@ -97,6 +97,10 @@ public class controladorPartido {
             conexion.desconectar();
         }
     }
+    /**
+     * MÉTODO PARA CONVERTIR MATRIZ A OBJETO (implementación: actualizar automaticamente)
+     * @return 
+     */
 
     public Object[][] convertirAMatrizObject() {
         ConexionBDR conexionBDR = new ConexionBDR();
@@ -108,28 +112,30 @@ public class controladorPartido {
             con = conexionBDR.conectar();
             st = con.createStatement();
 
-            // contar los registros
+            // Contar los registros
             rs = st.executeQuery("SELECT COUNT(*) FROM partido");
             rs.next();
             int cantidad = rs.getInt(1);
             rs.close();
 
-            // crear matriz con el tamaño adecuado
+            // Crear matriz con el tamaño adecuado
             Object[][] matrizObj = new Object[cantidad][7];
 
-            // corregir la consulta SQL (el JOIN original era incorrecto)
-            rs = st.executeQuery("SELECT id_partido, fecha, hora, id_equipo_local, id_equipo_visitante, goles_local, goles_visitante "
-                    + "FROM partido");
+            // Consulta SQL corregida (usar 'nombre' en lugar de 'nombre_equipo')
+            rs = st.executeQuery("SELECT p.id_partido, p.fecha, p.hora, el.nombre AS equipo_local, ev.nombre AS equipo_visitante, p.goles_local, p.goles_visitante "
+                    + "FROM partido p "
+                    + "LEFT JOIN equipo el ON p.id_equipo_local = el.id_equipo "
+                    + "LEFT JOIN equipo ev ON p.id_equipo_visitante = ev.id_equipo");
 
             int id = 0;
             while (rs.next()) {
-                matrizObj[id][0] = rs.getInt("id_partido");     
-                matrizObj[id][1] = rs.getDate("fecha");          
-                matrizObj[id][2] = rs.getTime("hora");          
-                matrizObj[id][3] = rs.getInt("id_equipo_local"); 
-                matrizObj[id][4] = rs.getInt("id_equipo_visitante");
-                matrizObj[id][5] = rs.getInt("goles_local");    
-                matrizObj[id][6] = rs.getInt("goles_visitante"); 
+                matrizObj[id][0] = rs.getInt("id_partido");
+                matrizObj[id][1] = rs.getDate("fecha");
+                matrizObj[id][2] = rs.getTime("hora");
+                matrizObj[id][3] = rs.getString("equipo_local");
+                matrizObj[id][4] = rs.getString("equipo_visitante");
+                matrizObj[id][5] = rs.getInt("goles_local");
+                matrizObj[id][6] = rs.getInt("goles_visitante");
                 id++;
             }
 
@@ -137,7 +143,7 @@ public class controladorPartido {
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            return new Object[0][7]; // mantener número de columnas en caso de error
+            return new Object[0][7];
         } finally {
             try {
                 if (rs != null) {
@@ -394,7 +400,7 @@ public class controladorPartido {
 
     /**
      * MÉTODOS PARA CARGAR ESTADISTICAS DE LOS PARTIDOS EN LA VENTANA DE
-     * CONSULTAS
+     *
      *
      * @return
      */
@@ -725,12 +731,39 @@ public class controladorPartido {
             filas.add(fila);
         }
 
+        // Ordenar las filas por "Puntos" (índice 6), con desempate por diferencia de goles y goles a favor
         Collections.sort(filas, new Comparator<Object[]>() {
             @Override
             public int compare(Object[] fila1, Object[] fila2) {
-                Integer puntos1 = (Integer) fila1[6];
-                Integer puntos2 = (Integer) fila2[6];
-                return puntos2.compareTo(puntos1);
+                Integer puntos1 = 0;
+                Integer puntos2 = 0;
+                try {
+                    puntos1 = fila1[6] != null ? ((Number) fila1[6]).intValue() : 0;
+                    puntos2 = fila2[6] != null ? ((Number) fila2[6]).intValue() : 0;
+                } catch (ClassCastException e) {
+                    System.err.println("Error: La columna 'Puntos' no contiene valores numéricos válidos.");
+                    return 0;
+                }
+
+                int comparacionPuntos = puntos2.compareTo(puntos1);
+                if (comparacionPuntos != 0) {
+                    return comparacionPuntos;
+                }
+
+                Integer gf1 = fila1[1] != null ? ((Number) fila1[1]).intValue() : 0;
+                Integer gc1 = fila1[2] != null ? ((Number) fila1[2]).intValue() : 0;
+                Integer dg1 = gf1 - gc1;
+
+                Integer gf2 = fila2[1] != null ? ((Number) fila2[1]).intValue() : 0;
+                Integer gc2 = fila2[2] != null ? ((Number) fila2[2]).intValue() : 0;
+                Integer dg2 = gf2 - gc2;
+
+                int comparacionDG = dg2.compareTo(dg1);
+                if (comparacionDG != 0) {
+                    return comparacionDG;
+                }
+
+                return gf2.compareTo(gf1);
             }
         });
 
@@ -777,6 +810,15 @@ public class controladorPartido {
         }
     }
 
+    /**
+     * MÉTODO PARA VERIFICAR SI EXISTE UN PARTIDO
+     *
+     * @param fecha
+     * @param hora
+     * @param equipoLocal
+     * @param equipoVisitante
+     * @return
+     */
     public boolean existePartido(String fecha, String hora, String equipoLocal, String equipoVisitante) {
         Connection conn = null;
         Statement sentencia = null;
@@ -786,7 +828,7 @@ public class controladorPartido {
             conn = conexion.conectar();
             sentencia = conn.createStatement();
 
-            // Normalizar datos
+            // normalizar los datos
             fecha = fecha.trim();
             hora = hora.trim();
             if (hora.length() == 5) {
@@ -795,15 +837,13 @@ public class controladorPartido {
             equipoLocal = equipoLocal.trim().toLowerCase();
             equipoVisitante = equipoVisitante.trim().toLowerCase();
 
-            // Escapar comillas simples
+            // se escapan comillas simples para obtener el nombre del equiop
             String equipoLocalEscapado = equipoLocal.replace("'", "''");
             String equipoVisitanteEscapado = equipoVisitante.replace("'", "''");
 
-            // Depuración
             System.out.println("Verificando partido - Fecha: " + fecha + ", Hora: " + hora
                     + ", Local: " + equipoLocalEscapado + ", Visitante: " + equipoVisitanteEscapado);
 
-            // Consulta SQL corregida: usar id_equipo en lugar de id
             String sql = "SELECT COUNT(*) FROM partido p "
                     + "JOIN equipo el ON p.id_equipo_local = el.id_equipo "
                     + "JOIN equipo ev ON p.id_equipo_visitante = ev.id_equipo "

@@ -51,11 +51,9 @@ public class GestionPartidos extends javax.swing.JPanel {
     private controladorPartido controlador;
     private Object[][] matrizDatos;
     private String [] columnas = {"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"};
+    
     public GestionPartidos() {
         //modeloPartidos = new DefaultTableModel(new String columnas []{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
-        
-        //private String[] columnas = {"ID", "NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
-        
         modeloEstadisticas = new DefaultTableModel(new String[] {"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
         controlador = new controladorPartido();
 
@@ -140,7 +138,6 @@ public class GestionPartidos extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         eliminar = new javax.swing.JButton();
-        refrescar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         buscarEquipoPorID = new javax.swing.JButton();
@@ -236,14 +233,6 @@ public class GestionPartidos extends javax.swing.JPanel {
             }
         });
 
-        refrescar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        refrescar.setText("Actualizar");
-        refrescar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refrescarActionPerformed(evt);
-            }
-        });
-
         jLabel5.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jLabel5.setText("Equipo Visitante:");
 
@@ -317,7 +306,6 @@ public class GestionPartidos extends javax.swing.JPanel {
                                         .addComponent(idPartido, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(39, 39, 39)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(refrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(guargar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(buscarEquipoPorID, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -372,14 +360,12 @@ public class GestionPartidos extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(refrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(buscarEquipoPorID, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buscarEquipoPorID, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(idPartido, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idPartido, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8)))
@@ -479,11 +465,6 @@ public class GestionPartidos extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_eliminarActionPerformed
-
-    private void refrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarActionPerformed
-        tablaPartidos.setModel(controlador.cargarPartidos());
-        System.out.println("Filas en tablaPartidos después de refrescar: " + tablaPartidos.getRowCount());
-    }//GEN-LAST:event_refrescarActionPerformed
 
     private void buscarEquipoPorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarEquipoPorIDActionPerformed
         String idBuscarStr = idPartido.getText().trim();
@@ -595,7 +576,6 @@ public class GestionPartidos extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton publicar;
-    private javax.swing.JButton refrescar;
     private javax.swing.JTable tablaEstadisticas;
     private javax.swing.JTable tablaPartidos;
     // End of variables declaration//GEN-END:variables
