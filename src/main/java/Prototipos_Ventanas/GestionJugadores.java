@@ -826,6 +826,7 @@ public class GestionJugadores extends javax.swing.JPanel {
         }
         return (List) dtm;
     }
+    
 /**
  * Convierte un List a DefaultTableModel
  * @param listadoJugadores
