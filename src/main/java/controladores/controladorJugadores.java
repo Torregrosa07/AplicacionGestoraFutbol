@@ -26,6 +26,8 @@ import javax.swing.JOptionPane;
  * @author Santiago
  */
 public class controladorJugadores {
+    
+    
 
     public void anadirJugador(String nombre, String apellidos, String dorsal,
             String posicion, String sexo, int edad, Integer idEquipo) {

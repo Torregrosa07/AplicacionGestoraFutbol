@@ -346,16 +346,13 @@ public class GestionPartidos extends javax.swing.JPanel {
                                 .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(refrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buscarEquipoPorID, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(idPartido, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE))
+                            .addComponent(buscarEquipoPorID, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(idPartido, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)))
@@ -377,14 +374,15 @@ public class GestionPartidos extends javax.swing.JPanel {
                             .addComponent(cargarDeFicheroXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(exportarAXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void guargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guargarActionPerformed
-        controlador.guardarPartido(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante, modeloPartidos);
+        String equipoLocal = comboEquipoLocal.getSelectedItem() != null ? comboEquipoLocal.getSelectedItem().toString() : null;
+        String equipoVisitante = comboEquipoVisitante.getSelectedItem() != null ? comboEquipoVisitante.getSelectedItem().toString() : null;
+        controlador.guardarPartido2(dateChooserFecha, hora2, equipoLocal, equipoVisitante, modeloPartidos);
         controlador.limpiarCampos(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante);
-
     }//GEN-LAST:event_guargarActionPerformed
 
     private void hora2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hora2ActionPerformed
@@ -498,63 +496,15 @@ public class GestionPartidos extends javax.swing.JPanel {
     }//GEN-LAST:event_buscarEquipoPorIDActionPerformed
 
     private void cargarDeFicheroXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarDeFicheroXMLActionPerformed
-        // cargarDeFicheroXMLActionPerformed();
         try {
-            // leer XML
-            FileInputStream fis = new FileInputStream("partidOs.xml");
-            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
-            ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
-            decoder.close();
-
-            if (lista.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "XML vacío.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            int cargados = 0;
-
-            for (Object[] fila : lista) {
-                try {
-                    // extraer datos
-                    Integer id = (Integer) fila[0];
-                    String fechaStr = (String) fila[1];
-                    String hora = (String) fila[2];
-                    String equipoLocal = (String) fila[3];
-                    String equipoVisitante = (String) fila[4];
-
-                    // se valida fecha y equipos
-                    Date fecha = dateFormat.parse(fechaStr);
-                    if (!controlador.existeEquipo(equipoLocal) || !controlador.existeEquipo(equipoVisitante)) {
-                        continue;
-                    }
-
-                    // se crean componentes temporales
-                    JDateChooser dateTemporal = new JDateChooser(fecha);
-                    TextField horaTemporal = new TextField(hora);
-                    JComboBox<String> comboTemporalLocal = new JComboBox<>(new String[]{equipoLocal});
-                    JComboBox<String> comboTemporalVisitante = new JComboBox<>(new String[]{equipoVisitante});
-
-                    // se guardan en la base de datos
-                    if (controlador.guardarPartido(dateTemporal, horaTemporal, comboTemporalLocal, comboTemporalVisitante, modeloPartidos)) {
-                        cargados++;
-                    }
-
-                } catch (Exception e) {
-                    continue; // ignorar filas con errores
-                }
-            }
-
-            // se actualiza en la tabla
-            modeloPartidos = controlador.cargarPartidos();
-            tablaPartidos.setModel(modeloPartidos);
-            JOptionPane.showMessageDialog(this, "Partidos cargados con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
+            int cargados = controlador.importarPartidosDesdeXML((DefaultTableModel) tablaPartidos.getModel());
+            JOptionPane.showMessageDialog(this, "Se cargaron lospartidos con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(this, "Archivo partidOs.xml no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar XML.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_cargarDeFicheroXMLActionPerformed
 
     private void exportarAXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarAXMLActionPerformed

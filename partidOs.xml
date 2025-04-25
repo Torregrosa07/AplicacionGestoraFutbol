@@ -39,5 +39,81 @@
     </void>
    </array>
   </void>
+  <void method="add">
+   <array class="java.lang.Object" length="5">
+    <void index="0">
+     <int>114</int>
+    </void>
+    <void index="1">
+     <string>2025-09-01</string>
+    </void>
+    <void index="2">
+     <string>18:00:00</string>
+    </void>
+    <void index="3">
+     <string>Prueba FC</string>
+    </void>
+    <void index="4">
+     <string>Atlético de Madrid</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="5">
+    <void index="0">
+     <int>9</int>
+    </void>
+    <void index="1">
+     <string>2025-04-16</string>
+    </void>
+    <void index="2">
+     <string>13:45:00</string>
+    </void>
+    <void index="3">
+     <string>Real Madrid</string>
+    </void>
+    <void index="4">
+     <string>Atlético de Madrid</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="5">
+    <void index="0">
+     <int>113</int>
+    </void>
+    <void index="1">
+     <string>2025-08-20</string>
+    </void>
+    <void index="2">
+     <string>12:30:00</string>
+    </void>
+    <void index="3">
+     <string>Real Madrid</string>
+    </void>
+    <void index="4">
+     <string>Prueba FC</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="5">
+    <void index="0">
+     <int>10</int>
+    </void>
+    <void index="1">
+     <string>2025-05-31</string>
+    </void>
+    <void index="2">
+     <string>09:30:00</string>
+    </void>
+    <void index="3">
+     <string>Atlético de Madrid</string>
+    </void>
+    <void index="4">
+     <string>Real Prueba CF</string>
+    </void>
+   </array>
+  </void>
  </object>
 </java>
