@@ -268,9 +268,19 @@ public class GestionJugadores extends javax.swing.JPanel {
 
         btnExportarBinario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnExportarBinario.setText("Exportar a Binario");
+        btnExportarBinario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarBinarioActionPerformed(evt);
+            }
+        });
 
         jButton1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jButton1.setText("Importar de Binario");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -793,6 +803,14 @@ public class GestionJugadores extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnImportarXMLActionPerformed
+
+    private void btnExportarBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarBinarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarBinarioActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
     private void mostrarDatosJugadorSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
 
