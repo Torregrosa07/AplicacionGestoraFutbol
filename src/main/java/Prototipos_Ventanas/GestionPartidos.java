@@ -20,6 +20,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -50,11 +51,11 @@ public class GestionPartidos extends javax.swing.JPanel {
     private DefaultTableModel modeloEstadisticas;
     private controladorPartido controlador;
     private Object[][] matrizDatos;
-    private String [] columnas = {"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"};
-    
+    private String[] columnas = {"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"};
+
     public GestionPartidos() {
         //modeloPartidos = new DefaultTableModel(new String columnas []{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
-        modeloEstadisticas = new DefaultTableModel(new String[] {"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
+        modeloEstadisticas = new DefaultTableModel(new String[]{"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
         controlador = new controladorPartido();
 
         initComponents();
@@ -90,7 +91,7 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void actualizarTabla() {
         try {
-            
+
             matrizDatos = controlador.convertirAMatrizObject();
 
             modeloPartidos = new DefaultTableModel(matrizDatos, columnas) {
@@ -100,7 +101,7 @@ public class GestionPartidos extends javax.swing.JPanel {
                 }
             };
 
-             tablaPartidos.setModel(modeloPartidos);
+            tablaPartidos.setModel(modeloPartidos);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,8 +147,8 @@ public class GestionPartidos extends javax.swing.JPanel {
         equipoVisitanteCampoTxt = new javax.swing.JTextField();
         cargarDeFicheroXML = new javax.swing.JButton();
         exportarAXML = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        importarDeBinario = new javax.swing.JButton();
+        exportarABinario = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(102, 102, 102));
         setPreferredSize(new java.awt.Dimension(1155, 581));
@@ -250,7 +251,7 @@ public class GestionPartidos extends javax.swing.JPanel {
         });
 
         cargarDeFicheroXML.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        cargarDeFicheroXML.setText("Cargar de Fichero XML");
+        cargarDeFicheroXML.setText("Importar de XML");
         cargarDeFicheroXML.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cargarDeFicheroXMLActionPerformed(evt);
@@ -265,11 +266,16 @@ public class GestionPartidos extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jButton1.setText("Importar de Binario");
+        importarDeBinario.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        importarDeBinario.setText("Importar de Binario");
 
-        jButton2.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
-        jButton2.setText("Exportar a Binario");
+        exportarABinario.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        exportarABinario.setText("Exportar a Binario");
+        exportarABinario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportarABinarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -313,35 +319,34 @@ public class GestionPartidos extends javax.swing.JPanel {
                         .addGap(27, 27, 27)
                         .addComponent(jScrollPane1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(equipoVisitanteCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(equipoLocalCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(35, 35, 35)
-                                            .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(42, 42, 42)
-                                        .addComponent(publicar)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cargarDeFicheroXML)
                                 .addGap(18, 18, 18)
-                                .addComponent(exportarAXML, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
-                                .addGap(29, 29, 29)))
+                                .addComponent(exportarAXML, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(equipoVisitanteCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(equipoLocalCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(35, 35, 35)
+                                    .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(publicar)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(importarDeBinario)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(380, 380, 380))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(exportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 68, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -382,8 +387,8 @@ public class GestionPartidos extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(importarDeBinario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(exportarAXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cargarDeFicheroXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
@@ -532,36 +537,65 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void exportarAXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarAXMLActionPerformed
         try {
-            // obtener el modelo actual de la tabla
+            // se obtiene el modelo actual de la tabla
             DefaultTableModel modeloActual = (DefaultTableModel) tablaPartidos.getModel();
 
-            // verificar si hay datos en la tabla
+            // y se verifica si hay datos en la tabla
             int rowCount = modeloActual.getRowCount();
             System.out.println("Filas en modeloActual (tablaPartidos.getModel()): " + rowCount);
-            System.out.println("Filas en modeloPartidos: " + modeloPartidos.getRowCount());
 
             if (rowCount == 0) {
                 JOptionPane.showMessageDialog(this, "No hay partidos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // convertir los datos de la tabla a una lista
+            // se convierten los datos de la tabla a una lista
             ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
             System.out.println("Número de filas exportadas: " + lista.size());
 
-            // guardar la lista en un archivo XML
+            // y procede a guardarse la lista en un archivo XML
             FileOutputStream fos = new FileOutputStream("partidOs.xml");
             XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(fos));
             encoder.writeObject(lista);
             encoder.close();
 
             JOptionPane.showMessageDialog(this, "Partidos exportados a XML correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al exportar XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }//GEN-LAST:event_exportarAXMLActionPerformed
+
+    private void exportarABinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarABinarioActionPerformed
+        try {
+            // se obteniene el modelo actual de la tabla
+            DefaultTableModel modeloActual = (DefaultTableModel) tablaPartidos.getModel();
+
+            // se verifica si hay datos en la tabla
+            int rowCount = modeloActual.getRowCount();
+            System.out.println("Filas en modeloActual (tablaPartidos.getModel()): " + rowCount);
+
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "No hay Equipos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // se convierten los datos de la tabla a una lista
+            ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
+            System.out.println("Número de filas exportadas: " + lista.size());
+
+            // y guarda la lista en un archivo binario
+            FileOutputStream fos = new FileOutputStream("equipos.bin");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(lista);
+            oos.close();
+
+            JOptionPane.showMessageDialog(this, "Equipos exportados a BINARIO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al exportar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_exportarABinarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -573,6 +607,7 @@ public class GestionPartidos extends javax.swing.JPanel {
     private javax.swing.JButton eliminar;
     private javax.swing.JTextField equipoLocalCampoTxt;
     private javax.swing.JTextField equipoVisitanteCampoTxt;
+    private javax.swing.JButton exportarABinario;
     private javax.swing.JButton exportarAXML;
     private java.awt.TextField gc;
     private java.awt.TextField gf;
@@ -580,8 +615,7 @@ public class GestionPartidos extends javax.swing.JPanel {
     private javax.swing.JLabel hora;
     private java.awt.TextField hora2;
     private javax.swing.JTextField idPartido;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton importarDeBinario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
