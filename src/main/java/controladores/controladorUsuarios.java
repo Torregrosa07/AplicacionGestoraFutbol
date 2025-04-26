@@ -5,7 +5,12 @@
 package controladores;
 
 import Modelos.Usuario;
+import java.beans.XMLDecoder;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -153,6 +158,40 @@ public class controladorUsuarios {
         } finally {
             em.close();
         }
+    }
+
+    public static int importarUsuariosDesdeXML() throws FileNotFoundException, Exception {
+        FileInputStream fis = new FileInputStream("usuarios.xml"); // Cargar el archivo correcto
+        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
+        ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
+        decoder.close();
+
+        if (lista.isEmpty()) {
+            throw new Exception("El archivo XML está vacío.");
+        }
+
+        int cargados = 0;
+
+        for (Object[] fila : lista) {
+            try {
+                String nombre = (String) fila[0];
+                String contraseña = (String) fila[1];
+
+                Usuario nuevoUsuario = new Usuario();
+                nuevoUsuario.setNombre(nombre);
+                nuevoUsuario.setContraseña(contraseña);
+
+                if (!controladorUsuarios.existeUsuario(nombre)) { // Si no existe
+                    controladorUsuarios.insertarUsuario(nuevoUsuario);
+                    cargados++;
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error al procesar usuario: " + e.getMessage());
+            }
+        }
+
+        return cargados;
     }
 
 }

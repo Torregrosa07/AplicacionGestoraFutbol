@@ -8,7 +8,10 @@ import Modelos.Usuario;
 import controladores.controladorUsuarios;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +93,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         btnExportarABinario = new javax.swing.JButton();
         btnImportarDeXml = new javax.swing.JButton();
         btnExportarAXml = new javax.swing.JButton();
-        btnImportarDeXml1 = new javax.swing.JButton();
+        btnImportarDeBinario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -202,11 +205,11 @@ public class GestionUsuarios extends javax.swing.JFrame {
             }
         });
 
-        btnImportarDeXml1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        btnImportarDeXml1.setText("Importar de Binario");
-        btnImportarDeXml1.addActionListener(new java.awt.event.ActionListener() {
+        btnImportarDeBinario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarDeBinario.setText("Importar de Binario");
+        btnImportarDeBinario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImportarDeXml1ActionPerformed(evt);
+                btnImportarDeBinarioActionPerformed(evt);
             }
         });
 
@@ -255,19 +258,19 @@ public class GestionUsuarios extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(btnLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnExportarAXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnExportarABinario))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnImportarDeXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btnImportarDeBinario, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -309,28 +312,30 @@ public class GestionUsuarios extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(cerrarSesion))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnImportarDeXml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnExportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(52, Short.MAX_VALUE))
+                            .addComponent(btnImportarDeBinario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -341,7 +346,9 @@ public class GestionUsuarios extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -449,7 +456,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 actualizarTablaUsuarios();
             } else {
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar el equipo.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar Al usuario.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -472,20 +479,53 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_cerrarSesionActionPerformed
 
     private void btnExportarABinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarABinarioActionPerformed
-        // TODO add your handling code here:
+        try {
+            DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
+
+            int rowCount = modeloActual.getRowCount();
+            System.out.println("Filas en modeloActual: " + rowCount);
+
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "No hay usuarios en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Convertir los datos de la tabla a una lista
+            ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
+            System.out.println("Número de filas exportadas: " + lista.size());
+
+            // Guardar la lista en un archivo binario
+            FileOutputStream fos = new FileOutputStream("usuarios.bin"); // nombre del archivo binario
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(lista);
+            oos.close();
+
+            JOptionPane.showMessageDialog(this, "Usuarios exportados a BINARIO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al exportar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_btnExportarABinarioActionPerformed
 
     private void btnImportarDeXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXmlActionPerformed
-        // TODO add your handling code here:
+        try {
+            int usuariosImportados = controladorUsuarios.importarUsuariosDesdeXML();
+            JOptionPane.showMessageDialog(this, usuariosImportados + " usuarios importados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            actualizarTablaUsuarios();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al importar usuarios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnImportarDeXmlActionPerformed
 
     private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
 
         try {
-            // Obtener el modelo actual de la tabla
+
             DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
 
-            // Verificar si hay datos en la tabla
             int rowCount = modeloActual.getRowCount();
             System.out.println("Filas en modeloActual: " + rowCount);
 
@@ -512,9 +552,60 @@ public class GestionUsuarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnExportarAXmlActionPerformed
 
-    private void btnImportarDeXml1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXml1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnImportarDeXml1ActionPerformed
+    private void btnImportarDeBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeBinarioActionPerformed
+        try {
+            // Leer el archivo binario
+            FileInputStream fis = new FileInputStream("usuarios.bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            // Recuperar la lista de usuarios
+            ArrayList<Object[]> lista = (ArrayList<Object[]>) ois.readObject();
+            ois.close();
+
+            System.out.println("Número de usuarios importados: " + lista.size());
+
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El archivo BINARIO está vacío.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Definir las columnas para la tabla
+            String[] columnas = {"Nombre", "Correo", "Número", "Contraseña"};
+
+            // Crear un nuevo modelo usando tu método
+            DefaultTableModel nuevoModelo = pasarListaATabla(lista, columnas);
+
+            // Asignar el nuevo modelo a la tabla
+            TDatos.setModel(nuevoModelo);
+
+            // Guardar cada usuario en la base de datos
+            for (Object[] fila : lista) {
+                try {
+                    // Extraer los datos de cada fila
+                    String nombre = (String) fila[0];
+                    String correo = (String) fila[1];
+                    String numero = (String) fila[2];
+                    String contraseña = (String) fila[3];
+
+                    Usuario nuevoUsuario = new Usuario(nombre, correo, numero, contraseña);
+
+                    // Insertar en la base de datos
+                    controladorUsuarios.insertarUsuario(nuevoUsuario);
+
+                } catch (Exception e) {
+                    System.err.println("Error insertando usuario: " + e.getMessage());
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Usuarios importados desde BINARIO y guardados en BD correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al importar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_btnImportarDeBinarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -645,8 +736,8 @@ public class GestionUsuarios extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportarABinario;
     private javax.swing.JButton btnExportarAXml;
+    private javax.swing.JButton btnImportarDeBinario;
     private javax.swing.JButton btnImportarDeXml;
-    private javax.swing.JButton btnImportarDeXml1;
     private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton cerrarSesion;

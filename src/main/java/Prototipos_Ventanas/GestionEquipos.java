@@ -11,6 +11,7 @@ import controladores.controladorUsuarios;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -95,7 +96,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         btnExportarAXml = new javax.swing.JButton();
         btnExportarABinario = new javax.swing.JButton();
         btnImportarDeXml = new javax.swing.JButton();
-        btnImportarDeXml1 = new javax.swing.JButton();
+        btnImportarDeBinario = new javax.swing.JButton();
 
         btnEliminar1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar1.setText("Eliminar");
@@ -211,11 +212,11 @@ public class GestionEquipos extends javax.swing.JPanel {
             }
         });
 
-        btnImportarDeXml1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        btnImportarDeXml1.setText("Importar de Binario");
-        btnImportarDeXml1.addActionListener(new java.awt.event.ActionListener() {
+        btnImportarDeBinario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarDeBinario.setText("Importar de Binario");
+        btnImportarDeBinario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImportarDeXml1ActionPerformed(evt);
+                btnImportarDeBinarioActionPerformed(evt);
             }
         });
 
@@ -262,7 +263,7 @@ public class GestionEquipos extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnImportarDeXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnImportarDeBinario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(47, 47, 47)))
                 .addContainerGap())
         );
@@ -305,7 +306,7 @@ public class GestionEquipos extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnImportarDeBinario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -498,7 +499,37 @@ public class GestionEquipos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExportarAXmlActionPerformed
 
     private void btnExportarABinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarABinarioActionPerformed
-        // TODO add your handling code here:
+        try {
+            // obtener el modelo actual de la tabla
+            DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
+
+            // verificar si hay datos en la tabla
+            int rowCount = modeloActual.getRowCount();
+            System.out.println("Filas en modeloActual (tablaPartidos.getModel()): " + rowCount);
+            System.out.println("Filas en modeloPartidos: " + dtm.getRowCount());
+
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "No hay Equipos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // convertir los datos de la tabla a una lista
+            ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
+            System.out.println("Número de filas exportadas: " + lista.size());
+
+            // guardar la lista en un archivo BINARIO
+            FileOutputStream fos = new FileOutputStream("equipos.bin");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(lista);
+            oos.close();
+
+            JOptionPane.showMessageDialog(this, "Equipos exportados a BINARIO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al exportar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_btnExportarABinarioActionPerformed
 
     private void btnImportarDeXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXmlActionPerformed
@@ -512,9 +543,9 @@ public class GestionEquipos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnImportarDeXmlActionPerformed
 
-    private void btnImportarDeXml1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXml1ActionPerformed
+    private void btnImportarDeBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeBinarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnImportarDeXml1ActionPerformed
+    }//GEN-LAST:event_btnImportarDeBinarioActionPerformed
 
     private void mostrarDatosUsuarioSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
@@ -600,8 +631,8 @@ public class GestionEquipos extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnExportarABinario;
     private javax.swing.JButton btnExportarAXml;
+    private javax.swing.JButton btnImportarDeBinario;
     private javax.swing.JButton btnImportarDeXml;
-    private javax.swing.JButton btnImportarDeXml1;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JLabel jLabel1;
