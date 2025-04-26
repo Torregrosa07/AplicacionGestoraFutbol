@@ -585,7 +585,7 @@ public class GestionPartidos extends javax.swing.JPanel {
             System.out.println("Número de filas exportadas: " + lista.size());
 
             // y guarda la lista en un archivo binario
-            FileOutputStream fos = new FileOutputStream("equipos.bin");
+            FileOutputStream fos = new FileOutputStream("partidos.bin");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(lista);
             oos.close();

@@ -851,7 +851,7 @@ public class controladorPartido {
      * @throws Exception Si ocurre un error al leer o procesar el XML.
      */
     public int importarPartidosDesdeXML(DefaultTableModel modeloPartidos) throws FileNotFoundException, Exception {
-        FileInputStream fis = new FileInputStream("partidOs.xml");
+        FileInputStream fis = new FileInputStream("partidos.xml");
         XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
         ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
         decoder.close();
