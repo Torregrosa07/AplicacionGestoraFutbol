@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="22.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <array class="java.lang.Object" length="8">
+    <void index="0">
+     <string>1</string>
+    </void>
+    <void index="1">
+     <string>Santiago Andres</string>
+    </void>
+    <void index="2">
+     <string>Torregrosa Alvarado</string>
+    </void>
+    <void index="3">
+     <string>DELANTERO</string>
+    </void>
+    <void index="4">
+     <string>100</string>
+    </void>
+    <void index="5">
+     <string>Prueba FC</string>
+    </void>
+    <void index="6">
+     <string>17</string>
+    </void>
+    <void index="7">
+     <string>MASCULINO</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="8">
+    <void index="0">
+     <string>32</string>
+    </void>
+    <void index="1">
+     <string>Thomas</string>
+    </void>
+    <void index="2">
+     <string>Quiroga</string>
+    </void>
+    <void index="3">
+     <string>DEFENSA</string>
+    </void>
+    <void index="4">
+     <string>19</string>
+    </void>
+    <void index="5">
+     <string>Torregrosa FC</string>
+    </void>
+    <void index="6">
+     <string>18</string>
+    </void>
+    <void index="7">
+     <string>MASCULINO</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="8">
+    <void index="0">
+     <string>35</string>
+    </void>
+    <void index="1">
+     <string>waaaaaasaaa</string>
+    </void>
+    <void index="2">
+     <string>aaaa</string>
+    </void>
+    <void index="3">
+     <string>DEFENSA</string>
+    </void>
+    <void index="4">
+     <string>22</string>
+    </void>
+    <void index="5">
+     <string>Real Prueba CF</string>
+    </void>
+    <void index="6">
+     <string>11</string>
+    </void>
+    <void index="7">
+     <string>NO_DEFINIDO</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="8">
+    <void index="0">
+     <string>36</string>
+    </void>
+    <void index="1">
+     <string>Rapha</string>
+    </void>
+    <void index="2">
+     <string>kaka</string>
+    </void>
+    <void index="3">
+     <string>DEFENSA</string>
+    </void>
+    <void index="4">
+     <string>11</string>
+    </void>
+    <void index="5">
+     <string>Torregrosa FC</string>
+    </void>
+    <void index="6">
+     <string>22</string>
+    </void>
+    <void index="7">
+     <string>MASCULINO</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="8">
+    <void index="0">
+     <string>38</string>
+    </void>
+    <void index="1">
+     <string>pruba</string>
+    </void>
+    <void index="2">
+     <string>jugador</string>
+    </void>
+    <void index="3">
+     <string>DELANTERO</string>
+    </void>
+    <void index="4">
+     <string>99</string>
+    </void>
+    <void index="5">
+     <string>Real Madrid</string>
+    </void>
+    <void index="6">
+     <string>99</string>
+    </void>
+    <void index="7">
+     <string>MASCULINO</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="8">
+    <void index="0">
+     <string>40</string>
+    </void>
+    <void index="1">
+     <string>awsadasd</string>
+    </void>
+    <void index="2">
+     <string>dfssdgs</string>
+    </void>
+    <void index="3">
+     <string>DEFENSA</string>
+    </void>
+    <void index="4">
+     <string>19</string>
+    </void>
+    <void index="5">
+     <string>Team wasaaaaaaaaaaaaaaaa</string>
+    </void>
+    <void index="6">
+     <string>18</string>
+    </void>
+    <void index="7">
+     <string>MASCULINO</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="8">
+    <void index="0">
+     <string>43</string>
+    </void>
+    <void index="1">
+     <string>sdgsegsdgsdgr</string>
+    </void>
+    <void index="2">
+     <string>ssdgsdgsdgrr</string>
+    </void>
+    <void index="3">
+     <string>MEDIOCENTRO</string>
+    </void>
+    <void index="4">
+     <string>11</string>
+    </void>
+    <void index="5">
+     <string>Real Prueba CF</string>
+    </void>
+    <void index="6">
+     <string>22</string>
+    </void>
+    <void index="7">
+     <string>MASCULINO</string>
+    </void>
+   </array>
+  </void>
+ </object>
+</java>

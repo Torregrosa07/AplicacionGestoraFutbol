@@ -8,6 +8,10 @@ import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
 import Modelos.Jugador;
 import controladores.controladorJugadores;
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -110,9 +114,10 @@ public class GestionJugadores extends javax.swing.JPanel {
         labelEdad = new javax.swing.JLabel();
         btnExportarAXml = new javax.swing.JButton();
         btnLimpiarCampos = new javax.swing.JButton();
-        btnGuardarFichero = new javax.swing.JButton();
-        btnCargarFichero = new javax.swing.JButton();
-        btnAbrirFicheros = new javax.swing.JButton();
+        btnExportarXML = new javax.swing.JButton();
+        btnImportarXML = new javax.swing.JButton();
+        btnExportarBinario = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -245,19 +250,27 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        btnGuardarFichero.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        btnGuardarFichero.setText("Guardar Fichero de Texto");
-        btnGuardarFichero.addActionListener(new java.awt.event.ActionListener() {
+        btnExportarXML.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnExportarXML.setText("Exportar a XML");
+        btnExportarXML.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarFicheroActionPerformed(evt);
+                btnExportarXMLActionPerformed(evt);
             }
         });
 
-        btnCargarFichero.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        btnCargarFichero.setText("Cargar Fichero de Texto");
+        btnImportarXML.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarXML.setText("Importar de XML");
+        btnImportarXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarXMLActionPerformed(evt);
+            }
+        });
 
-        btnAbrirFicheros.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        btnAbrirFicheros.setText("Abrir Fichero de Texto");
+        btnExportarBinario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnExportarBinario.setText("Exportar a Binario");
+
+        jButton1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        jButton1.setText("Importar de Binario");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -317,12 +330,17 @@ public class GestionJugadores extends javax.swing.JPanel {
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnAbrirFicheros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCargarFichero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGuardarFichero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnExportarBinario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnExportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnImportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(154, 154, 154)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -369,13 +387,14 @@ public class GestionJugadores extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnGuardarFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCargarFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAbrirFicheros, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnExportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnImportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnExportarBinario, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(44, 44, 44))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -715,9 +734,65 @@ public class GestionJugadores extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnLimpiarCamposActionPerformed
 
-    private void btnGuardarFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarFicheroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardarFicheroActionPerformed
+    private void btnExportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarXMLActionPerformed
+        try {
+            DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
+            int rowCount = modeloActual.getRowCount();
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "No hay jugadores en la tabla para exportar.",
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            List<Object[]> lista = pasarTablaALista(modeloActual);
+
+            // Guardar la lista en un archivo XML
+            try (FileOutputStream fos = new FileOutputStream("jugadores.xml"); BufferedOutputStream bos = new BufferedOutputStream(fos); XMLEncoder encoder = new XMLEncoder(bos)) {
+
+                encoder.writeObject(lista);
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Jugadores exportados a XML correctamente.",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al exportar XML: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportarXMLActionPerformed
+
+    private void btnImportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarXMLActionPerformed
+        try {
+            int numJugadores = controladorJugadores.importarJugadoresDesdeXML();
+            if (numJugadores > 0) {
+                JOptionPane.showMessageDialog(this,
+                        numJugadores + " jugadores importados correctamente.",
+                        "Importación XML", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se importó ningún jugador (todos ya existían o archivo vacío).",
+                        "Importación XML", JOptionPane.WARNING_MESSAGE);
+            }
+            
+            //Actualizar la tabla despues de importar
+            actualizarTabla();
+        } catch (FileNotFoundException fnf) {
+            JOptionPane.showMessageDialog(this,
+                    "No se encontró el archivo jugadores.xml",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al importar XML: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_btnImportarXMLActionPerformed
     private void mostrarDatosJugadorSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
 
@@ -785,15 +860,16 @@ public class GestionJugadores extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
-    private javax.swing.JButton btnAbrirFicheros;
     private javax.swing.JButton btnAnadir;
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnCargarFichero;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportarAXml;
-    private javax.swing.JButton btnGuardarFichero;
+    private javax.swing.JButton btnExportarBinario;
+    private javax.swing.JButton btnExportarXML;
+    private javax.swing.JButton btnImportarXML;
     private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboEquipo;
     private javax.swing.JComboBox<String> jComboPosicion;
     private javax.swing.JComboBox<String> jComboSexo;
@@ -812,33 +888,42 @@ public class GestionJugadores extends javax.swing.JPanel {
     private java.awt.TextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
-/**
- * Convierte un DefaultTableModel a List
- * @param dtm
- * @return 
- */
-    private List pasarTablaALista(DefaultTableModel dtm) {
-        List<String> listadoJugadores = new ArrayList<>();
-        int max = dtm.getRowCount();
-        for (int i = 0; i < max; i++) {
-            listadoJugadores.add((String) dtm.getValueAt(max, 1));
-
+    /**
+     * MÉTODO PARA PASAR TABLA A LISTA Convierte un DefaultTableModel a
+     * List<Object[]>, donde cada Object[] es una fila completa de la tabla.
+     *
+     * @param dtm
+     * @return
+     */
+    private List<Object[]> pasarTablaALista(DefaultTableModel dtm) {
+        List<Object[]> listadoJugadores = new ArrayList<>();
+        int filas = dtm.getRowCount();
+        int columnas = dtm.getColumnCount();
+        for (int i = 0; i < filas; i++) {
+            Object[] fila = new Object[columnas];
+            for (int j = 0; j < columnas; j++) {
+                fila[j] = dtm.getValueAt(i, j);
+            }
+            listadoJugadores.add(fila);
         }
-        return (List) dtm;
-    }
-    
-/**
- * Convierte un List a DefaultTableModel
- * @param listadoJugadores
- * @return 
- */
-    private DefaultTableModel pasarListaATabla(List listadoJugadores) {
-        DefaultTableModel dtm = this.dtm;
-        int max = listadoJugadores.size();
-        for (int i = 0; i < max; i++) {
-            dtm.addRow((Object[]) listadoJugadores.get(i));
-        }
-        return dtm;
+        return listadoJugadores;
     }
 
+    /**
+     * MÉTODO PARA PASAR LISTA A TABLA Convierte a List<Object[]> a un
+     * DefaultTableModel modelo
+     *
+     * @param listadoJugadores
+     * @param columnas
+     * @return
+     */
+    private DefaultTableModel pasarListaATabla(ArrayList<Object[]> listadoJugadores, String[] columnas) {
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        for (Object[] fila : listadoJugadores) {
+            modelo.addRow(fila);
+        }
+
+        return modelo;
+
+    }
 }

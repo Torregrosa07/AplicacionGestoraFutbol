@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="22.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Prueba FC</string>
+    </void>
+    <void index="1">
+     <int>2000</int>
+    </void>
+    <void index="2">
+     <string>Villanueva de La Jara</string>
+    </void>
+    <void index="3">
+     <string>Santiago Torregrosa</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Real Prueba CF</string>
+    </void>
+    <void index="1">
+     <int>1920</int>
+    </void>
+    <void index="2">
+     <string>Ciudad de Prueba</string>
+    </void>
+    <void index="3">
+     <string>Juan Pruebas</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Torregrosa FC</string>
+    </void>
+    <void index="1">
+     <int>1999</int>
+    </void>
+    <void index="2">
+     <string>Villanueva de La Jara</string>
+    </void>
+    <void index="3">
+     <string>Luis Enrique</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Real Madrid</string>
+    </void>
+    <void index="1">
+     <int>0</int>
+    </void>
+    <void index="2">
+     <string>Madrid</string>
+    </void>
+    <void index="3">
+     <string>Carlo Ancelotti</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Atlético de Madrid</string>
+    </void>
+    <void index="1">
+     <int>0</int>
+    </void>
+    <void index="2">
+     <string>Madrid</string>
+    </void>
+    <void index="3">
+     <string>Diego Simeone</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Team wasaaaaaaaaaaaaaaaa</string>
+    </void>
+    <void index="1">
+     <int>2000</int>
+    </void>
+    <void index="2">
+     <string>aqui</string>
+    </void>
+    <void index="3">
+     <string>Don pollo</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Aaaaa</string>
+    </void>
+    <void index="1">
+     <int>2022</int>
+    </void>
+    <void index="2">
+     <string>aaaaa</string>
+    </void>
+    <void index="3">
+     <string>aaaaa</string>
+    </void>
+   </array>
+  </void>
+ </object>
+</java>
