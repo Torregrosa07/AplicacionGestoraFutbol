@@ -413,7 +413,7 @@ public class GestionPartidos extends javax.swing.JPanel {
     private void guargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guargarActionPerformed
         String equipoLocal = comboEquipoLocal.getSelectedItem() != null ? comboEquipoLocal.getSelectedItem().toString() : null;
         String equipoVisitante = comboEquipoVisitante.getSelectedItem() != null ? comboEquipoVisitante.getSelectedItem().toString() : null;
-        controlador.guardarPartido2(dateChooserFecha, hora2, equipoLocal, equipoVisitante, modeloPartidos);
+        controlador.guardarPartido(dateChooserFecha, hora2, equipoLocal, equipoVisitante, modeloPartidos);
         controlador.limpiarCampos(dateChooserFecha, hora2, comboEquipoLocal, comboEquipoVisitante);
         actualizarTabla();
     }//GEN-LAST:event_guargarActionPerformed
@@ -554,7 +554,7 @@ public class GestionPartidos extends javax.swing.JPanel {
             System.out.println("Número de filas exportadas: " + lista.size());
 
             // y procede a guardarse la lista en un archivo XML
-            FileOutputStream fos = new FileOutputStream("partidOs.xml");
+            FileOutputStream fos = new FileOutputStream("partidos.xml");
             XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(fos));
             encoder.writeObject(lista);
             encoder.close();

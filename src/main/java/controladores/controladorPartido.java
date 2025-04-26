@@ -47,7 +47,7 @@ public class controladorPartido {
 
     public controladorPartido() {
         conexion = new ConexionBDR();
-        contadorID = obtenerUltimoID() + 1;
+        //contadorID = obtenerUltimoID() + 1;
     }
 
     public boolean añadir(Partido par) {
@@ -58,50 +58,21 @@ public class controladorPartido {
         return listadoPartidos;
     }
 
-    public boolean anadirPartido(Date fechaPartido, int idEquipoLocal, String nombreEquipoLocal,
-            int idEquipoVisitante, String nombreEquipoVisitante,
-            int golesLocal, int golesVisitante) {
-        Equipo equipoLocal = new Equipo(idEquipoLocal, nombreEquipoLocal);
-        Equipo equipoVisitante = new Equipo(idEquipoVisitante, nombreEquipoVisitante);
-
-        Partido nuevo = new Partido(contadorID++, fechaPartido, equipoLocal, equipoVisitante, golesLocal, golesVisitante);
-        return añadir(nuevo);
-    }
-
-    private int obtenerUltimoID() {
-        Connection conn = null;
-        Statement sentencia = null;
-        ResultSet rs = null;
-        try {
-            conn = conexion.conectar();
-            sentencia = conn.createStatement();
-            rs = sentencia.executeQuery("SELECT MAX(id_partido) AS max_id FROM partido");
-            if (rs.next()) {
-                return rs.getInt("max_id");
-            }
-            return 0;
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return 0;
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (sentencia != null) {
-                    sentencia.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            conexion.desconectar();
-        }
-    }
+//    public boolean anadirPartido(Date fechaPartido, int idEquipoLocal, String nombreEquipoLocal,
+//            int idEquipoVisitante, String nombreEquipoVisitante,
+//            int golesLocal, int golesVisitante) {
+//        Equipo equipoLocal = new Equipo(idEquipoLocal, nombreEquipoLocal);
+//        Equipo equipoVisitante = new Equipo(idEquipoVisitante, nombreEquipoVisitante);
+//
+//        Partido nuevo = new Partido(contadorID++, fechaPartido, equipoLocal, equipoVisitante, golesLocal, golesVisitante);
+//        return añadir(nuevo);
+//    }
     /**
-     * MÉTODO PARA CONVERTIR MATRIZ A OBJETO (implementación: actualizar automaticamente)
-     * @return 
+     * MÉTODO PARA CONVERTIR MATRIZ A OBJETO (implementación: actualizar
+     * automaticamente)
+     *
+     * @return
      */
-
     public Object[][] convertirAMatrizObject() {
         ConexionBDR conexionBDR = new ConexionBDR();
         Connection con = null;
@@ -327,30 +298,6 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODO PARA CERRAR RECURSOS DE LA BASE DE DATOS (esto para evitar fugas
-     * de recursos, limites de conexiones y posibles errores futuros)
-     *
-     * @param rs
-     * @param stmt
-     * @param conn
-     */
-    private void cerrarRecursos(ResultSet rs, Statement sentencia, Connection conn) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (sentencia != null) {
-                sentencia.close();
-            }
-            if (conn != null) {
-                conexion.desconectar();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * MÉTODO PARA CARGAR PARTIDOS EN LA TABLA DE LA VENTANA DE CONSULTAS
      *
      * @return
@@ -392,7 +339,17 @@ public class controladorPartido {
             System.err.println("Error al cargar partidos en cargarPartidos: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al cargar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            cerrarRecursos(rs, sentencia, conn);
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (sentencia != null) {
+                    sentencia.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            conexion.desconectar();
         }
         return modelo;
     }
@@ -713,7 +670,6 @@ public class controladorPartido {
         }
         return modelo;
     }
-
     /**
      * M{ETODO PARA VERIFICAR QUE EXISTTE UN EQUIPO
      *
@@ -746,7 +702,6 @@ public class controladorPartido {
             conexion.desconectar();
         }
     }
-
     /**
      * MÉTODO PARA VERIFICAR SI EXISTE UN PARTIDO
      *
@@ -769,7 +724,7 @@ public class controladorPartido {
             fecha = fecha.trim();
             hora = hora.trim();
             if (hora.length() == 5) {
-                hora += ":00"; // Asegurar formato HH:mm:ss
+                hora += ":00"; // asegurar el formato HH:mm:ss
             }
             equipoLocal = equipoLocal.trim().toLowerCase();
             equipoVisitante = equipoVisitante.trim().toLowerCase();
@@ -811,10 +766,9 @@ public class controladorPartido {
             conexion.desconectar();
         }
     }
-
     /**
      *
-     * INTENTO DE MÉTODO GUARDAR PARTIDO
+     * MÉTODO GUARDAR PARTIDO (segundo metodo)
      *
      * @param dateChooserFecha Componente de fecha.
      * @param hora2 Campo de texto para la hora.
@@ -823,7 +777,7 @@ public class controladorPartido {
      * @param modeloPartidos Modelo de la tabla de partidos.
      * @return true si se guardó correctamente, false si hubo un error.
      */
-    public boolean guardarPartido2(JDateChooser dateChooserFecha, TextField hora2, String equipoLocal, String equipoVisitante, DefaultTableModel modeloPartidos) {
+    public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, String equipoLocal, String equipoVisitante, DefaultTableModel modeloPartidos) {
         Date fecha = dateChooserFecha.getDate();
         if (fecha == null) {
             JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -845,7 +799,7 @@ public class controladorPartido {
 
         String horaStr = hora2.getText().trim();
         if (horaStr.length() == 5) {
-            horaStr += ":00"; // Asegurar formato HH:mm:ss
+            horaStr += ":00"; // asegurar el formato HH:mm:ss
         }
 
         // Verificar si el partido ya existe
@@ -923,14 +877,14 @@ public class controladorPartido {
                 }
 
                 if (hora.length() == 5) {
-                    hora += ":00"; // Asegurar formato HH:mm:ss
+                    hora += ":00"; // asegurar el formato HH:mm:ss
                 }
 
                 JDateChooser dateTemporal = new JDateChooser(fecha);
                 TextField horaTemporal = new TextField(hora);
 
                 if (!existePartido(fechaStr, hora, equipoLocal, equipoVisitante)) {
-                    if (guardarPartido2(dateTemporal, horaTemporal, equipoLocal, equipoVisitante, modeloPartidos)) {
+                    if (guardarPartido(dateTemporal, horaTemporal, equipoLocal, equipoVisitante, modeloPartidos)) {
                         cargados++;
                     }
                 }
@@ -951,8 +905,6 @@ public class controladorPartido {
                 nuevoModelo.getValueAt(i, 4)
             });
         }
-
         return cargados;
     }
-
 }
