@@ -8,7 +8,11 @@ import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
 import controladores.controladorEquipos;
 import controladores.controladorUsuarios;
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.sql.Connection;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.XmlExporter;
@@ -18,7 +22,7 @@ import util.XmlExporter;
  * @author thomas
  */
 public class GestionEquipos extends javax.swing.JPanel {
- 
+
     private controladores.controladorEquipos controladorEquipos = new controladores.controladorEquipos();
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
@@ -34,7 +38,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         TDatos.getSelectionModel().addListSelectionListener(e -> mostrarDatosUsuarioSeleccionado());
 
         actualizaTabla();
-        
+
     }
 
     /**
@@ -89,6 +93,9 @@ public class GestionEquipos extends javax.swing.JPanel {
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnExportarAXml = new javax.swing.JButton();
+        btnExportarABinario = new javax.swing.JButton();
+        btnImportarDeXml = new javax.swing.JButton();
+        btnImportarDeXml1 = new javax.swing.JButton();
 
         btnEliminar1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar1.setText("Eliminar");
@@ -188,6 +195,30 @@ public class GestionEquipos extends javax.swing.JPanel {
             }
         });
 
+        btnExportarABinario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnExportarABinario.setText("Exportar a Binario");
+        btnExportarABinario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarABinarioActionPerformed(evt);
+            }
+        });
+
+        btnImportarDeXml.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarDeXml.setText("Importar de XML");
+        btnImportarDeXml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarDeXmlActionPerformed(evt);
+            }
+        });
+
+        btnImportarDeXml1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarDeXml1.setText("Importar de Binario");
+        btnImportarDeXml1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarDeXml1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -220,12 +251,19 @@ public class GestionEquipos extends javax.swing.JPanel {
                         .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(114, 114, 114)
-                        .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnExportarAXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnExportarABinario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnImportarDeXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(47, 47, 47)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -256,20 +294,26 @@ public class GestionEquipos extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImportarDeXml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1026, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1044, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,7 +402,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         Equipo equipoEncontrado = controladorEquipos.buscarEquipoPorNombre(nombreBuscar);
 
         if (equipoEncontrado != null) {
-   
+
             txtNombreEquipo.setText(equipoEncontrado.getNombre());
             txtAñoDeFundacion.setText(String.valueOf(equipoEncontrado.getAñoFundacion()));
             txtLocalidad.setText(equipoEncontrado.getLocalidad());
@@ -367,8 +411,8 @@ public class GestionEquipos extends javax.swing.JPanel {
             for (int i = 0; i < TDatos.getRowCount(); i++) {
                 String nombreEnTabla = TDatos.getValueAt(i, 0).toString();
                 if (nombreEnTabla.equalsIgnoreCase(nombreBuscar)) {
-                    TDatos.setRowSelectionInterval(i, i); 
-                    TDatos.scrollRectToVisible(TDatos.getCellRect(i, 0, true)); 
+                    TDatos.setRowSelectionInterval(i, i);
+                    TDatos.scrollRectToVisible(TDatos.getCellRect(i, 0, true));
                     break;
                 }
             }
@@ -420,17 +464,57 @@ public class GestionEquipos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
-                                                 
-        XmlExporter exporter = new XmlExporter();
+
         try {
-            exporter.exportarEquiposYJugadoresAXml("equipos_y_jugadores.xml");
-            JOptionPane.showMessageDialog(this, "Exportación a XML exitosa!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // obtener el modelo actual de la tabla
+            DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
+
+            // verificar si hay datos en la tabla
+            int rowCount = modeloActual.getRowCount();
+            System.out.println("Filas en modeloActual (tablaPartidos.getModel()): " + rowCount);
+            System.out.println("Filas en modeloPartidos: " + dtm.getRowCount());
+
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "No hay Equipos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // convertir los datos de la tabla a una lista
+            ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
+            System.out.println("Número de filas exportadas: " + lista.size());
+
+            // guardar la lista en un archivo XML
+            FileOutputStream fos = new FileOutputStream("equipos.xml");
+            XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(fos));
+            encoder.writeObject(lista);
+            encoder.close();
+
+            JOptionPane.showMessageDialog(this, "Equipos exportados a XML correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, " Error al exportar a XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al exportar XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnExportarAXmlActionPerformed
 
+    private void btnExportarABinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarABinarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarABinarioActionPerformed
+
+    private void btnImportarDeXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXmlActionPerformed
+        try {
+            int cantidad = controladorEquipos.importarEquiposDesdeXML();
+            JOptionPane.showMessageDialog(this, cantidad + " Equipos importados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            actualizaTabla(); // actualiza la tabla
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al importar desde XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnImportarDeXmlActionPerformed
+
+    private void btnImportarDeXml1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXml1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImportarDeXml1ActionPerformed
 
     private void mostrarDatosUsuarioSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
@@ -469,6 +553,42 @@ public class GestionEquipos extends javax.swing.JPanel {
             }
         }
     }
+
+    /**
+     * MÉTODO PARA PASAR LA TABLA A LISTA
+     *
+     * @param modelo
+     * @return
+     */
+    private ArrayList<Object[]> pasarTablaALista(DefaultTableModel modelo) {
+        ArrayList<Object[]> lista = new ArrayList<>();
+        int filas = modelo.getRowCount();
+        int columnas = modelo.getColumnCount();
+
+        for (int i = 0; i < filas; i++) {
+            Object[] fila = new Object[columnas];
+            for (int j = 0; j < columnas; j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            lista.add(fila);
+        }
+        return lista;
+    }
+
+    /**
+     * MÉTODO PARA PASAR LISTA A TABLA
+     *
+     * @param lista
+     * @param columnas
+     * @return
+     */
+    private DefaultTableModel pasarListaATabla(ArrayList<Object[]> lista, String[] columnas) {
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        for (Object[] fila : lista) {
+            modelo.addRow(fila);
+        }
+        return modelo;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
     private javax.swing.JButton btnActualizar1;
@@ -478,7 +598,10 @@ public class GestionEquipos extends javax.swing.JPanel {
     private javax.swing.JButton btnBuscar1;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminar1;
+    private javax.swing.JButton btnExportarABinario;
     private javax.swing.JButton btnExportarAXml;
+    private javax.swing.JButton btnImportarDeXml;
+    private javax.swing.JButton btnImportarDeXml1;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JLabel jLabel1;

@@ -6,7 +6,11 @@ package Prototipos_Ventanas;
 
 import Modelos.Usuario;
 import controladores.controladorUsuarios;
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import util.XmlExporter;
 
 /**
  *
@@ -44,8 +49,6 @@ public class GestionUsuarios extends javax.swing.JFrame {
             Object[] fila = {u.getNombre(), u.getCorreo(), u.getNumero(), u.getContraseña()};
             modelo.addRow(fila);
         }
-        
-       
 
         TDatos.setModel(modelo);
     }
@@ -84,6 +87,10 @@ public class GestionUsuarios extends javax.swing.JFrame {
         txtNúmero = new javax.swing.JTextField();
         btnLimpiarCampos = new javax.swing.JButton();
         cerrarSesion = new javax.swing.JButton();
+        btnExportarABinario = new javax.swing.JButton();
+        btnImportarDeXml = new javax.swing.JButton();
+        btnExportarAXml = new javax.swing.JButton();
+        btnImportarDeXml1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -171,6 +178,38 @@ public class GestionUsuarios extends javax.swing.JFrame {
             }
         });
 
+        btnExportarABinario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnExportarABinario.setText("Exportar a Binario");
+        btnExportarABinario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarABinarioActionPerformed(evt);
+            }
+        });
+
+        btnImportarDeXml.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarDeXml.setText("Importar de XML");
+        btnImportarDeXml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarDeXmlActionPerformed(evt);
+            }
+        });
+
+        btnExportarAXml.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnExportarAXml.setText("Exportar a XML");
+        btnExportarAXml.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarAXmlActionPerformed(evt);
+            }
+        });
+
+        btnImportarDeXml1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarDeXml1.setText("Importar de Binario");
+        btnImportarDeXml1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportarDeXml1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -216,8 +255,19 @@ public class GestionUsuarios extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(btnLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnExportarAXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnExportarABinario))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnImportarDeXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -254,9 +304,20 @@ public class GestionUsuarios extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(cerrarSesion)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(cerrarSesion))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnImportarDeXml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnExportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnImportarDeXml1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -406,9 +467,54 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
     private void cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesionActionPerformed
         this.dispose();
-        
+
 
     }//GEN-LAST:event_cerrarSesionActionPerformed
+
+    private void btnExportarABinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarABinarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarABinarioActionPerformed
+
+    private void btnImportarDeXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXmlActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImportarDeXmlActionPerformed
+
+    private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
+
+        try {
+            // Obtener el modelo actual de la tabla
+            DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
+
+            // Verificar si hay datos en la tabla
+            int rowCount = modeloActual.getRowCount();
+            System.out.println("Filas en modeloActual: " + rowCount);
+
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "No hay usuarios en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Convertir los datos de la tabla a una lista
+            ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
+            System.out.println("Número de filas exportadas: " + lista.size());
+
+            // Guardar la lista en un archivo XML
+            FileOutputStream fos = new FileOutputStream("usuarios.xml"); // nombre más adecuado
+            XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(fos));
+            encoder.writeObject(lista);
+            encoder.close();
+
+            JOptionPane.showMessageDialog(this, "Usuarios exportados a XML correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al exportar XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnExportarAXmlActionPerformed
+
+    private void btnImportarDeXml1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXml1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImportarDeXml1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -497,12 +603,50 @@ public class GestionUsuarios extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * MÉTODO PARA PASAR LA TABLA A LISTA
+     *
+     * @param modelo
+     * @return
+     */
+    private ArrayList<Object[]> pasarTablaALista(DefaultTableModel modelo) {
+        ArrayList<Object[]> lista = new ArrayList<>();
+        int filas = modelo.getRowCount();
+        int columnas = modelo.getColumnCount();
 
+        for (int i = 0; i < filas; i++) {
+            Object[] fila = new Object[columnas];
+            for (int j = 0; j < columnas; j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            lista.add(fila);
+        }
+        return lista;
+    }
+
+    /**
+     * MÉTODO PARA PASAR LISTA A TABLA
+     *
+     * @param lista
+     * @param columnas
+     * @return
+     */
+    private DefaultTableModel pasarListaATabla(ArrayList<Object[]> lista, String[] columnas) {
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+        for (Object[] fila : lista) {
+            modelo.addRow(fila);
+        }
+        return modelo;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
     private javax.swing.JButton btnAñadir;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportarABinario;
+    private javax.swing.JButton btnExportarAXml;
+    private javax.swing.JButton btnImportarDeXml;
+    private javax.swing.JButton btnImportarDeXml1;
     private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton cerrarSesion;
