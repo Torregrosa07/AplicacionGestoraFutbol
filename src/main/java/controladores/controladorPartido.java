@@ -715,68 +715,6 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODO PARA ORDENAR ESTADISTICAS POR PUNTOS DE MAYOR A MENOR
-     *
-     * @param modelo El DefaultTableModel con las estadísticas a ordenar.
-     * @return Un nuevo DefaultTableModel ordenado por puntos.
-     */
-    public DefaultTableModel ordenarEstadisticasPorPuntos(DefaultTableModel modelo) {
-        List<Object[]> filas = new ArrayList<>();
-        for (int i = 0; i < modelo.getRowCount(); i++) {
-            Object[] fila = new Object[modelo.getColumnCount()];
-            for (int j = 0; j < modelo.getColumnCount(); j++) {
-                fila[j] = modelo.getValueAt(i, j);
-            }
-            filas.add(fila);
-        }
-
-        // Ordenar las filas por "Puntos" (índice 6), con desempate por diferencia de goles y goles a favor
-        Collections.sort(filas, new Comparator<Object[]>() {
-            @Override
-            public int compare(Object[] fila1, Object[] fila2) {
-                Integer puntos1 = 0;
-                Integer puntos2 = 0;
-                try {
-                    puntos1 = fila1[6] != null ? ((Number) fila1[6]).intValue() : 0;
-                    puntos2 = fila2[6] != null ? ((Number) fila2[6]).intValue() : 0;
-                } catch (ClassCastException e) {
-                    System.err.println("Error: La columna 'Puntos' no contiene valores numéricos válidos.");
-                    return 0;
-                }
-
-                int comparacionPuntos = puntos2.compareTo(puntos1);
-                if (comparacionPuntos != 0) {
-                    return comparacionPuntos;
-                }
-
-                Integer gf1 = fila1[1] != null ? ((Number) fila1[1]).intValue() : 0;
-                Integer gc1 = fila1[2] != null ? ((Number) fila1[2]).intValue() : 0;
-                Integer dg1 = gf1 - gc1;
-
-                Integer gf2 = fila2[1] != null ? ((Number) fila2[1]).intValue() : 0;
-                Integer gc2 = fila2[2] != null ? ((Number) fila2[2]).intValue() : 0;
-                Integer dg2 = gf2 - gc2;
-
-                int comparacionDG = dg2.compareTo(dg1);
-                if (comparacionDG != 0) {
-                    return comparacionDG;
-                }
-
-                return gf2.compareTo(gf1);
-            }
-        });
-
-        DefaultTableModel modeloOrdenado = new DefaultTableModel(
-                new String[]{"Equipo", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0
-        );
-        for (Object[] fila : filas) {
-            modeloOrdenado.addRow(fila);
-        }
-
-        return modeloOrdenado;
-    }
-
-    /**
      * M{ETODO PARA VERIFICAR QUE EXISTTE UN EQUIPO
      *
      * @param nombre

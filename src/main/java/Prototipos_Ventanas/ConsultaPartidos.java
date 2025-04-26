@@ -53,7 +53,7 @@ public class ConsultaPartidos extends javax.swing.JPanel {
                 System.out.println("Advertencia: No se cargaron estadísticas. El modelo está vacío.");
             } else {
                 System.out.println("Estadísticas cargadas exitosamente. Filas: " + estadisticasModel.getRowCount());
-                estadisticasModel = controlador.ordenarEstadisticasPorPuntos(estadisticasModel);
+                //estadisticasModel = controlador.ordenarEstadisticasPorPuntos(estadisticasModel);
                 System.out.println("Estadísticas ordenadas por puntos. Filas: " + estadisticasModel.getRowCount());
 
             }
