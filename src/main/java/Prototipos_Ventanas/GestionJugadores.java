@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import util.XmlExporter;
 import java.lang.String;
 
 /**
@@ -620,14 +619,14 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboSexoActionPerformed
 
     private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
-        XmlExporter exporter = new XmlExporter();
-        try {
-            exporter.exportarEquiposYJugadoresAXml("equipos_y_jugadores.xml");
-            JOptionPane.showMessageDialog(this, "Exportación a XML exitosa!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, " Error al exportar a XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
+//        XmlExporter exporter = new XmlExporter();
+//        try {
+//            exporter.exportarEquiposYJugadoresAXml("equipos_y_jugadores.xml");
+//            JOptionPane.showMessageDialog(this, "Exportación a XML exitosa!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(this, " Error al exportar a XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//            e.printStackTrace();
+//        }
     }//GEN-LAST:event_btnExportarAXmlActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
