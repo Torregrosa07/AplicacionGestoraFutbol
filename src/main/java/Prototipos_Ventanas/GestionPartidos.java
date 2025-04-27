@@ -20,6 +20,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -54,7 +55,7 @@ public class GestionPartidos extends javax.swing.JPanel {
     private String[] columnas = {"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"};
 
     public GestionPartidos() {
-        //modeloPartidos = new DefaultTableModel(new String columnas []{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0);
+        modeloPartidos = new DefaultTableModel(columnas, 0);
         modeloEstadisticas = new DefaultTableModel(new String[]{"Fecha", "GF", "GC", "PG", "PP", "PE", "Puntos"}, 0);
         controlador = new controladorPartido();
 
@@ -91,18 +92,14 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void actualizarTabla() {
         try {
-
             matrizDatos = controlador.convertirAMatrizObject();
-
             modeloPartidos = new DefaultTableModel(matrizDatos, columnas) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    return false; // Impedir edición de celdas
+                    return false;
                 }
             };
-
             tablaPartidos.setModel(modeloPartidos);
-
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,
@@ -268,6 +265,11 @@ public class GestionPartidos extends javax.swing.JPanel {
 
         importarDeBinario.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         importarDeBinario.setText("Importar de Binario");
+        importarDeBinario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importarDeBinarioActionPerformed(evt);
+            }
+        });
 
         exportarABinario.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         exportarABinario.setText("Exportar a Binario");
@@ -324,15 +326,14 @@ public class GestionPartidos extends javax.swing.JPanel {
                                 .addComponent(cargarDeFicheroXML)
                                 .addGap(18, 18, 18)
                                 .addComponent(exportarAXML, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(equipoVisitanteCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(equipoLocalCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(35, 35, 35)
-                                    .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(equipoVisitanteCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(gc, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(equipoLocalCampoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(gf, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(42, 42, 42)
@@ -342,8 +343,7 @@ public class GestionPartidos extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(importarDeBinario)
                                 .addGap(18, 18, 18)
-                                .addComponent(exportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(exportarABinario, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 68, Short.MAX_VALUE)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -525,12 +525,29 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void cargarDeFicheroXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarDeFicheroXMLActionPerformed
         try {
-            int cargados = controlador.importarPartidosDesdeXML((DefaultTableModel) tablaPartidos.getModel());
-            JOptionPane.showMessageDialog(this, "Se cargaron lospartidos con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            int cargados = controlador.importarPartidosDesdeXML(modeloPartidos);
+            if (cargados > 0) {
+                JOptionPane.showMessageDialog(this,
+                        cargados + " partidos importados correctamente.",
+                        "Importación XML", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se importó ningún partido (todos ya existían o archivo vacío).",
+                        "Importación XML", JOptionPane.WARNING_MESSAGE);
+            }
+
+            // se actualiza la tabla después de importar
+            actualizarTabla();
+
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "Archivo partidOs.xml no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Archivo partidos.xml no encontrado.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Error al importar XML: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
 
     }//GEN-LAST:event_cargarDeFicheroXMLActionPerformed
@@ -568,34 +585,127 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void exportarABinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarABinarioActionPerformed
         try {
-            // se obteniene el modelo actual de la tabla
             DefaultTableModel modeloActual = (DefaultTableModel) tablaPartidos.getModel();
-
-            // se verifica si hay datos en la tabla
             int rowCount = modeloActual.getRowCount();
             System.out.println("Filas en modeloActual (tablaPartidos.getModel()): " + rowCount);
 
             if (rowCount == 0) {
-                JOptionPane.showMessageDialog(this, "No hay Equipos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No hay partidos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // se convierten los datos de la tabla a una lista
             ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
             System.out.println("Número de filas exportadas: " + lista.size());
 
-            // y guarda la lista en un archivo binario
             FileOutputStream fos = new FileOutputStream("partidos.bin");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(lista);
             oos.close();
 
-            JOptionPane.showMessageDialog(this, "Equipos exportados a BINARIO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Partidos exportados a BINARIO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al exportar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }//GEN-LAST:event_exportarABinarioActionPerformed
+
+    private void importarDeBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarDeBinarioActionPerformed
+        try {
+            // Leer el archivo binario
+            FileInputStream fis = new FileInputStream("partidos.bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            // Recuperar la lista de partidos
+            ArrayList<Object[]> lista = (ArrayList<Object[]>) ois.readObject();
+            ois.close();
+
+            System.out.println("Número de partidos importados: " + lista.size());
+
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El archivo binario está vacío.", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            int cargados = 0;
+
+            for (Object[] fila : lista) {
+                try {
+                    // Validar que la fila tenga el número correcto de elementos
+                    if (fila.length != 5) {
+                        System.err.println("Fila malformada: " + Arrays.toString(fila));
+                        continue;
+                    }
+
+                    // Extraer los datos de cada fila
+                    Integer id = (Integer) fila[0];
+                    String fechaStr = (String) fila[1]; // La fecha se guarda como String
+                    Date fecha = dateFormat.parse(fechaStr); // Convertir String a Date
+                    String hora = (String) fila[2];
+                    String equipoLocal = (String) fila[3];
+                    String equipoVisitante = (String) fila[4];
+
+                    // Validar datos nulos
+                    if (fechaStr == null || hora == null || equipoLocal == null || equipoVisitante == null) {
+                        System.err.println("Datos incompletos en la fila: " + Arrays.toString(fila));
+                        continue;
+                    }
+
+                    if (!controlador.existeEquipo(equipoLocal) || !controlador.existeEquipo(equipoVisitante)) {
+                        System.out.println("Equipo no encontrado: " + equipoLocal + " o " + equipoVisitante);
+                        continue;
+                    }
+
+                    // Limpiar la hora (quitar espacios)
+                    hora = hora.trim();
+
+                    // Validar el formato de la hora (esperamos HH:mm:ss)
+                    if (!hora.matches("\\d{2}:\\d{2}:\\d{2}")) {
+                        System.err.println("Hora inválida, debe ser HH:mm:ss (ejemplo: 14:30:00): " + hora);
+                        continue;
+                    }
+                    // La hora ya está en formato HH:mm:ss, no necesitamos modificarla
+
+                    JDateChooser dateTemporal = new JDateChooser(fecha);
+                    TextField horaTemporal = new TextField(hora);
+
+                    if (!controlador.existePartido(fechaStr, hora, equipoLocal, equipoVisitante)) {
+                        if (controlador.guardarPartido(dateTemporal, horaTemporal, equipoLocal, equipoVisitante, modeloPartidos)) {
+                            cargados++;
+                        }
+                    } else {
+                        System.out.println("Partido ya existente: " + fechaStr + " " + hora + " " + equipoLocal + " vs " + equipoVisitante);
+                    }
+
+                } catch (Exception e) {
+                    System.err.println("Error al procesar partido: " + e.getMessage());
+                }
+            }
+
+            // Actualizar tablaPartidos con los datos
+            modeloPartidos.setRowCount(0);
+            DefaultTableModel nuevoModelo = controlador.cargarPartidos();
+            for (int i = 0; i < nuevoModelo.getRowCount(); i++) {
+                modeloPartidos.addRow(new Object[]{
+                    nuevoModelo.getValueAt(i, 0),
+                    nuevoModelo.getValueAt(i, 1),
+                    nuevoModelo.getValueAt(i, 2),
+                    nuevoModelo.getValueAt(i, 3),
+                    nuevoModelo.getValueAt(i, 4)
+                });
+            }
+
+            // Actualizar los combos y la tabla de estadísticas
+            controlador.cargarEquiposEnCombos(comboEquipoLocal, comboEquipoVisitante);
+            tablaEstadisticas.setModel(controlador.cargarEstadisticas());
+
+            JOptionPane.showMessageDialog(this, "Se importaron los partidos desde BINARIO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al importar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_importarDeBinarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

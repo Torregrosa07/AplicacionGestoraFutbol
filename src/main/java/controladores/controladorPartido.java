@@ -464,7 +464,7 @@ public class controladorPartido {
     }
 
     /**
-     * MÉTODO PARA QCALCULAR ESTADISTÍCAS
+     * MÉTODO PARA CALCULAR ESTADISTÍCAS
      *
      * @param idPartido
      * @param golesLocalStr
@@ -670,8 +670,9 @@ public class controladorPartido {
         }
         return modelo;
     }
+
     /**
-     * M{ETODO PARA VERIFICAR QUE EXISTTE UN EQUIPO
+     * MÉTODO PARA VERIFICAR QUE EXISTTE UN EQUIPO
      *
      * @param nombre
      * @return
@@ -702,6 +703,7 @@ public class controladorPartido {
             conexion.desconectar();
         }
     }
+
     /**
      * MÉTODO PARA VERIFICAR SI EXISTE UN PARTIDO
      *
@@ -745,7 +747,12 @@ public class controladorPartido {
 
             rs = sentencia.executeQuery(sql);
 
-            int count = rs.next() ? rs.getInt(1) : 0;
+            int count;
+            if (rs.next()) {
+                count = rs.getInt(1);
+            } else {
+                count = 0;
+            }
             System.out.println("Resultado de existePartido: " + count + " coincidencias encontradas");
             return count > 0;
 
@@ -766,6 +773,7 @@ public class controladorPartido {
             conexion.desconectar();
         }
     }
+
     /**
      *
      * MÉTODO GUARDAR PARTIDO (segundo metodo)

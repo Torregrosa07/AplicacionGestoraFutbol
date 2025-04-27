@@ -80,17 +80,15 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="exportarAXML" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="equipoVisitanteCampoTxt" min="-2" pref="205" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="gc" min="-2" pref="68" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="equipoLocalCampoTxt" min="-2" pref="205" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                  <Component id="gf" min="-2" pref="68" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="equipoVisitanteCampoTxt" min="-2" pref="205" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="gc" min="-2" pref="68" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="equipoLocalCampoTxt" min="-2" pref="205" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="gf" min="-2" pref="68" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel4" alignment="0" min="-2" pref="328" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
@@ -104,7 +102,6 @@
                               <Component id="importarDeBinario" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="exportarABinario" min="-2" pref="168" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="0" pref="68" max="32767" attributes="0"/>
@@ -465,6 +462,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Importar de Binario"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importarDeBinarioActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="exportarABinario">
       <Properties>
