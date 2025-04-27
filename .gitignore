@@ -6,3 +6,4 @@
 # Ignorar base de datos
 db/AD_Ejemplo1.odb
 db/AD_Ejemplo1.odb$
+/nbproject/
