@@ -433,7 +433,32 @@ public class GestionJugadores extends javax.swing.JPanel {
         // Validación de campos vacíos
         if (nombre.isEmpty() || apellidos.isEmpty() || dorsal.isEmpty()
                 || posicion == null || sexo == null || edadTexto.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, completa todos los campos.",
+                    "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validación de sólo texto
+        String regexTexto = "^([A-ZÁÉÍÓÚÑa-zñáéíóúñ]{1,}'?-?[A-ZÁÉÍÓÚÑa-zñáéíóú]+[\\s]*)+$";
+        if (!nombre.matches(regexTexto)) {
+            JOptionPane.showMessageDialog(this,
+                    "El nombre sólo puede contener letras y espacios.",
+                    "Error en Nombre", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!apellidos.matches(regexTexto)) {
+            JOptionPane.showMessageDialog(this,
+                    "Los apellidos sólo pueden contener letras y espacios.",
+                    "Error en Apellidos", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Validación de dorsal: solo números
+        String regexDorsal = "^\\d+$";
+        if (!dorsal.matches(regexDorsal)) {
+            JOptionPane.showMessageDialog(this,
+                    "El dorsal sólo puede contener números.",
+                    "Error en Dorsal", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -442,7 +467,9 @@ public class GestionJugadores extends javax.swing.JPanel {
         try {
             edad = Integer.parseInt(edadTexto);
         } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.", "Error en el campo edad", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "La edad debe ser un número válido.",
+                    "Error en Edad", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -645,6 +672,20 @@ public class GestionJugadores extends javax.swing.JPanel {
             return;
         }
 
+        String regexTexto = "^([A-ZÁÉÍÓÚÑa-zñáéíóúñ]{1,}'?-?[A-ZÁÉÍÓÚÑa-zñáéíóú]+[\\s]*)+$";
+        if (!nombre.matches(regexTexto)) {
+            JOptionPane.showMessageDialog(this,
+                    "El nombre sólo puede contener letras y espacios.",
+                    "Error en Nombre", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!apellidos.matches(regexTexto)) {
+            JOptionPane.showMessageDialog(this,
+                    "Los apellidos sólo pueden contener letras y espacios.",
+                    "Error en Apellidos", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // Convertir edad a entero
         int edad;
         try {
@@ -652,6 +693,14 @@ public class GestionJugadores extends javax.swing.JPanel {
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.",
                     "Error en el campo edad", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Validación de dorsal: solo números
+        String regexDorsal = "^\\d+$";
+        if (!dorsal.matches(regexDorsal)) {
+            JOptionPane.showMessageDialog(this,
+                    "El dorsal sólo puede contener números.",
+                    "Error en Dorsal", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -755,68 +804,68 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExportarXMLActionPerformed
 
     private void btnImportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarXMLActionPerformed
-         try {
-        // Abrir y decodificar el XML
-        FileInputStream fis = new FileInputStream("jugadores.xml");
-        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
-        @SuppressWarnings("unchecked")
-        ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
-        decoder.close();
+        try {
+            // Abrir y decodificar el XML
+            FileInputStream fis = new FileInputStream("jugadores.xml");
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
+            @SuppressWarnings("unchecked")
+            ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
+            decoder.close();
 
-        if (lista.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                "El archivo XML está vacío.",
-                "Importación XML", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int importados = 0;
-        controladorEquipos ctrlEquipos = new controladorEquipos();
-
-        for (Object[] fila : lista) {
-            String nombre   = (String) fila[1];
-            String apellidos= (String) fila[2];
-            String posicion = (String) fila[3];
-            String dorsal   = (String) fila[4];
-            String equipoNom= (String) fila[5];
-            int edad        = Integer.parseInt(fila[6].toString());
-            String sexo     = (String) fila[7];
-
-            // Saltar si ya existe
-            if (controladorJugadores.buscarJugadorPorNombreApellidos(nombre, apellidos) != null) {
-                continue;
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "El archivo XML está vacío.",
+                        "Importación XML", JOptionPane.WARNING_MESSAGE);
+                return;
             }
 
-            // Buscar ID de equipo si se proporciona nombre
-            Integer idEquipo = null;
-            if (equipoNom != null && !equipoNom.trim().isEmpty()) {
-                Equipo eq = ctrlEquipos.buscarEquipoPorNombre(equipoNom);
-                if (eq != null) {
-                    idEquipo = eq.getIDEquipo();
+            int importados = 0;
+            controladorEquipos ctrlEquipos = new controladorEquipos();
+
+            for (Object[] fila : lista) {
+                String nombre = (String) fila[1];
+                String apellidos = (String) fila[2];
+                String posicion = (String) fila[3];
+                String dorsal = (String) fila[4];
+                String equipoNom = (String) fila[5];
+                int edad = Integer.parseInt(fila[6].toString());
+                String sexo = (String) fila[7];
+
+                // Saltar si ya existe
+                if (controladorJugadores.buscarJugadorPorNombreApellidos(nombre, apellidos) != null) {
+                    continue;
                 }
+
+                // Buscar ID de equipo si se proporciona nombre
+                Integer idEquipo = null;
+                if (equipoNom != null && !equipoNom.trim().isEmpty()) {
+                    Equipo eq = ctrlEquipos.buscarEquipoPorNombre(equipoNom);
+                    if (eq != null) {
+                        idEquipo = eq.getIDEquipo();
+                    }
+                }
+
+                // Añadir a la BD
+                controladorJugadores.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+                importados++;
             }
 
-            // Añadir a la BD
-            controladorJugadores.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
-            importados++;
+            // Mostrar resultado y refrescar tabla
+            JOptionPane.showMessageDialog(this,
+                    importados + " jugadores importados correctamente.",
+                    "Importación XML", JOptionPane.INFORMATION_MESSAGE);
+            actualizarTabla();
+
+        } catch (FileNotFoundException fnf) {
+            JOptionPane.showMessageDialog(this,
+                    "No se encontró el archivo jugadores.xml",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al importar XML: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
-        // Mostrar resultado y refrescar tabla
-        JOptionPane.showMessageDialog(this,
-            importados + " jugadores importados correctamente.",
-            "Importación XML", JOptionPane.INFORMATION_MESSAGE);
-        actualizarTabla();
-
-    } catch (FileNotFoundException fnf) {
-        JOptionPane.showMessageDialog(this,
-            "No se encontró el archivo jugadores.xml",
-            "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-            "Error al importar XML: " + e.getMessage(),
-            "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
 
 
     }//GEN-LAST:event_btnImportarXMLActionPerformed
