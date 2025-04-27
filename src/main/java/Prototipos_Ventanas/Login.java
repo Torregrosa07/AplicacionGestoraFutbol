@@ -53,7 +53,7 @@ public class Login extends javax.swing.JFrame {
             jPanel1.requestFocusInWindow();
         });
 
-        InicioSesion.addActionListener(e -> validarAcceso());
+        
 
     }
 
@@ -88,6 +88,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         InicioSesion.setText("Iniciar Sesión");
+        InicioSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InicioSesionActionPerformed(evt);
+            }
+        });
 
         EntrarDeInvitado.setText("Entrar como invitado");
         EntrarDeInvitado.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +181,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-
+        
 
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
@@ -214,6 +219,10 @@ public class Login extends javax.swing.JFrame {
         });
 
     }//GEN-LAST:event_RegistrarseActionPerformed
+
+    private void InicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InicioSesionActionPerformed
+        validarAcceso();
+    }//GEN-LAST:event_InicioSesionActionPerformed
     private void txtUsuarioFocusGained(java.awt.event.FocusEvent evt) {
         if (txtUsuario.getText().equals("Usuario")) {
             txtUsuario.setText("");

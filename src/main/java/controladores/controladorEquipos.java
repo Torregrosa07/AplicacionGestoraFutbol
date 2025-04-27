@@ -60,6 +60,45 @@ public class controladorEquipos {
         }
     }
 
+    public boolean existeEquipo(String nombre, int añoFundacion) {
+        ConexionBDR conexionBDR = new ConexionBDR();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            con = conexionBDR.conectar();
+            st = con.createStatement();
+
+            String sql = "SELECT COUNT(*) FROM equipo WHERE nombre = '"
+                    + nombre.replace("'", "''") + "' AND anio_fundacion = " + añoFundacion;
+
+            rs = st.executeQuery(sql);
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            conexionBDR.desconectar();
+        }
+    }
+
     public boolean modificarEquipo(String nombreOriginal, String nuevoNombre, int nuevoAño, String nuevaLocalidad, String nuevoEntrenador) {
         ConexionBDR conexionBDR = new ConexionBDR();
         Connection con = null;
@@ -204,7 +243,7 @@ public class controladorEquipos {
     }
 
     public int importarEquiposDesdeXML() throws FileNotFoundException, Exception {
-        FileInputStream fis = new FileInputStream("equipos.xml"); // Aquí cambia el nombre correcto de tu archivo XML
+        FileInputStream fis = new FileInputStream("equipos.xml");
         XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
         ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
         decoder.close();

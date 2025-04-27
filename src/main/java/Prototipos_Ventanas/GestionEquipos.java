@@ -6,17 +6,19 @@ package Prototipos_Ventanas;
 
 import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
+import Modelos.Usuario;
 import controladores.controladorEquipos;
 import controladores.controladorUsuarios;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 
 /**
  *
@@ -505,8 +507,8 @@ public class GestionEquipos extends javax.swing.JPanel {
 
             // verificar si hay datos en la tabla
             int rowCount = modeloActual.getRowCount();
-            System.out.println("Filas en modeloActual (tablaPartidos.getModel()): " + rowCount);
-            System.out.println("Filas en modeloPartidos: " + dtm.getRowCount());
+            System.out.println("Filas en modelo Actual (tablaPartidos.getModel()): " + rowCount);
+            System.out.println("Filas en modelo Partidos: " + dtm.getRowCount());
 
             if (rowCount == 0) {
                 JOptionPane.showMessageDialog(this, "No hay Equipos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -523,10 +525,10 @@ public class GestionEquipos extends javax.swing.JPanel {
             oos.writeObject(lista);
             oos.close();
 
-            JOptionPane.showMessageDialog(this, "Equipos exportados a BINARIO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Equipos exportados a binario correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al exportar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al exportar binario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
 
@@ -544,7 +546,62 @@ public class GestionEquipos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnImportarDeXmlActionPerformed
 
     private void btnImportarDeBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeBinarioActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Leer el archivo binario
+            FileInputStream fis = new FileInputStream("equipos.bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            // Recuperar la lista de usuarios
+            ArrayList<Object[]> lista = (ArrayList<Object[]>) ois.readObject();
+            ois.close();
+
+            System.out.println("Número de equipos importados: " + lista.size());
+
+            if (lista.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El archivo binario está vacío.", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Definir las columnas para la tabla
+            String[] columnas = {"NOMBRE", "AÑO FUNDACIÓN", "LOCALIDAD", "ENTRENADOR"};
+
+            // Crear un nuevo modelo usando tu método
+            DefaultTableModel nuevoModelo = pasarListaATabla(lista, columnas);
+
+            // Asignar el nuevo modelo a la tabla
+            TDatos.setModel(nuevoModelo);
+
+            // Guardar cada usuario en la base de datos
+            for (Object[] fila : lista) {
+                try {
+                    // Extraer los datos de cada fila
+                    String nombreEquipo = (String) fila[0];
+                    int añoFundacion = Integer.parseInt(fila[1].toString());
+                    String localidad = (String) fila[2];
+                    String entrenador = (String) fila[3];
+
+                    Equipo nuevoEquipo = new Equipo(nombreEquipo, añoFundacion, localidad, entrenador);
+
+                    // Insertar en la base de datos
+                    if (!controladorEquipos.existeEquipo(nombreEquipo, añoFundacion)) {
+                        controladorEquipos.guardarEnBD(nuevoEquipo);
+                    } else {
+                        System.out.println("Equipo ya existente: " + nombreEquipo + " (" + añoFundacion + ")");
+                    }
+
+                } catch (Exception e) {
+                    System.err.println("Error insertando usuario: " + e.getMessage());
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "Usuarios importados desde BINARIO y guardados en BDO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al importar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+        actualizaTabla();
     }//GEN-LAST:event_btnImportarDeBinarioActionPerformed
 
     private void mostrarDatosUsuarioSeleccionado() {

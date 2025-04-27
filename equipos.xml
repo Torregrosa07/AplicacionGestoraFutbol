@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="22.0.2" class="java.beans.XMLDecoder">
+<java version="23" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
    <array class="java.lang.Object" length="4">
@@ -110,6 +110,70 @@
     </void>
     <void index="3">
      <string>aaaaa</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Águilas Doradas</string>
+    </void>
+    <void index="1">
+     <int>2001</int>
+    </void>
+    <void index="2">
+     <string>Pueblo Nuevo</string>
+    </void>
+    <void index="3">
+     <string>María Gómez</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Tiburones Azules</string>
+    </void>
+    <void index="1">
+     <int>1987</int>
+    </void>
+    <void index="2">
+     <string>Costa Norte</string>
+    </void>
+    <void index="3">
+     <string>José Torres</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Guerreros Unidos</string>
+    </void>
+    <void index="1">
+     <int>2005</int>
+    </void>
+    <void index="2">
+     <string>Montaña Alta</string>
+    </void>
+    <void index="3">
+     <string>Laura Sánchez</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Toros Salvajes</string>
+    </void>
+    <void index="1">
+     <int>1999</int>
+    </void>
+    <void index="2">
+     <string>Villa Serena</string>
+    </void>
+    <void index="3">
+     <string>Miguel Díaz</string>
     </void>
    </array>
   </void>

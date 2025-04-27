@@ -26,7 +26,6 @@ public class Equipo implements Comparable<Equipo>{
     }
 
     public Equipo(String nombre, int añoFundacion, String localidad, String entrenador) {
-        this.IDEquipo = IDEquipo;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;
         this.localidad = localidad;

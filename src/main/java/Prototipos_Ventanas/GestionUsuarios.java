@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 /**
  *
  * @author thomas
@@ -387,7 +386,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             return;
         }
 
-        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono);
+        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, true);
         controladorUsuarios.insertarUsuario(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
@@ -587,7 +586,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                     String numero = (String) fila[2];
                     String contraseña = (String) fila[3];
 
-                    Usuario nuevoUsuario = new Usuario(nombre, correo, numero, contraseña);
+                    Usuario nuevoUsuario = new Usuario(nombre, contraseña, correo, numero, false);
 
                     // Insertar en la base de datos
                     controladorUsuarios.insertarUsuario(nuevoUsuario);
@@ -597,7 +596,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                 }
             }
 
-            JOptionPane.showMessageDialog(this, "Usuarios importados desde BINARIO y guardados en BD correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Usuarios importados desde BINARIO y guardados en BDO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al importar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

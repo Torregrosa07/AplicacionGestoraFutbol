@@ -37,20 +37,19 @@ public class controladorUsuarios {
     }
 
     public static Usuario validarUsuario(String nombre, String contraseña) {
-
-        em = emf.createEntityManager();
-
+        em = emf.createEntityManager(); 
         try {
+            em.getTransaction().begin(); 
+            em.flush();                  
+            em.clear();                  
             TypedQuery<Usuario> query = em.createQuery(
                     "SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.contraseña = :contraseña", Usuario.class);
             query.setParameter("nombre", nombre);
             query.setParameter("contraseña", contraseña);
 
-            return query.getSingleResult(); // devuelve el objeto si encuentra coincidencia
+            return query.getSingleResult();
         } catch (NoResultException e) {
-            return null; // usuario no encontrado
-        } finally {
-            em.close();
+            return null;
         }
     }
 
@@ -161,7 +160,7 @@ public class controladorUsuarios {
     }
 
     public static int importarUsuariosDesdeXML() throws FileNotFoundException, Exception {
-        FileInputStream fis = new FileInputStream("usuarios.xml"); // Cargar el archivo correcto
+        FileInputStream fis = new FileInputStream("usuarios.xml");
         XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
         ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
         decoder.close();
@@ -181,7 +180,7 @@ public class controladorUsuarios {
                 nuevoUsuario.setNombre(nombre);
                 nuevoUsuario.setContraseña(contraseña);
 
-                if (!controladorUsuarios.existeUsuario(nombre)) { // Si no existe
+                if (!controladorUsuarios.existeUsuario(nombre)) {
                     controladorUsuarios.insertarUsuario(nuevoUsuario);
                     cargados++;
                 }
