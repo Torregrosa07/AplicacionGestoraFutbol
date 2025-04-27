@@ -402,53 +402,7 @@ public class controladorJugadores {
         }
     }
 
-    public int importarJugadoresDesdeXML() throws FileNotFoundException, Exception {
-        FileInputStream fis = new FileInputStream("jugadores.xml");
-        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
-        @SuppressWarnings("unchecked")
-        ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
-        decoder.close();
-
-        if (lista.isEmpty()) {
-            throw new Exception("El archivo XML está vacío.");
-        }
-
-        int cargados = 0;
-        controladorEquipos ctrlEquipos = new controladorEquipos();
-
-        for (Object[] fila : lista) {
-            try {
-                String nombre = (String) fila[1];
-                String apellidos = (String) fila[2];
-                String posicion = (String) fila[3];
-                String dorsal = (String) fila[4];
-                String equipoNom = (String) fila[5];
-                int edad = Integer.parseInt(fila[6].toString());
-                String sexo = (String) fila[7];
-
-                // Buscamos si ya existe
-                if (buscarJugadorPorNombreApellidos(nombre, apellidos) != null) {
-                    continue;
-                }
-
-                // Obtenemos idEquipo si hay nombre
-                Integer idEquipo = null;
-                if (equipoNom != null && !equipoNom.trim().isEmpty()) {
-                    Modelos.Equipo eq = ctrlEquipos.buscarEquipoPorNombre(equipoNom);
-                    if (eq != null) {
-                        idEquipo = eq.getIDEquipo();
-                    }
-                }
-
-                // Insertamos
-                anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
-                cargados++;
-            } catch (Exception e) {
-                System.err.println("Error procesando jugador: " + e.getMessage());
-            }
-        }
-        return cargados;
-    }
+    
 
     /*    public Object[][] convertirAMatrizObjectPorEquipo(int idEquipo) {
         ConexionBDR conexion = new ConexionBDR();

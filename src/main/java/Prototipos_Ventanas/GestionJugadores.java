@@ -7,11 +7,17 @@ package Prototipos_Ventanas;
 import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
 import Modelos.Jugador;
+import controladores.controladorEquipos;
 import controladores.controladorJugadores;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -111,12 +117,11 @@ public class GestionJugadores extends javax.swing.JPanel {
         jComboPosicion = new javax.swing.JComboBox<>();
         txtEdad = new javax.swing.JTextField();
         labelEdad = new javax.swing.JLabel();
-        btnExportarAXml = new javax.swing.JButton();
         btnLimpiarCampos = new javax.swing.JButton();
         btnExportarXML = new javax.swing.JButton();
         btnImportarXML = new javax.swing.JButton();
         btnExportarBinario = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnImportarBinario = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -231,15 +236,6 @@ public class GestionJugadores extends javax.swing.JPanel {
         labelEdad.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         labelEdad.setText("Edad:");
 
-        btnExportarAXml.setBackground(new java.awt.Color(255, 153, 0));
-        btnExportarAXml.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        btnExportarAXml.setText("Exportar a XML");
-        btnExportarAXml.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportarAXmlActionPerformed(evt);
-            }
-        });
-
         btnLimpiarCampos.setBackground(new java.awt.Color(255, 102, 102));
         btnLimpiarCampos.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnLimpiarCampos.setText("LIMPIAR CAMPOS");
@@ -273,11 +269,11 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        jButton1.setText("Importar de Binario");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnImportarBinario.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        btnImportarBinario.setText("Importar de Binario");
+        btnImportarBinario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnImportarBinarioActionPerformed(evt);
             }
         });
 
@@ -296,10 +292,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,7 +337,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnExportarBinario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnImportarBinario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnExportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -394,15 +387,13 @@ public class GestionJugadores extends javax.swing.JPanel {
                             .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnExportarAXml, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnExportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnImportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(13, 13, 13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImportarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnExportarBinario, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnImportarBinario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(44, 44, 44))
         );
 
@@ -618,17 +609,6 @@ public class GestionJugadores extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jComboSexoActionPerformed
 
-    private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
-//        XmlExporter exporter = new XmlExporter();
-//        try {
-//            exporter.exportarEquiposYJugadoresAXml("equipos_y_jugadores.xml");
-//            JOptionPane.showMessageDialog(this, "Exportación a XML exitosa!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, " Error al exportar a XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//            e.printStackTrace();
-//        }
-    }//GEN-LAST:event_btnExportarAXmlActionPerformed
-
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // Verificar que se haya seleccionado una fila en la tabla
         int filaSeleccionada = TDatos.getSelectedRow();
@@ -775,41 +755,184 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExportarXMLActionPerformed
 
     private void btnImportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarXMLActionPerformed
-        try {
-            int numJugadores = controladorJugadores.importarJugadoresDesdeXML();
-            if (numJugadores > 0) {
-                JOptionPane.showMessageDialog(this,
-                        numJugadores + " jugadores importados correctamente.",
-                        "Importación XML", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "No se importó ningún jugador (todos ya existían o archivo vacío).",
-                        "Importación XML", JOptionPane.WARNING_MESSAGE);
-            }
-            
-            //Actualizar la tabla despues de importar
-            actualizarTabla();
-        } catch (FileNotFoundException fnf) {
+         try {
+        // Abrir y decodificar el XML
+        FileInputStream fis = new FileInputStream("jugadores.xml");
+        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
+        @SuppressWarnings("unchecked")
+        ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
+        decoder.close();
+
+        if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                    "No se encontró el archivo jugadores.xml",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Error al importar XML: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+                "El archivo XML está vacío.",
+                "Importación XML", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+
+        int importados = 0;
+        controladorEquipos ctrlEquipos = new controladorEquipos();
+
+        for (Object[] fila : lista) {
+            String nombre   = (String) fila[1];
+            String apellidos= (String) fila[2];
+            String posicion = (String) fila[3];
+            String dorsal   = (String) fila[4];
+            String equipoNom= (String) fila[5];
+            int edad        = Integer.parseInt(fila[6].toString());
+            String sexo     = (String) fila[7];
+
+            // Saltar si ya existe
+            if (controladorJugadores.buscarJugadorPorNombreApellidos(nombre, apellidos) != null) {
+                continue;
+            }
+
+            // Buscar ID de equipo si se proporciona nombre
+            Integer idEquipo = null;
+            if (equipoNom != null && !equipoNom.trim().isEmpty()) {
+                Equipo eq = ctrlEquipos.buscarEquipoPorNombre(equipoNom);
+                if (eq != null) {
+                    idEquipo = eq.getIDEquipo();
+                }
+            }
+
+            // Añadir a la BD
+            controladorJugadores.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+            importados++;
+        }
+
+        // Mostrar resultado y refrescar tabla
+        JOptionPane.showMessageDialog(this,
+            importados + " jugadores importados correctamente.",
+            "Importación XML", JOptionPane.INFORMATION_MESSAGE);
+        actualizarTabla();
+
+    } catch (FileNotFoundException fnf) {
+        JOptionPane.showMessageDialog(this,
+            "No se encontró el archivo jugadores.xml",
+            "Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+            "Error al importar XML: " + e.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
 
 
     }//GEN-LAST:event_btnImportarXMLActionPerformed
 
     private void btnExportarBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarBinarioActionPerformed
-        // TODO add your handling code here:
+        try {
+            // obtener el modelo actual de la tabla
+            DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
+
+            // verificar si hay datos en la tabla
+            int rowCount = modeloActual.getRowCount();
+            System.out.println("Filas en modelo Actual (tablaPartidos.getModel()): " + rowCount);
+            System.out.println("Filas en modelo Partidos: " + dtm.getRowCount());
+
+            if (rowCount == 0) {
+                JOptionPane.showMessageDialog(this, "No hay Equipos en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // convertir los datos de la tabla a una lista
+            ArrayList<Object[]> listadoJugadores = pasarTablaALista(modeloActual);
+            System.out.println("Número de filas exportadas: " + listadoJugadores.size());
+
+            // guardar la lista en un archivo BINARIO
+            FileOutputStream fos = new FileOutputStream("jugadores.bin");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(listadoJugadores);
+            oos.close();
+
+            JOptionPane.showMessageDialog(this, "Jugadores exportados a binario correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al exportar binario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnExportarBinarioActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnImportarBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarBinarioActionPerformed
+
+        try {
+            // Abrir el archivo binario para lectura
+            FileInputStream fis = new FileInputStream("jugadores.bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            // Leer la lista de jugadores
+            ArrayList<Object[]> listadoJugadores = (ArrayList<Object[]>) ois.readObject();
+            ois.close();
+
+            if (listadoJugadores.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "El archivo no contiene jugadores para importar.",
+                        "Archivo vacío", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Contador de jugadores importados
+            int jugadoresImportados = 0;
+
+            // Recorrer la lista y añadir cada jugador a la BD si no existe
+            for (Object[] fila : listadoJugadores) {
+                // Obtener los datos del jugador
+                int idJugador = Integer.parseInt(fila[0].toString());
+                String nombre = String.valueOf(fila[1]);
+                String apellidos = String.valueOf(fila[2]);
+                String posicion = String.valueOf(fila[3]);
+                String dorsal = String.valueOf(fila[4]);
+                String equipo = String.valueOf(fila[5]);
+                int edad = Integer.parseInt(fila[6].toString());
+                String sexo = String.valueOf(fila[7]);
+
+                // Buscar si el jugador ya existe
+                Jugador jugadorExistente = controladorJugadores.buscarJugadorPorNombreApellidos(nombre, apellidos);
+
+                if (jugadorExistente == null) {
+                    // Obtener el ID del equipo si existe
+                    Integer idEquipo = null;
+                    if (!"null".equals(equipo) && !"Sin equipo".equals(equipo) && !equipo.isEmpty()) {
+                        controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
+                        Equipo equipoObj = ctrlEquipos.buscarEquipoPorNombre(equipo);
+                        if (equipoObj != null) {
+                            idEquipo = equipoObj.getIDEquipo();
+                        }
+                    }
+
+                    // Añadir el nuevo jugador
+                    controladorJugadores.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+                    jugadoresImportados++;
+                }
+            }
+
+            // Mostrar mensaje según resultado
+            if (jugadoresImportados > 0) {
+                JOptionPane.showMessageDialog(this,
+                        jugadoresImportados + " jugadores importados correctamente.",
+                        "Importación binaria", JOptionPane.INFORMATION_MESSAGE);
+
+                // Actualizar la tabla tras la importación
+                actualizarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se importó ningún jugador (todos ya existían en la base de datos).",
+                        "Importación binaria", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (FileNotFoundException fnf) {
+            JOptionPane.showMessageDialog(this,
+                    "No se encontró el archivo jugadores.bin",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al importar desde archivo binario: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_btnImportarBinarioActionPerformed
     private void mostrarDatosJugadorSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
 
@@ -880,13 +1003,12 @@ public class GestionJugadores extends javax.swing.JPanel {
     private javax.swing.JButton btnAnadir;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnExportarAXml;
     private javax.swing.JButton btnExportarBinario;
     private javax.swing.JButton btnExportarXML;
+    private javax.swing.JButton btnImportarBinario;
     private javax.swing.JButton btnImportarXML;
     private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboEquipo;
     private javax.swing.JComboBox<String> jComboPosicion;
     private javax.swing.JComboBox<String> jComboSexo;
@@ -912,8 +1034,8 @@ public class GestionJugadores extends javax.swing.JPanel {
      * @param dtm
      * @return
      */
-    private List<Object[]> pasarTablaALista(DefaultTableModel dtm) {
-        List<Object[]> listadoJugadores = new ArrayList<>();
+    private ArrayList<Object[]> pasarTablaALista(DefaultTableModel dtm) {
+        ArrayList<Object[]> listadoJugadores = new ArrayList<>();
         int filas = dtm.getRowCount();
         int columnas = dtm.getColumnCount();
         for (int i = 0; i < filas; i++) {
