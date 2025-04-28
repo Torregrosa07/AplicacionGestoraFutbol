@@ -141,7 +141,7 @@ public class controladorEquipos {
 
         try {
             con = conexionBDR.conectar();
-            con.setAutoCommit(false); // Iniciamos una transacción para garantizar que todo se ejecute o nada
+            con.setAutoCommit(false); 
             st = con.createStatement();
 
             // Primero obtenemos el ID del equipo
@@ -149,7 +149,7 @@ public class controladorEquipos {
             rs = st.executeQuery(sqlBuscarId);
 
             if (!rs.next()) {
-                return false; // El equipo no existe
+                return false; 
             }
 
             int idEquipo = rs.getInt("id_equipo");

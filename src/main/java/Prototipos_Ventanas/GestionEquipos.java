@@ -52,14 +52,11 @@ public class GestionEquipos extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
 
     private void actualizaTabla() {
-        //miniAgenda.añadir(new Deportista("Ana","Futbol",2011, 1.76f)); // registro de ejemplo directo
+
         matrizDatos = controladorEquipos.convertirAMatrizObject();
         dtm = new DefaultTableModel(matrizDatos, columnas) {
             //para impedir edición de las celdas
-            @Override
-            public boolean isCellEditable(int fila, int columna) {
-                return false;
-            }
+
         };
         TDatos.setModel(dtm);
 
@@ -347,6 +344,11 @@ public class GestionEquipos extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (nombreEquipo.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "El nombre del equipo no puede contener solo números.", "Error", JOptionPane.ERROR_MESSAGE);
+            txtNombreEquipo.setText("");
+            return;
+        }
 
         int añoFundacion;
         try {
@@ -436,7 +438,7 @@ public class GestionEquipos extends javax.swing.JPanel {
 
         String nombreOriginal = TDatos.getValueAt(filaSeleccionada, 0).toString();
 
-        // Obtener nuevos valores desde los JTextFields
+    
         String nuevoNombre = txtNombreEquipo.getText().trim();
         String anioStr = txtAñoDeFundacion.getText().trim();
         String nuevaLocalidad = txtLocalidad.getText().trim();
@@ -594,7 +596,7 @@ public class GestionEquipos extends javax.swing.JPanel {
                 }
             }
 
-            JOptionPane.showMessageDialog(this, "Usuarios importados desde BINARIO y guardados en BDO correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Usuarios importados desde BINARIO y guardados en BDR correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al importar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

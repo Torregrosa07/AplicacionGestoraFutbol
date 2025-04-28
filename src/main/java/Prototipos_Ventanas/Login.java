@@ -192,13 +192,12 @@ public class Login extends javax.swing.JFrame {
     private void EntrarDeInvitadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntrarDeInvitadoActionPerformed
         JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido Invitado", "KickOff Tournaments", JOptionPane.INFORMATION_MESSAGE);
 
-        // Abre la nueva ventana
         Consultar nuevaVentana = new Consultar();
         nuevaVentana.setVisible(true);
-        nuevaVentana.setLocationRelativeTo(null); // Centra la nueva ventana
+        nuevaVentana.setLocationRelativeTo(null); 
         esAdministrador = false;
 
-        // Cierra la ventana de login
+
         this.dispose();
     }//GEN-LAST:event_EntrarDeInvitadoActionPerformed
 
@@ -206,10 +205,10 @@ public class Login extends javax.swing.JFrame {
 
         VentanaRegistros ventana = new VentanaRegistros(Login.this);
         ventana.setVisible(true);
-        // Simula modal: desactiva esta ventana
+    
         setEnabled(false);
 
-        // Reactiva Login cuando cierre la ventana de registros
+
         ventana.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -278,7 +277,7 @@ public class Login extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Login ventana = new Login();
-                ventana.setLocationRelativeTo(null); // Centra la ventana en la pantalla
+                ventana.setLocationRelativeTo(null); 
                 ventana.setVisible(true);
             }
         });

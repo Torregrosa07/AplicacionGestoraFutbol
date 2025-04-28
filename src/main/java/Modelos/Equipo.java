@@ -91,15 +91,4 @@ public class Equipo implements Comparable<Equipo>{
         return this.nombre.compareToIgnoreCase(otro.getNombre());
     }
     
-    private void agregarJugador (Jugador jugador) {
-        
-    }
-    private int calcularPuntos () {
-        
-        return 0;
-        
-    }
-    private void obtenerEstadisticas () {
-        
-    }
 }

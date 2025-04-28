@@ -28,7 +28,6 @@ public class controladorUsuarios {
     static String nombreBDO = "AD_Ejemplo1.odb";
     static String rutaBase = "db/";
     static String rutaBDO = rutaBase + nombreBDO;
-    String jpql;
     static EntityManagerFactory emf;
     static EntityManager em;
 
@@ -53,7 +52,7 @@ public class controladorUsuarios {
         }
     }
 
-    public static void insertarUsuario(Usuario usuario) {
+    public static void Añadir(Usuario usuario) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -68,7 +67,7 @@ public class controladorUsuarios {
         }
     }
 
-    public static boolean existeUsuario(String nombre) {
+    public static boolean existe(String nombre) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Long> query = em.createQuery(
@@ -96,7 +95,7 @@ public class controladorUsuarios {
         }
     }
 
-    public static boolean actualizarUsuario(Usuario usuario) {
+    public static boolean actualizar(Usuario usuario) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -180,8 +179,8 @@ public class controladorUsuarios {
                 nuevoUsuario.setNombre(nombre);
                 nuevoUsuario.setContraseña(contraseña);
 
-                if (!controladorUsuarios.existeUsuario(nombre)) {
-                    controladorUsuarios.insertarUsuario(nuevoUsuario);
+                if (!controladorUsuarios.existe(nombre)) {
+                    controladorUsuarios.Añadir(nuevoUsuario);
                     cargados++;
                 }
 

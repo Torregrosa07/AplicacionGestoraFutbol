@@ -364,6 +364,13 @@ public class GestionUsuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+         if (nuevoUsuario.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "El nombre del equipo no puede contener solo números.", "Error", JOptionPane.ERROR_MESSAGE);
+            txtNombreUsuario.setText("");
+            return;
+        }
+
 
         Pattern patternCorreo = Pattern.compile(regCorreo);
         Matcher matcherCorreo = patternCorreo.matcher(correo);
@@ -380,14 +387,14 @@ public class GestionUsuarios extends javax.swing.JFrame {
             txtNúmero.setText("");
             return;
         }
-        if (controladorUsuarios.existeUsuario(nuevoUsuario)) {
+        if (controladorUsuarios.existe(nuevoUsuario)) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
             txtNombreUsuario.setText("");
             return;
         }
 
         Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, true);
-        controladorUsuarios.insertarUsuario(nuevo);
+        controladorUsuarios.Añadir(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         actualizarTablaUsuarios();
@@ -424,7 +431,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         }
 
         Usuario actualizado = new Usuario(nombre, contraseña);
-        boolean exito = controladorUsuarios.actualizarUsuario(actualizado);
+        boolean exito = controladorUsuarios.actualizar(actualizado);
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Usuario modificado.");
@@ -494,7 +501,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             System.out.println("Número de filas exportadas: " + lista.size());
 
             // Guardar la lista en un archivo binario
-            FileOutputStream fos = new FileOutputStream("usuarios.bin"); // nombre del archivo binario
+            FileOutputStream fos = new FileOutputStream("usuarios.bin"); 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(lista);
             oos.close();
@@ -538,7 +545,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             System.out.println("Número de filas exportadas: " + lista.size());
 
             // Guardar la lista en un archivo XML
-            FileOutputStream fos = new FileOutputStream("usuarios.xml"); // nombre más adecuado
+            FileOutputStream fos = new FileOutputStream("usuarios.xml"); 
             XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(fos));
             encoder.writeObject(lista);
             encoder.close();
@@ -589,7 +596,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                     Usuario nuevoUsuario = new Usuario(nombre, contraseña, correo, numero, false);
 
                     // Insertar en la base de datos
-                    controladorUsuarios.insertarUsuario(nuevoUsuario);
+                    controladorUsuarios.Añadir(nuevoUsuario);
 
                 } catch (Exception e) {
                     System.err.println("Error insertando usuario: " + e.getMessage());
@@ -637,7 +644,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 GestionUsuarios ventana = new GestionUsuarios();
-                ventana.setLocationRelativeTo(null); // Centra la ventana en la pantalla
+                ventana.setLocationRelativeTo(null); 
                 ventana.setVisible(true);
             }
         });

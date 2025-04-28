@@ -27,17 +27,9 @@ public class VentanaRegistros extends javax.swing.JFrame {
      */
     public VentanaRegistros(Login parent) {
         initComponents();
-
-        // Bloquear la X
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-        // No permitir maximizar
         setResizable(false);
-
-        // Centrar
         setLocationRelativeTo(null);
-
-        // Guardar referencia si necesitás volver a activarlo más tarde
         this.parentLogin = parent;
     }
 
@@ -203,9 +195,18 @@ public class VentanaRegistros extends javax.swing.JFrame {
         String nuevoUsuario = txtUsuarioNuevo.getText().trim();
         String nuevaContraseña = new String(txtContraseñaNueva.getText()).trim();
         String confirmarContraseña = new String(txtContraseñaconfirma.getText()).trim();
-
         String correo = txtCorreo.getText().trim();
         String telefono = txtNúmero.getText().trim();
+        
+        if (nuevoUsuario.isEmpty() || nuevaContraseña.isEmpty() || confirmarContraseña.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (nuevoUsuario.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "El nombre del usuario no puede contener solo números.", "Error", JOptionPane.ERROR_MESSAGE);
+            txtUsuarioNuevo.setText("");
+            return;
+        }
 
         Pattern patternCorreo = Pattern.compile(regCorreo);
         Matcher matcherCorreo = patternCorreo.matcher(correo);
@@ -223,10 +224,6 @@ public class VentanaRegistros extends javax.swing.JFrame {
             return;
         }
 
-        if (nuevoUsuario.isEmpty() || nuevaContraseña.isEmpty() || confirmarContraseña.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
 
         if (!nuevaContraseña.equals(confirmarContraseña)) {
             JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -235,14 +232,14 @@ public class VentanaRegistros extends javax.swing.JFrame {
             return;
         }
 
-        if (controladorUsuarios.existeUsuario(nuevoUsuario)) {
+        if (controladorUsuarios.existe(nuevoUsuario)) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
             txtUsuarioNuevo.setText("");
             return;
         }
 
         Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, false);
-        controladorUsuarios.insertarUsuario(nuevo);
+        controladorUsuarios.Añadir(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }//GEN-LAST:event_btnRegistrarActionPerformed
