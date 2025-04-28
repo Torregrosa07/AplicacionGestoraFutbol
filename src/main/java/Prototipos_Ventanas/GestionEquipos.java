@@ -91,6 +91,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         btnExportarABinario = new javax.swing.JButton();
         btnImportarDeXml = new javax.swing.JButton();
         btnImportarDeBinario = new javax.swing.JButton();
+        btnLimpiarCampos = new javax.swing.JButton();
 
         btnEliminar1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar1.setText("Eliminar");
@@ -214,6 +215,15 @@ public class GestionEquipos extends javax.swing.JPanel {
             }
         });
 
+        btnLimpiarCampos.setBackground(new java.awt.Color(255, 102, 102));
+        btnLimpiarCampos.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnLimpiarCampos.setText("LIMPIAR CAMPOS");
+        btnLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarCamposActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -239,14 +249,17 @@ public class GestionEquipos extends javax.swing.JPanel {
                                     .addComponent(txtLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtEntrenador, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
+                        .addGap(68, 68, 68)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(btnLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
@@ -257,7 +270,7 @@ public class GestionEquipos extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnImportarDeXml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnImportarDeBinario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnImportarDeBinario, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
                         .addGap(47, 47, 47)))
                 .addContainerGap())
         );
@@ -282,7 +295,9 @@ public class GestionEquipos extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEntrenador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
-                        .addGap(51, 51, 51)
+                        .addGap(34, 34, 34)
+                        .addComponent(btnLimpiarCampos)
+                        .addGap(33, 33, 33)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -601,6 +616,16 @@ public class GestionEquipos extends javax.swing.JPanel {
         actualizaTabla();
     }//GEN-LAST:event_btnImportarDeBinarioActionPerformed
 
+    private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
+
+        txtNombreEquipo.setText("");
+        txtAñoDeFundacion.setText("");
+        txtLocalidad.setText("");
+        txtEntrenador.setText("");
+
+        actualizaTabla();
+    }//GEN-LAST:event_btnLimpiarCamposActionPerformed
+
     private void mostrarDatosUsuarioSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
 
@@ -687,6 +712,7 @@ public class GestionEquipos extends javax.swing.JPanel {
     private javax.swing.JButton btnExportarAXml;
     private javax.swing.JButton btnImportarDeBinario;
     private javax.swing.JButton btnImportarDeXml;
+    private javax.swing.JButton btnLimpiarCampos;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JLabel jLabel1;

@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionUsuarios extends javax.swing.JFrame {
 
+    controladorUsuarios  controlador = new controladorUsuarios();
     final String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
     final String regTelefono = "^[\\+]?\\d{9,14}$";
 
@@ -384,14 +385,14 @@ public class GestionUsuarios extends javax.swing.JFrame {
             txtNúmero.setText("");
             return;
         }
-        if (controladorUsuarios.existe(nuevoUsuario)) {
+        if (controlador.existe(nuevoUsuario)) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
             txtNombreUsuario.setText("");
             return;
         }
 
         Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, true);
-        controladorUsuarios.Añadir(nuevo);
+        controlador.añadir(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         actualizarTablaUsuarios();
@@ -406,7 +407,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             return;
         }
 
-        Usuario usuario = controladorUsuarios.buscarUsuarioPorNombre(nombre);
+        Usuario usuario = controladorUsuarios.buscar(nombre);
 
         if (usuario != null) {
             txtContraseña.setText(usuario.getContraseña());
@@ -428,7 +429,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         }
 
         Usuario actualizado = new Usuario(nombre, contraseña);
-        boolean exito = controladorUsuarios.actualizar(actualizado);
+        boolean exito = controlador.editar(actualizado);
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Usuario modificado.");
@@ -453,7 +454,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         int confirmacion = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas eliminar el usuario '" + nombreUsuario + "'?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            boolean exito = controladorUsuarios.eliminarUsuario(nombreUsuario);
+            boolean exito = controlador.eliminar(nombreUsuario);
 
             if (exito) {
                 JOptionPane.showMessageDialog(this, "Usuario eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -593,7 +594,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
                     Usuario nuevoUsuario = new Usuario(nombre, contraseña, correo, numero, false);
 
                     // Insertar en la base de datos
-                    controladorUsuarios.Añadir(nuevoUsuario);
+                    controlador.añadir(nuevoUsuario);
 
                 } catch (Exception e) {
                     System.err.println("Error insertando usuario: " + e.getMessage());

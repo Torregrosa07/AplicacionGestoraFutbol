@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
  * @author thomas
  */
 public class VentanaRegistros extends javax.swing.JFrame {
+    controladorUsuarios  controlador = new controladorUsuarios();
 
     final private Login parentLogin;
     final String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
@@ -232,14 +233,14 @@ public class VentanaRegistros extends javax.swing.JFrame {
             return;
         }
 
-        if (controladorUsuarios.existe(nuevoUsuario)) {
+        if (controlador.existe(nuevoUsuario)) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
             txtUsuarioNuevo.setText("");
             return;
         }
 
         Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, false);
-        controladorUsuarios.Añadir(nuevo);
+        controlador.añadir(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }//GEN-LAST:event_btnRegistrarActionPerformed

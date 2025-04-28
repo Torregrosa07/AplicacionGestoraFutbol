@@ -4,6 +4,7 @@
  */
 package controladores;
 
+import Modelos.Gestionar;
 import Modelos.Usuario;
 import java.beans.XMLDecoder;
 import java.io.BufferedInputStream;
@@ -34,12 +35,12 @@ public class controladorUsuarios {
         emf = Persistence.createEntityManagerFactory(rutaBDO);
     }
 
-    public static Usuario validarUsuario(String nombre, String contraseña) {
-        em = emf.createEntityManager(); 
+    public Usuario validarUsuario(String nombre, String contraseña) {
+        em = emf.createEntityManager();
         try {
-            em.getTransaction().begin(); 
-            em.flush();                  
-            em.clear();                  
+            em.getTransaction().begin();
+            em.flush();
+            em.clear();
             TypedQuery<Usuario> query = em.createQuery(
                     "SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.contraseña = :contraseña", Usuario.class);
             query.setParameter("nombre", nombre);
@@ -51,7 +52,8 @@ public class controladorUsuarios {
         }
     }
 
-    public static void Añadir(Usuario usuario) {
+//    @Override
+    public void añadir(Usuario usuario) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -66,7 +68,7 @@ public class controladorUsuarios {
         }
     }
 
-    public static boolean existe(String nombre) {
+    public boolean existe(String nombre) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Long> query = em.createQuery(
@@ -79,7 +81,7 @@ public class controladorUsuarios {
         }
     }
 
-    public static Usuario buscarUsuarioPorNombre(String nombre) {
+    public static Usuario buscar(String nombre) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Usuario> query = em.createQuery(
@@ -94,7 +96,7 @@ public class controladorUsuarios {
         }
     }
 
-    public static boolean actualizar(Usuario usuario) {
+    public boolean editar(Usuario usuario) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -122,7 +124,7 @@ public class controladorUsuarios {
         }
     }
 
-    public static boolean eliminarUsuario(String nombre) {
+    public boolean eliminar(String nombre) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -158,6 +160,8 @@ public class controladorUsuarios {
     }
 
     public static int importarUsuariosDesdeXML() throws FileNotFoundException, Exception {
+        controladorUsuarios controlador = new controladorUsuarios();
+
         FileInputStream fis = new FileInputStream("usuarios.xml");
         XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
         ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
@@ -178,8 +182,8 @@ public class controladorUsuarios {
                 nuevoUsuario.setNombre(nombre);
                 nuevoUsuario.setContraseña(contraseña);
 
-                if (!controladorUsuarios.existe(nombre)) {
-                    controladorUsuarios.Añadir(nuevoUsuario);
+                if (!controlador.existe(nombre)) {
+                    controlador.añadir(nuevoUsuario);
                     cargados++;
                 }
 

@@ -14,6 +14,7 @@ import javax.swing.*;
  * @author Santiago
  */
 public class Login extends javax.swing.JFrame {
+    controladorUsuarios  controlador = new controladorUsuarios();
 
     boolean esAdministrador = false;
 
@@ -292,7 +293,7 @@ public class Login extends javax.swing.JFrame {
             contraseñaIngresada = "";
         }
 
-        Usuario usuario = controladorUsuarios.validarUsuario(usuarioIngresado, contraseñaIngresada);
+        Usuario usuario = controlador.validarUsuario(usuarioIngresado, contraseñaIngresada);
 
         if (usuario != null) {
             JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
