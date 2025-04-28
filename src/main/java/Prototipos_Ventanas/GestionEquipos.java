@@ -4,18 +4,13 @@
  */
 package Prototipos_Ventanas;
 
-import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
-import Modelos.Usuario;
-import controladores.controladorEquipos;
-import controladores.controladorUsuarios;
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

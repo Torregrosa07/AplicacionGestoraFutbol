@@ -7,8 +7,6 @@ package Prototipos_Ventanas;
 import Modelos.Usuario;
 import controladores.controladorUsuarios;
 import java.awt.Color;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import javax.swing.*;
 
 /**

@@ -9,7 +9,6 @@ import java.beans.XMLDecoder;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;

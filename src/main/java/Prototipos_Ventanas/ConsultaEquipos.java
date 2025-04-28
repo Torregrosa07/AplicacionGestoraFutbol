@@ -5,7 +5,6 @@
 package Prototipos_Ventanas;
 
 import Modelos.Equipo;
-import controladores.controladorEquipos;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 

@@ -8,7 +8,6 @@ import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
 
 import Modelos.Partido;
-import Prototipos_Ventanas.GestionPartidos;
 import com.toedter.calendar.JDateChooser;
 import java.awt.TextField;
 import java.beans.XMLDecoder;
@@ -16,23 +15,16 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**

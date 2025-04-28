@@ -4,7 +4,6 @@
  */
 package Prototipos_Ventanas;
 
-import ConexionesBD.ConexionBDR;
 import Modelos.Equipo;
 import Modelos.Jugador;
 import controladores.controladorEquipos;
@@ -18,10 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

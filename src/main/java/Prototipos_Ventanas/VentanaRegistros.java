@@ -8,7 +8,6 @@ import Modelos.Usuario;
 import controladores.controladorUsuarios;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -19,11 +18,12 @@ import javax.swing.JOptionPane;
 public class VentanaRegistros extends javax.swing.JFrame {
 
     final private Login parentLogin;
-    String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
-    String regTelefono = "^[\\+]?\\d{9,14}$";
+    final String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
+    final String regTelefono = "^[\\+]?\\d{9,14}$";
 
     /**
      * Creates new form VentanaRegistros
+     * @param parent
      */
     public VentanaRegistros(Login parent) {
         initComponents();
