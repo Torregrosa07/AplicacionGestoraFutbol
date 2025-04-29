@@ -237,40 +237,7 @@ public class controladorEquipos {
         }
     }
 
-    public int importarEquiposDesdeXML() throws FileNotFoundException, Exception {
-        FileInputStream fis = new FileInputStream("equipos.xml");
-        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
-        ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
-        decoder.close();
-
-        if (lista.isEmpty()) {
-            throw new Exception("El archivo XML está vacío.");
-        }
-
-        int cargados = 0;
-
-        for (Object[] fila : lista) {
-            try {
-                String nombre = (String) fila[0];
-                int añoFundacion = (Integer) fila[1];
-                String localidad = (String) fila[2];
-                String entrenador = (String) fila[3];
-
-                Equipo nuevoEquipo = new Equipo(nombre, añoFundacion, localidad, entrenador);
-
-                if (buscarEquipoPorNombre(nombre) == null) {
-                    if (guardarEnBD(nuevoEquipo)) {
-                        cargados++;
-                    }
-                }
-
-            } catch (Exception e) {
-                System.err.println("Error al procesar equipo: " + e.getMessage());
-            }
-        }
-
-        return cargados;
-    }
+   
 
     public Object[][] convertirAMatrizObject() {
         ConexionBDR conexionBDR = new ConexionBDR();

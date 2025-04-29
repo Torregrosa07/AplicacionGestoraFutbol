@@ -6,7 +6,9 @@ package Prototipos_Ventanas;
 
 import Modelos.Usuario;
 import controladores.controladorUsuarios;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionUsuarios extends javax.swing.JFrame {
 
-    controladorUsuarios  controlador = new controladorUsuarios();
+    controladorUsuarios controlador = new controladorUsuarios();
     final String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
     final String regTelefono = "^[\\+]?\\d{9,14}$";
 
@@ -362,13 +364,12 @@ public class GestionUsuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-         if (nuevoUsuario.matches("\\d+")) {
+
+        if (nuevoUsuario.matches("\\d+")) {
             JOptionPane.showMessageDialog(this, "El nombre del equipo no puede contener solo números.", "Error", JOptionPane.ERROR_MESSAGE);
             txtNombreUsuario.setText("");
             return;
         }
-
 
         Pattern patternCorreo = Pattern.compile(regCorreo);
         Matcher matcherCorreo = patternCorreo.matcher(correo);
@@ -499,7 +500,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             System.out.println("Número de filas exportadas: " + lista.size());
 
             // Guardar la lista en un archivo binario
-            FileOutputStream fos = new FileOutputStream("usuarios.bin"); 
+            FileOutputStream fos = new FileOutputStream("usuarios.bin");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(lista);
             oos.close();
@@ -515,9 +516,40 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
     private void btnImportarDeXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXmlActionPerformed
         try {
-            int usuariosImportados = controladorUsuarios.importarUsuariosDesdeXML();
-            JOptionPane.showMessageDialog(this, usuariosImportados + " usuarios importados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            FileInputStream fis = new FileInputStream("usuarios.xml");
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
+            ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
+            decoder.close();
+
+            if (lista == null || lista.isEmpty()) {
+                throw new Exception("El archivo XML está vacío.");
+            }
+
+            int cargados = 0;
+
+            for (Object[] fila : lista) {
+                try {
+                    String nombre = (String) fila[0];
+                    String contraseña = (String) fila[1];
+
+                    Usuario nuevoUsuario = new Usuario();
+                    nuevoUsuario.setNombre(nombre);
+                    nuevoUsuario.setContraseña(contraseña);
+
+                    if (!controlador.existe(nombre)) {
+                        controlador.añadir(nuevoUsuario);
+                        cargados++;
+                    }
+
+                } catch (Exception e) {
+                    System.err.println("Error al procesar usuario: " + e.getMessage());
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, cargados + " usuarios importados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             actualizarTablaUsuarios();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al importar usuarios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
@@ -543,7 +575,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             System.out.println("Número de filas exportadas: " + lista.size());
 
             // Guardar la lista en un archivo XML
-            FileOutputStream fos = new FileOutputStream("usuarios.xml"); 
+            FileOutputStream fos = new FileOutputStream("usuarios.xml");
             XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(fos));
             encoder.writeObject(lista);
             encoder.close();
@@ -642,7 +674,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 GestionUsuarios ventana = new GestionUsuarios();
-                ventana.setLocationRelativeTo(null); 
+                ventana.setLocationRelativeTo(null);
                 ventana.setVisible(true);
             }
         });

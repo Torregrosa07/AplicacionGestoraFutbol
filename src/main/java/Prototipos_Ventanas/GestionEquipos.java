@@ -5,7 +5,10 @@
 package Prototipos_Ventanas;
 
 import Modelos.Equipo;
+import controladores.controladorEquipos;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionEquipos extends javax.swing.JPanel {
 
-    private controladores.controladorEquipos controladorEquipos = new controladores.controladorEquipos();
+    private controladorEquipos controlador = new controladorEquipos();
     private Object[][] matrizDatos;
     private DefaultTableModel dtm;
     private String[] columnas = {"NOMBRE", "AÑO FUNDACIÓN", "LOCALIDAD", "ENTRENADOR"};
@@ -32,7 +35,7 @@ public class GestionEquipos extends javax.swing.JPanel {
     public GestionEquipos() {
         initComponents();
 
-        controladorEquipos = new controladores.controladorEquipos();
+        controlador = new controladores.controladorEquipos();
         TDatos.getSelectionModel().addListSelectionListener(e -> mostrarDatosUsuarioSeleccionado());
 
         actualizaTabla();
@@ -48,7 +51,7 @@ public class GestionEquipos extends javax.swing.JPanel {
 
     private void actualizaTabla() {
 
-        matrizDatos = controladorEquipos.convertirAMatrizObject();
+        matrizDatos = controlador.convertirAMatrizObject();
         dtm = new DefaultTableModel(matrizDatos, columnas) {
             //para impedir edición de las celdas
 
@@ -370,7 +373,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         }
 
         Equipo nuevoEquipo = new Equipo(nombreEquipo, añoFundacion, localidad, entrenador);
-        boolean guardadoBD = controladorEquipos.guardarEnBD(nuevoEquipo);
+        boolean guardadoBD = controlador.guardarEnBD(nuevoEquipo);
 
         if (guardadoBD) {
             JOptionPane.showMessageDialog(this, "Equipo registrado correctamente en la base de datos.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -395,7 +398,7 @@ public class GestionEquipos extends javax.swing.JPanel {
         int confirmacion = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas eliminar el equipo '" + nombreEquipo + "'?", "Confirmar", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            boolean exito = controladorEquipos.eliminarEquipo(nombreEquipo);
+            boolean exito = controlador.eliminarEquipo(nombreEquipo);
 
             if (exito) {
                 JOptionPane.showMessageDialog(this, "Equipo eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -414,7 +417,7 @@ public class GestionEquipos extends javax.swing.JPanel {
             return;
         }
 
-        Equipo equipoEncontrado = controladorEquipos.buscarEquipoPorNombre(nombreBuscar);
+        Equipo equipoEncontrado = controlador.buscarEquipoPorNombre(nombreBuscar);
 
         if (equipoEncontrado != null) {
 
@@ -467,7 +470,7 @@ public class GestionEquipos extends javax.swing.JPanel {
             return;
         }
 
-        boolean exito = controladorEquipos.modificarEquipo(nombreOriginal, nuevoNombre, nuevoAnio, nuevaLocalidad, nuevoEntrenador);
+        boolean exito = controlador.modificarEquipo(nombreOriginal, nuevoNombre, nuevoAnio, nuevaLocalidad, nuevoEntrenador);
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Equipo modificado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -547,23 +550,55 @@ public class GestionEquipos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExportarABinarioActionPerformed
 
     private void btnImportarDeXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXmlActionPerformed
-        try {
-            int cantidad = controladorEquipos.importarEquiposDesdeXML();
-            JOptionPane.showMessageDialog(this, cantidad + " Equipos importados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            actualizaTabla(); // actualiza la tabla
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al importar desde XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+           try {
+        FileInputStream fis = new FileInputStream("equipos.xml");
+        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
+        ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
+        decoder.close();
+
+        if (lista == null || lista.isEmpty()) {
+            throw new Exception("El archivo XML está vacío.");
         }
+
+        int cargados = 0;
+
+        for (Object[] fila : lista) {
+            try {
+                String nombre = (String) fila[0];
+                int añoFundacion = (Integer) fila[1];
+                String localidad = (String) fila[2];
+                String entrenador = (String) fila[3];
+
+                Equipo nuevoEquipo = new Equipo(nombre, añoFundacion, localidad, entrenador);
+
+                if (controlador.buscarEquipoPorNombre(nombre) == null) {
+                    if (controlador.guardarEnBD(nuevoEquipo)) {
+                        cargados++;
+                    }
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error al procesar equipo: " + e.getMessage());
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, cargados + " Equipos importados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        actualizaTabla(); 
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al importar desde XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+
     }//GEN-LAST:event_btnImportarDeXmlActionPerformed
 
     private void btnImportarDeBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeBinarioActionPerformed
         try {
-            // Leer el archivo binario
+            // Leer el binario
             FileInputStream fis = new FileInputStream("equipos.bin");
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            // Recuperar la lista de usuarios
+            // Recupera la lista de usuarios
             ArrayList<Object[]> lista = (ArrayList<Object[]>) ois.readObject();
             ois.close();
 
@@ -595,8 +630,8 @@ public class GestionEquipos extends javax.swing.JPanel {
                     Equipo nuevoEquipo = new Equipo(nombreEquipo, añoFundacion, localidad, entrenador);
 
                     // Insertar en la base de datos
-                    if (!controladorEquipos.existeEquipo(nombreEquipo, añoFundacion)) {
-                        controladorEquipos.guardarEnBD(nuevoEquipo);
+                    if (!controlador.existeEquipo(nombreEquipo, añoFundacion)) {
+                        controlador.guardarEnBD(nuevoEquipo);
                     } else {
                         System.out.println("Equipo ya existente: " + nombreEquipo + " (" + añoFundacion + ")");
                     }
@@ -606,10 +641,10 @@ public class GestionEquipos extends javax.swing.JPanel {
                 }
             }
 
-            JOptionPane.showMessageDialog(this, "Usuarios importados desde BINARIO y guardados en BDR correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Usuarios importados desde binario y guardados en BDR correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al importar BINARIO: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al importar binario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
 
