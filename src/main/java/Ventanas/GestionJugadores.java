@@ -168,7 +168,6 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        btnAnadir.setBackground(new java.awt.Color(102, 255, 102));
         btnAnadir.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnAnadir.setText("Añadir");
         btnAnadir.addActionListener(new java.awt.event.ActionListener() {
@@ -177,7 +176,6 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        btnModificar.setBackground(new java.awt.Color(255, 255, 102));
         btnModificar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -186,7 +184,6 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
         btnEliminar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -195,7 +192,6 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         });
 
-        btnBuscar.setBackground(new java.awt.Color(51, 153, 255));
         btnBuscar.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
