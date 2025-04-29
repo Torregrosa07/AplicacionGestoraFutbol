@@ -537,34 +537,34 @@ public class controladorPartido {
                     String nombreLocal = ""; //variables para nombres
                     String nombreVisitante = "";
 
-                    stmtEquipos = conn.createStatement();
-                    rsLocal = stmtEquipos.executeQuery("SELECT nombre FROM equipo WHERE id_equipo = " + idEquipoLocal);
+                    stmtEquipos = conn.createStatement(); //sentencia para los equipos
+                    rsLocal = stmtEquipos.executeQuery("SELECT nombre FROM equipo WHERE id_equipo = " + idEquipoLocal); //donde se seleccionan sus ids
                     if (rsLocal.next()) {
-                        nombreLocal = rsLocal.getString("nombre");
+                        nombreLocal = rsLocal.getString("nombre");//y obtiene el nombre del equipo local
                     }
 
-                    rsVisitante = stmtEquipos.executeQuery("SELECT nombre FROM equipo WHERE id_equipo = " + idEquipoVisitante);
+                    rsVisitante = stmtEquipos.executeQuery("SELECT nombre FROM equipo WHERE id_equipo = " + idEquipoVisitante);//y lo mismo para busscar el id del visitante
                     if (rsVisitante.next()) {
                         nombreVisitante = rsVisitante.getString("nombre");
                     }
 
-                    Equipo equipoLocal = new Equipo(idEquipoLocal, nombreLocal);
-                    Equipo equipoVisitante = new Equipo(idEquipoVisitante, nombreVisitante);
+                    Equipo equipoLocal = new Equipo(idEquipoLocal, nombreLocal); //instancia del equipo local
+                    Equipo equipoVisitante = new Equipo(idEquipoVisitante, nombreVisitante);//instancia del equipo visitante
 
-                    String fechaStr = rs.getString("fecha") + " " + rs.getString("hora");
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    String fechaStr = rs.getString("fecha") + " " + rs.getString("hora"); //se obtiene la fecha y la hora
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");//instancia del formato de fehca y hora
                     Date fechaPartido = sdf.parse(fechaStr);
 
-                    int golesLocal = rs.getInt("goles_local");
+                    int golesLocal = rs.getInt("goles_local"); //se obtiene los goles del equipo local
                     if (rs.wasNull()) {
                         golesLocal = -1;
                     }
-                    int golesVisitante = rs.getInt("goles_visitante");
+                    int golesVisitante = rs.getInt("goles_visitante");//se obtiene los goles del equipo visitante
                     if (rs.wasNull()) {
                         golesVisitante = -1;
                     }
 
-                    Partido partido = new Partido(
+                    Partido partido = new Partido( 
                             rs.getInt("id_partido"),
                             fechaPartido,
                             equipoLocal,
@@ -575,14 +575,14 @@ public class controladorPartido {
                     return partido;
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) { //manejo de excepciones
             System.err.println("Error al buscar partido por ID: " + e.getMessage());
             e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (ParseException e) {//excepcion de parseo
             System.err.println("Error al parsear la fecha: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            try {
+            try { //se cierra todo
                 if (rsLocal != null) {
                     rsLocal.close();
                 }
@@ -601,7 +601,7 @@ public class controladorPartido {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            conexion.desconectar();
+            conexion.desconectar(); //y se desconecta
         }
         return null;
     }
@@ -612,7 +612,7 @@ public class controladorPartido {
      * @param fecha La fecha en formato "yyyy-MM-dd" para buscar los partidos.
      * @return Un DefaultTableModel con los partidos encontrados.
      */
-    public DefaultTableModel buscarPartidosPorFecha(String fecha) {
+    public DefaultTableModel buscarPartidosPorFecha(String fecha) { //se pasa por parametro un string que contiene la fecha
         DefaultTableModel modelo = new DefaultTableModel(
                 new String[]{"ID", "Fecha", "Hora", "Equipo Local", "Equipo Visitante"}, 0
         );
@@ -620,18 +620,18 @@ public class controladorPartido {
         Statement sentencia = null;
         ResultSet rs = null;
         try {
-            conn = conexion.conectar();
-            System.out.println("Conexión a la base de datos exitosa en buscarPartidosPorFecha.");
+            conn = conexion.conectar(); //se conecta
+            System.out.println("Conexión a la base de datos exitosa en buscarPartidosPorFecha.");//mensaje para la consola
             sentencia = conn.createStatement();
-            String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante "
+            String sql = "SELECT p.id_partido, p.fecha, p.hora, e1.nombre AS local, e2.nombre AS visitante " //sentencia
                     + "FROM partido p "
                     + "JOIN equipo e1 ON p.id_equipo_local = e1.id_equipo "
                     + "JOIN equipo e2 ON p.id_equipo_visitante = e2.id_equipo "
                     + "WHERE p.fecha = '" + fecha + "'";
-            System.out.println("Ejecutando consulta en buscarPartidosPorFecha: " + sql);
+            System.out.println("Ejecutando consulta en buscarPartidosPorFecha: " + sql); //mas comentarios para la consola
             rs = sentencia.executeQuery(sql);
 
-            int rowCount = 0;
+            int contadorFilas = 0; // se inicia un contador de filas 
             while (rs.next()) {
                 modelo.addRow(new Object[]{
                     rs.getInt("id_partido"),
@@ -640,17 +640,17 @@ public class controladorPartido {
                     rs.getString("local"),
                     rs.getString("visitante")
                 });
-                rowCount++;
+                contadorFilas++; //se incrementa el contador
             }
-            System.out.println("Se encontraron " + rowCount + " partidos para la fecha " + fecha + " en buscarPartidosPorFecha.");
-            if (rowCount == 0) {
-                System.out.println("Advertencia: No se encontraron partidos para la fecha " + fecha + " en buscarPartidosPorFecha.");
+            System.out.println("Se encontraron " + contadorFilas + " partidos para la fecha " + fecha + " en buscarPartidosPorFecha."); //con el contador se busca el partido con la fecha seleccionada en la fila
+            if (contadorFilas == 0) {
+                System.out.println("Advertencia: No se encontraron partidos para la fecha " + fecha + " en buscarPartidosPorFecha."); //mensaje para la consoal y sabeer que esta pasando
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) { //manejo de excepciones
             System.err.println("Error al buscar partidos por fecha: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al buscar partidos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            try {
+            try { //se cierra todo
                 if (rs != null) {
                     rs.close();
                 }
@@ -660,9 +660,9 @@ public class controladorPartido {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            conexion.desconectar();
+            conexion.desconectar(); //y se desconecta
         }
-        return modelo;
+        return modelo; //devolverá en el mopdelo el partido con la fecha consultada
     }
 
     /**
@@ -671,19 +671,19 @@ public class controladorPartido {
      * @param nombre
      * @return
      */
-    public boolean existeEquipo(String nombre) {
+    public boolean existeEquipo(String nombre) {  //se pasa por parametro el Stirng del nombre del equipo        
         Connection conn = null;
         Statement sentencia = null;
         ResultSet rs = null;
         try {
-            conn = conexion.conectar();
+            conn = conexion.conectar(); // se conecta
             sentencia = conn.createStatement();
-            String sql = "SELECT COUNT(*) FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'";
-            rs = sentencia.executeQuery(sql);
-            return rs.next() && rs.getInt(1) > 0;
-        } catch (SQLException | ClassNotFoundException e) {
+            String sql = "SELECT COUNT(*) FROM equipo WHERE nombre = '" + nombre.replace("'", "''") + "'"; //sentencia para lanzar
+            rs = sentencia.executeQuery(sql); //y se ejecuta
+            return rs.next() && rs.getInt(1) > 0; 
+        } catch (SQLException | ClassNotFoundException e) { //manejo de excepciones
             return false;
-        } finally {
+        } finally {  //se cierra todo
             try {
                 if (rs != null) {
                     rs.close();
@@ -694,7 +694,7 @@ public class controladorPartido {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            conexion.desconectar();
+            conexion.desconectar(); //y se desconecta
         }
     }
 
@@ -707,7 +707,7 @@ public class controladorPartido {
      * @param equipoVisitante
      * @return
      */
-    public boolean existePartido(String fecha, String hora, String equipoLocal, String equipoVisitante) {
+    public boolean existePartido(String fecha, String hora, String equipoLocal, String equipoVisitante) { 
         Connection conn = null;
         Statement sentencia = null;
         ResultSet rs = null;
@@ -729,10 +729,10 @@ public class controladorPartido {
             String equipoLocalEscapado = equipoLocal.replace("'", "''");
             String equipoVisitanteEscapado = equipoVisitante.replace("'", "''");
 
-            System.out.println("Verificando partido - Fecha: " + fecha + ", Hora: " + hora
+            System.out.println("Verificando partido - Fecha: " + fecha + ", Hora: " + hora //mensaje para la consola
                     + ", Local: " + equipoLocalEscapado + ", Visitante: " + equipoVisitanteEscapado);
 
-            String sql = "SELECT COUNT(*) FROM partido p "
+            String sql = "SELECT COUNT(*) FROM partido p " //sentencia SQL con los nombres escapados de los equipos
                     + "JOIN equipo el ON p.id_equipo_local = el.id_equipo "
                     + "JOIN equipo ev ON p.id_equipo_visitante = ev.id_equipo "
                     + "WHERE p.fecha = '" + fecha + "' AND p.hora = '" + hora + "' "
@@ -741,20 +741,20 @@ public class controladorPartido {
 
             rs = sentencia.executeQuery(sql);
 
-            int count;
-            if (rs.next()) {
-                count = rs.getInt(1);
+            int contador; // se inicia un contador
+            if (rs.next()) { //para cerificar qu eexiste alguna coincidencia con alguno de los partidos en la base de datos
+                contador = rs.getInt(1);
             } else {
-                count = 0;
+                contador = 0;
             }
-            System.out.println("Resultado de existePartido: " + count + " coincidencias encontradas");
-            return count > 0;
+            System.out.println("Resultado de existePartido: " + contador + " coincidencias encontradas");//mensaje para consola
+            return contador > 0;
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             return false;
         } finally {
-            try {
+            try { //se cierra todo 
                 if (rs != null) {
                     rs.close();
                 }
@@ -764,7 +764,7 @@ public class controladorPartido {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            conexion.desconectar();
+            conexion.desconectar(); //y se desconecta
         }
     }
 
@@ -780,31 +780,31 @@ public class controladorPartido {
      * @return true si se guardó correctamente, false si hubo un error.
      */
     public boolean guardarPartido(JDateChooser dateChooserFecha, TextField hora2, String equipoLocal, String equipoVisitante, DefaultTableModel modeloPartidos) {
-        Date fecha = dateChooserFecha.getDate();
-        if (fecha == null) {
+        Date fecha = dateChooserFecha.getDate(); 
+        if (fecha == null) { //para obtener la fecha
             JOptionPane.showMessageDialog(null, "Por favor, seleccione una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaSeleccionada = sdf.format(fecha);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //se asegura el formato de fecha
+        String fechaSeleccionada = sdf.format(fecha); //y se crea una variable con la fecha seleccionada
 
-        if (equipoLocal == null || equipoLocal.equals("Sin equipo") || equipoVisitante == null || equipoVisitante.equals("Sin equipo")) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);
+        if (equipoLocal == null || equipoLocal.equals("Sin equipo") || equipoVisitante == null || equipoVisitante.equals("Sin equipo")) { //if para que se seleccionen los equipos que jugarán el partido
+            JOptionPane.showMessageDialog(null, "Debe seleccionar ambos equipos", "Error", JOptionPane.ERROR_MESSAGE);//mensaje por si no se elije ningun equipo
             return false;
         }
 
-        if (equipoLocal.equals(equipoVisitante)) {
+        if (equipoLocal.equals(equipoVisitante)) { //if para evitar que se seleccione el msimo equipo
             JOptionPane.showMessageDialog(null, "No puedes seleccionar el mismo equipo", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
         String horaStr = hora2.getText().trim();
         if (horaStr.length() == 5) {
-            horaStr += ":00"; // asegurar el formato HH:mm:ss
+            horaStr += ":00"; // se asegura el formato de hora HH:mm:ss (para la base de datos)
         }
 
-        // Verificar si el partido ya existe
+        // verificar si el partido ya existe
         if (existePartido(fechaSeleccionada, horaStr, equipoLocal, equipoVisitante)) {
             JOptionPane.showMessageDialog(null, "El partido ya existe en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -813,26 +813,26 @@ public class controladorPartido {
         Connection conn = null;
         Statement sentencia = null;
         try {
-            conn = conexion.conectar();
-            int idLocal = obtenerIdEquipo(equipoLocal);
+            conn = conexion.conectar(); //se conecta
+            int idLocal = obtenerIdEquipo(equipoLocal); //y obtiene el id de ambos equipos seleccionados
             int idVisitante = obtenerIdEquipo(equipoVisitante);
 
-            if (idLocal == 0 || idVisitante == 0) {
+            if (idLocal == 0 || idVisitante == 0) { //if por si no se encuentran esos equipos en la base de datos
                 JOptionPane.showMessageDialog(null, "No se encontraron los equipos en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
 
-            sentencia = conn.createStatement();
-            String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) "
+            sentencia = conn.createStatement(); 
+            String sqlInsert = "INSERT INTO partido (fecha, hora, id_equipo_local, id_equipo_visitante) " //sentencia de INSERT en la tabla de partido para guardar el nuevo partido
                     + "VALUES ('" + fechaSeleccionada + "', '" + horaStr + "', " + idLocal + ", " + idVisitante + ")";
             sentencia.executeUpdate(sqlInsert);
 
             return true;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) { //manejo de las excepciones
             JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             return false;
-        } finally {
+        } finally { //se cierra todo
             try {
                 if (sentencia != null) {
                     sentencia.close();
@@ -840,73 +840,7 @@ public class controladorPartido {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            conexion.desconectar();
+            conexion.desconectar(); //y se desconecta
         }
     }
-
-    /**
-     * Importa partidos desde un archivo XML y los guarda en la base de datos.
-     *
-     * @param modeloPartidos Modelo de la tabla de partidos para actualizar.
-     * @return Número de partidos cargados con éxito.
-     * @throws FileNotFoundException Si el archivo XML no se encuentra.
-     * @throws Exception Si ocurre un error al leer o procesar el XML.
-     */
-//    public int importarPartidosDesdeXML(DefaultTableModel modeloPartidos) throws FileNotFoundException, Exception {
-//        FileInputStream fis = new FileInputStream("partidos.xml");
-//        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
-//        ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
-//        decoder.close();
-//
-//        if (lista.isEmpty()) {
-//            throw new Exception("XML vacío.");
-//        }
-//
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        int cargados = 0;
-//
-//        for (Object[] fila : lista) {
-//            try {
-//                Integer id = (Integer) fila[0];
-//                String fechaStr = (String) fila[1];
-//                String hora = (String) fila[2];
-//                String equipoLocal = (String) fila[3];
-//                String equipoVisitante = (String) fila[4];
-//
-//                Date fecha = dateFormat.parse(fechaStr);
-//                if (!existeEquipo(equipoLocal) || !existeEquipo(equipoVisitante)) {
-//                    continue;
-//                }
-//
-//                if (hora.length() == 5) {
-//                    hora += ":00"; // asegurar el formato HH:mm:ss
-//                }
-//
-//                JDateChooser dateTemporal = new JDateChooser(fecha);
-//                TextField horaTemporal = new TextField(hora);
-//
-//                if (!existePartido(fechaStr, hora, equipoLocal, equipoVisitante)) {
-//                    if (guardarPartido(dateTemporal, horaTemporal, equipoLocal, equipoVisitante, modeloPartidos)) {
-//                        cargados++;
-//                    }
-//                }
-//
-//            } catch (Exception e) {
-//                System.err.println("Error al procesar partido: " + e.getMessage());
-//            }
-//        }
-//
-//        modeloPartidos.setRowCount(0);
-//        DefaultTableModel nuevoModelo = cargarPartidos();
-//        for (int i = 0; i < nuevoModelo.getRowCount(); i++) {
-//            modeloPartidos.addRow(new Object[]{
-//                nuevoModelo.getValueAt(i, 0),
-//                nuevoModelo.getValueAt(i, 1),
-//                nuevoModelo.getValueAt(i, 2),
-//                nuevoModelo.getValueAt(i, 3),
-//                nuevoModelo.getValueAt(i, 4)
-//            });
-//        }
-//        return cargados;
-//    }
 }
