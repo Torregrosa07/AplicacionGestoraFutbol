@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="22.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>k</string>
+    </void>
+    <void index="1">
+     <string>k@gmail.com</string>
+    </void>
+    <void index="2">
+     <string>111222333</string>
+    </void>
+    <void index="3">
+     <string>1111</string>
+    </void>
+   </array>
+  </void>
+  <void method="add">
+   <array class="java.lang.Object" length="4">
+    <void index="0">
+     <string>Administrador</string>
+    </void>
+    <void index="1">
+     <string>a@gmail.com</string>
+    </void>
+    <void index="2">
+     <string>000999111</string>
+    </void>
+    <void index="3">
+     <string>1234</string>
+    </void>
+   </array>
+  </void>
+ </object>
+</java>

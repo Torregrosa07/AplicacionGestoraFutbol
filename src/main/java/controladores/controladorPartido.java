@@ -250,7 +250,7 @@ public class controladorPartido {
      * @param comboLocal
      * @param comboVisitante
      */
-    public static void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) {
+    public void limpiarCampos(JDateChooser dateChooser, TextField hora2, JComboBox<String> comboLocal, JComboBox<String> comboVisitante) {
         dateChooser.setDate(null);
         hora2.setText("");
         comboLocal.setSelectedIndex(0);
