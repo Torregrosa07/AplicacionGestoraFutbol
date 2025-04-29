@@ -1,9 +1,9 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-package equipo5.com.kickoff_tournaments_aplicacion_gestora_futbol;
+package Vista;
 
-import Prototipos_Ventanas.Login;
+import Ventanas.Login;
 
 /**
  *
