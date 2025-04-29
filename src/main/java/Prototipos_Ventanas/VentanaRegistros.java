@@ -16,14 +16,21 @@ import javax.swing.JOptionPane;
  * @author thomas
  */
 public class VentanaRegistros extends javax.swing.JFrame {
-    controladorUsuarios  controlador = new controladorUsuarios();
 
+    // Se crea una instancia del controlador de usuarios para manejar las operaciones
+    controladorUsuarios controlador = new controladorUsuarios();
+
+    // Se declara una referencia al objeto Login que representa el formulario o ventana de inicio de sesión.
     final private Login parentLogin;
+    // Expresión regular para validar direcciones de correo electrnico.
     final String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
+    // Expresión regular para validar números de teléfono.
+    // Acepta números que pueden empezar con un '+' seguido de entre 9 y 14 dígitos.
     final String regTelefono = "^[\\+]?\\d{9,14}$";
 
     /**
      * Creates new form VentanaRegistros
+     *
      * @param parent
      */
     public VentanaRegistros(Login parent) {
@@ -198,7 +205,7 @@ public class VentanaRegistros extends javax.swing.JFrame {
         String confirmarContraseña = new String(txtContraseñaconfirma.getText()).trim();
         String correo = txtCorreo.getText().trim();
         String telefono = txtNúmero.getText().trim();
-        
+
         if (nuevoUsuario.isEmpty() || nuevaContraseña.isEmpty() || confirmarContraseña.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor completa todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -224,7 +231,6 @@ public class VentanaRegistros extends javax.swing.JFrame {
             txtNúmero.setText("");
             return;
         }
-
 
         if (!nuevaContraseña.equals(confirmarContraseña)) {
             JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);

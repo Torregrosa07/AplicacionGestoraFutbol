@@ -14,7 +14,8 @@ import javax.swing.*;
  * @author Santiago
  */
 public class Login extends javax.swing.JFrame {
-    controladorUsuarios  controlador = new controladorUsuarios();
+
+    controladorUsuarios controlador = new controladorUsuarios();
 
     boolean esAdministrador = false;
 
@@ -51,8 +52,6 @@ public class Login extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
             jPanel1.requestFocusInWindow();
         });
-
-        
 
     }
 
@@ -180,7 +179,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        
+
 
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
@@ -193,9 +192,8 @@ public class Login extends javax.swing.JFrame {
 
         Consultar nuevaVentana = new Consultar();
         nuevaVentana.setVisible(true);
-        nuevaVentana.setLocationRelativeTo(null); 
+        nuevaVentana.setLocationRelativeTo(null);
         esAdministrador = false;
-
 
         this.dispose();
     }//GEN-LAST:event_EntrarDeInvitadoActionPerformed
@@ -204,9 +202,8 @@ public class Login extends javax.swing.JFrame {
 
         VentanaRegistros ventana = new VentanaRegistros(Login.this);
         ventana.setVisible(true);
-    
-        setEnabled(false);
 
+        setEnabled(false);
 
         ventana.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -276,35 +273,51 @@ public class Login extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Login ventana = new Login();
-                ventana.setLocationRelativeTo(null); 
+                ventana.setLocationRelativeTo(null);
                 ventana.setVisible(true);
             }
         });
     }
 
+    /**
+     * Valida el acceso a la aplicación, revisando los datos de la BDO
+     */
     private void validarAcceso() {
+        // Se obtiene el texto ingresado en el campo de usuario, eliminando espacios al inicio y final.
         String usuarioIngresado = txtUsuario.getText().trim();
+
+        // Se obtiene la contraseña ingresada en el campo correspondiente y se convierte a String.
         String contraseñaIngresada = new String(txtContraseña.getPassword());
 
+        // Si el texto del usuario es el texto por defecto ("Usuario"), se limpia.
         if (usuarioIngresado.equals("Usuario")) {
             usuarioIngresado = "";
         }
+
+        // Si la contraseña es el texto por defecto ("Contraseña"), se limpia.
         if (contraseñaIngresada.equals("Contraseña")) {
             contraseñaIngresada = "";
         }
 
+        // Se llama al método del controlador para validar si el usuario y la contraseña existen en la base de datos.
         Usuario usuario = controlador.validarUsuario(usuarioIngresado, contraseñaIngresada);
 
+        // Si el usuario existe (es válido)...
         if (usuario != null) {
+          
             JOptionPane.showMessageDialog(this, "Acceso concedido. Bienvenido, " + usuarioIngresado + ".", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 
-            Gestion nuevaVentana = new Gestion(usuario); 
-            nuevaVentana.setVisible(true);
-            nuevaVentana.setLocationRelativeTo(null);
-            this.dispose();
+            // Se crea una nueva ventana de gestión y se pasa el usuario como parámetro.
+            Gestion nuevaVentana = new Gestion(usuario);
+            nuevaVentana.setVisible(true);                  
+            nuevaVentana.setLocationRelativeTo(null);       
+            this.dispose();                                
         } else {
+            // Si el usuario no existe o la contraseña es incorrecta, se muestra un mensaje de error.
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Acceso denegado", JOptionPane.ERROR_MESSAGE);
+
             txtContraseña.setText("");
+
             txtContraseñaFocusLost(null);
         }
     }

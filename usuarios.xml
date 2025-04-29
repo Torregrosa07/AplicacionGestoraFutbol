@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="22.0.2" class="java.beans.XMLDecoder">
+<java version="23" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <array class="java.lang.Object" length="4">
-    <void index="0">
-     <string>k</string>
+   <object class="Modelos.Usuario">
+    <void property="admin">
+     <boolean>true</boolean>
     </void>
-    <void index="1">
-     <string>k@gmail.com</string>
+    <void property="contraseña">
+     <string>Contraseña123</string>
     </void>
-    <void index="2">
-     <string>111222333</string>
+    <void property="correo">
+     <string>admin@hotmail.com</string>
     </void>
-    <void index="3">
-     <string>1111</string>
+    <void property="id">
+     <long>24</long>
     </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="4">
-    <void index="0">
+    <void property="nombre">
      <string>Administrador</string>
     </void>
-    <void index="1">
-     <string>a@gmail.com</string>
+    <void property="numero">
+     <string>444333555</string>
     </void>
-    <void index="2">
-     <string>000999111</string>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Modelos.Usuario">
+    <void property="admin">
+     <boolean>true</boolean>
     </void>
-    <void index="3">
-     <string>1234</string>
+    <void property="contraseña">
+     <string>Contraseña321</string>
     </void>
-   </array>
+    <void property="correo">
+     <string>thomas@hotmail.com</string>
+    </void>
+    <void property="id">
+     <long>31</long>
+    </void>
+    <void property="nombre">
+     <string>Thomas</string>
+    </void>
+    <void property="numero">
+     <string>444333555</string>
+    </void>
+   </object>
   </void>
  </object>
 </java>

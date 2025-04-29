@@ -27,34 +27,51 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GestionUsuarios extends javax.swing.JFrame {
 
+    // Se crea una instancia del controlador de usuarios para acceder a operaciones sobre los usuarios.
     controladorUsuarios controlador = new controladorUsuarios();
+
+// Expresión regular para validar el formato de un correo electrónico.
     final String regCorreo = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
+
+// Expresión regular para validar números de teléfono (de 9 a 14 dígitos, con o sin prefijo +).
     final String regTelefono = "^[\\+]?\\d{9,14}$";
 
-    /**
-     * Creates new form GestionUsuarios
-     */
     public GestionUsuarios() {
         initComponents();
-        actualizarTablaUsuarios();
+        actualizarTablaUsuarios(); // Carga los datos de los usuarios en la tabla.
 
+        // Se añade un listener para detectar cuando se selecciona una fila en la tabla.
+        // Al seleccionar una fila, se llama al método que muestra los datos del usuario seleccionado en los campos.
         TDatos.getSelectionModel().addListSelectionListener(e -> mostrarDatosUsuarioSeleccionado());
     }
 
+    /**
+     * Método que actualiza el contenido de la tabla de usuarios con los datos
+     * obtenidos del controlador.
+     */
     private void actualizarTablaUsuarios() {
+        // Se definen los nombres de las columnas de la tabla.
         String[] columnas = {"Nombre", "Correo", "Número", "Contraseña"};
+
+        // Se crea un nuevo modelo de tabla vacío con las columnas definidas.
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
+        // Se obtiene la lista de todos los usuarios desde la base de datos.
         List<Usuario> usuarios = controladorUsuarios.obtenerTodosUsuarios();
 
+        // Por cada usuario, se crea una fila con sus datos y se añade al modelo de la tabla.
         for (Usuario u : usuarios) {
             Object[] fila = {u.getNombre(), u.getCorreo(), u.getNumero(), u.getContraseña()};
             modelo.addRow(fila);
         }
 
+        // Se establece el nuevo modelo con los datos cargados en la tabla.
         TDatos.setModel(modelo);
     }
 
+    /**
+     * Método que limpia todos los campos del formulario, dejándolos vacíos.
+     */
     private void limpiarCampos() {
         txtNombreUsuario.setText("");
         txtContraseña.setText("");
@@ -392,7 +409,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             return;
         }
 
-        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, true);
+        Usuario nuevo = new Usuario(nuevoUsuario, nuevaContraseña, correo, telefono, false);
         controlador.añadir(nuevo);
         JOptionPane.showMessageDialog(this, "Usuario registrado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
@@ -516,63 +533,56 @@ public class GestionUsuarios extends javax.swing.JFrame {
 
     private void btnImportarDeXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeXmlActionPerformed
         try {
-
+            // Abrimos el archivo XML que contiene la lista de objetos Usuario serializados
             FileInputStream fis = new FileInputStream("usuarios.xml");
             XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
-            ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
-            decoder.close();
+
+            // Leemos la lista de usuarios directamente como objetos Usuario
+            ArrayList<Usuario> lista = (ArrayList<Usuario>) decoder.readObject();
+            decoder.close(); // Cerramos el decoder
 
             if (lista == null || lista.isEmpty()) {
-                throw new Exception("El archivo XML está vacío.");
+                throw new Exception("El archivo XML está vacío o no contiene usuarios.");
             }
 
-            int cargados = 0;
+            int cargados = 0; // Contador de usuarios cargados correctamente
 
-            for (Object[] fila : lista) {
+            for (Usuario usuario : lista) {
                 try {
-                    String nombre = (String) fila[0];
-                    String contraseña = (String) fila[1];
-
-                    Usuario nuevoUsuario = new Usuario();
-                    nuevoUsuario.setNombre(nombre);
-                    nuevoUsuario.setContraseña(contraseña);
-
-                    if (!controlador.existe(nombre)) {
-                        controlador.añadir(nuevoUsuario);
+                    // Si no existe, lo añadimos
+                    if (!controlador.existe(usuario.getNombre())) {
+                        controlador.añadir(usuario);
                         cargados++;
                     }
-
-                } catch (Exception e) {
-                    System.err.println("Error al procesar usuario: " + e.getMessage());
+                } catch (Exception ex) {
+                    System.err.println("Error al procesar usuario: " + ex.getMessage());
                 }
             }
 
             JOptionPane.showMessageDialog(this, cargados + " usuarios importados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            actualizarTablaUsuarios();
+            actualizarTablaUsuarios(); // Refresca la tabla
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al importar usuarios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+
+
     }//GEN-LAST:event_btnImportarDeXmlActionPerformed
 
     private void btnExportarAXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarAXmlActionPerformed
 
         try {
+            // Obtener la lista de usuarios directamente desde el controlador
+            ArrayList<Usuario> lista = new ArrayList<>(controladorUsuarios.obtenerTodosUsuarios());
 
-            DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
-
-            int rowCount = modeloActual.getRowCount();
-            System.out.println("Filas en modeloActual: " + rowCount);
+            int rowCount = lista.size();
+            System.out.println("Usuarios obtenidos: " + rowCount);
 
             if (rowCount == 0) {
-                JOptionPane.showMessageDialog(this, "No hay usuarios en la tabla para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No hay usuarios en la base de datos para exportar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-
-            // Convertir los datos de la tabla a una lista
-            ArrayList<Object[]> lista = pasarTablaALista(modeloActual);
-            System.out.println("Número de filas exportadas: " + lista.size());
 
             // Guardar la lista en un archivo XML
             FileOutputStream fos = new FileOutputStream("usuarios.xml");
@@ -586,6 +596,7 @@ public class GestionUsuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al exportar XML: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+
     }//GEN-LAST:event_btnExportarAXmlActionPerformed
 
     private void btnImportarDeBinarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarDeBinarioActionPerformed
@@ -680,30 +691,40 @@ public class GestionUsuarios extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Selecciona automáticamente una fila de la tabla TDatos que coincida con
+     * el nombre especificado.
+     */
     private void seleccionarFilaPorNombre(String nombre) {
         DefaultTableModel modelo = (DefaultTableModel) TDatos.getModel();
 
         for (int i = 0; i < modelo.getRowCount(); i++) {
+            // Compara el valor de la columna 0 (Nombre) con el nombre proporcionado.
             if (modelo.getValueAt(i, 0).toString().equals(nombre)) {
+                // Selecciona la fila y la hace visible en la interfaz.
                 TDatos.setRowSelectionInterval(i, i);
                 TDatos.scrollRectToVisible(TDatos.getCellRect(i, 0, true));
-                break;
+                break; // Sale del bucle una vez que encuentra la coincidencia.
             }
         }
     }
 
+    /**
+     * Muestra en los campos de texto los datos del usuario actualmente
+     * seleccionado en la tabla.
+     */
     private void mostrarDatosUsuarioSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
 
         if (filaSeleccionada >= 0) {
             try {
-                // Convertir valores a String de forma segura
+                // Se obtienen los valores de cada columna en la fila seleccionada.
                 String nombre = String.valueOf(TDatos.getValueAt(filaSeleccionada, 0));
                 String correo = String.valueOf(TDatos.getValueAt(filaSeleccionada, 1));
                 String numero = String.valueOf(TDatos.getValueAt(filaSeleccionada, 2));
                 String contraseña = String.valueOf(TDatos.getValueAt(filaSeleccionada, 3));
 
-                // Reemplazar "null" por cadena vacía 
+                // Si algún campo contiene "null" (cadena), se reemplaza por vacío.
                 if (nombre.equals("null")) {
                     nombre = "";
                 }
@@ -717,13 +738,14 @@ public class GestionUsuarios extends javax.swing.JFrame {
                     contraseña = "";
                 }
 
-                // Llenar campos de texto
+                // Se cargan los valores en los campos de texto del formulario.
                 txtNombreUsuario.setText(nombre);
                 txtCorreo.setText(correo);
                 txtNúmero.setText(numero);
                 txtContraseña.setText(contraseña);
 
             } catch (Exception e) {
+                // Si ocurre un error al acceder a los datos, se imprime en consola.
                 System.err.println("Error al mostrar datos: " + e.getMessage());
                 e.printStackTrace();
             }
@@ -731,16 +753,18 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }
 
     /**
-     * MÉTODO PARA PASAR LA TABLA A LISTA
+     * Convierte el contenido de un DefaultTableModel en una lista de arreglos
+     * de objetos (filas).
      *
      * @param modelo
-     * @return
+     * @return Una lista con cada fila representada como un arreglo de objetos.
      */
     private ArrayList<Object[]> pasarTablaALista(DefaultTableModel modelo) {
         ArrayList<Object[]> lista = new ArrayList<>();
         int filas = modelo.getRowCount();
         int columnas = modelo.getColumnCount();
 
+        // Recorre cada celda del modelo y lo guarda en una lista como una fila de objetos.
         for (int i = 0; i < filas; i++) {
             Object[] fila = new Object[columnas];
             for (int j = 0; j < columnas; j++) {
@@ -752,7 +776,8 @@ public class GestionUsuarios extends javax.swing.JFrame {
     }
 
     /**
-     * MÉTODO PARA PASAR LISTA A TABLA
+     * Convierte una lista de filas (arreglos de objetos) en un
+     * DefaultTableModel.
      *
      * @param lista
      * @param columnas
@@ -761,10 +786,11 @@ public class GestionUsuarios extends javax.swing.JFrame {
     private DefaultTableModel pasarListaATabla(ArrayList<Object[]> lista, String[] columnas) {
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
         for (Object[] fila : lista) {
-            modelo.addRow(fila);
+            modelo.addRow(fila); // Agrega cada fila al modelo.
         }
         return modelo;
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TDatos;
     private javax.swing.JButton btnAñadir;
