@@ -446,7 +446,7 @@ public class GestionJugadores extends javax.swing.JPanel {
             return;
         }
 
-        // Validación de sólo texto
+        // Expresión regular para los nombres (permite caracteres especiales) 
         String regexTexto = "^([A-ZÁÉÍÓÚÑa-zñáéíóúñ]{1,}'?-?[A-ZÁÉÍÓÚÑa-zñáéíóú]+[\\s]*)+$";
         if (!nombre.matches(regexTexto)) {
             JOptionPane.showMessageDialog(this,
@@ -460,7 +460,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                     "Error en Apellidos", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Validación de dorsal: solo números
+        // Expresión regular para datos númericos
         String regexDorsal = "^\\d+$";
         if (!dorsal.matches(regexDorsal)) {
             JOptionPane.showMessageDialog(this,
@@ -662,7 +662,9 @@ public class GestionJugadores extends javax.swing.JPanel {
                     "Campos vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+        
+        // Expresión regular para los nombres (permite caracteres especiales) 
+        
         String regexTexto = "^([A-ZÁÉÍÓÚÑa-zñáéíóúñ]{1,}'?-?[A-ZÁÉÍÓÚÑa-zñáéíóú]+[\\s]*)+$";
         if (!nombre.matches(regexTexto)) {
             JOptionPane.showMessageDialog(this,
@@ -686,7 +688,7 @@ public class GestionJugadores extends javax.swing.JPanel {
                     "Error en el campo edad", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Validación de dorsal: solo números
+        // Expresión regular para datos númericos
         String regexDorsal = "^\\d+$";
         if (!dorsal.matches(regexDorsal)) {
             JOptionPane.showMessageDialog(this,
@@ -967,6 +969,9 @@ public class GestionJugadores extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_btnImportarBinarioActionPerformed
+    /**
+     * MÉTODO PARA MOSTRAR AL JUGADOR SELECCIONADO EN LOS CAMPOS DE TEXTO
+     */
     private void mostrarDatosJugadorSeleccionado() {
         int filaSeleccionada = TDatos.getSelectedRow();
 

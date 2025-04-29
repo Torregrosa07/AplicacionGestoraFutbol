@@ -41,7 +41,8 @@ public class controladorJugadores {
         try {
             conn = objetoConexion.conectar();
             sentencia = conn.createStatement();
-
+            
+            //Construimos la sentencia sql, dependiendo si el jugador tiene equipo asignado 
             String sql;
             if (idEquipo != null) {
                 sql = "INSERT INTO jugador (nombre, apellidos, dorsal, posicion, sexo, edad, id_equipo) "
@@ -56,7 +57,7 @@ public class controladorJugadores {
             sentencia.executeUpdate(sql);
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            // Error de duplicado (si existe la restricción UNIQUE)
+            // Error de duplicado gracias a que el nombre y apellidos son unique en la bd
             JOptionPane.showMessageDialog(null, "Error: El jugador ya existe en la base de datos.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +86,8 @@ public class controladorJugadores {
         try {
             conn = objetoConexion.conectar();
             sentencia = conn.createStatement();
-
+            
+            // se elimina por id
             String sql = "DELETE FROM jugador WHERE id_jugador = " + idJugador;
             int filasAfectadas = sentencia.executeUpdate(sql);
 
