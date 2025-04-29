@@ -29,7 +29,7 @@ public class ConexionBDR {
     String driver = "com.mysql.cj.jdbc.Driver";
     Connection con;
     static Statement sentencia;
-    
+
     // Ruta al archivo de configuración
     private static final String CONFIG_FILE = "config/database.txt";
 
@@ -37,7 +37,7 @@ public class ConexionBDR {
         // Cargar configuración al crear la instancia
         cargarConfiguracion();
     }
-    
+
     /**
      * Carga la configuración de la base de datos desde un archivo
      */
@@ -49,7 +49,7 @@ public class ConexionBDR {
                 if (configuracion.length == 2) {
                     String clave = configuracion[0].trim();
                     String valor = configuracion[1].trim();
-                    
+
                     switch (clave.toLowerCase()) {
                         case "bd":
                         case "database":
@@ -112,7 +112,7 @@ public class ConexionBDR {
                 con.close();
                 System.out.println("SE DESCONECTÓ DE " + bd + " CORRECTAMENTE");
 //            JOptionPane.showMessageDialog(null, "Conexión desconectada");
-                
+
             }
         } catch (SQLException ex) {
             System.out.println("NO SE DESCONECTÓ DE " + bd + " CORRECTAMENTE");
@@ -126,7 +126,7 @@ public class ConexionBDR {
         conexion.conectar();
         conexion.desconectar();
     }
-    
+
     public Statement getStatement() throws SQLException, ClassNotFoundException {
         if (con == null || con.isClosed()) {
             conectar();

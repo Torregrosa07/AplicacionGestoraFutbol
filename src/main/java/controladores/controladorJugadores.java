@@ -21,6 +21,17 @@ import javax.swing.JOptionPane;
  */
 public class controladorJugadores {
 
+    /**
+     * MÉTODO PARA AÑADIR A LOS JUGADORES A LA BD
+     *
+     * @param nombre
+     * @param apellidos
+     * @param dorsal
+     * @param posicion
+     * @param sexo
+     * @param edad
+     * @param idEquipo
+     */
     public void anadirJugador(String nombre, String apellidos, String dorsal,
             String posicion, String sexo, int edad, Integer idEquipo) {
         ConexionBDR objetoConexion = new ConexionBDR();
@@ -61,6 +72,11 @@ public class controladorJugadores {
         }
     }
 
+    /**
+     * MÉTODO PARA ELIMINAR JUGADORES DE LA BD
+     *
+     * @param idJugador
+     */
     public void eliminarJugador(int idJugador) {
         ConexionBDR objetoConexion = new ConexionBDR();
         Connection conn = null;
@@ -92,6 +108,18 @@ public class controladorJugadores {
         }
     }
 
+    /**
+     * MÉTODO PARA MODIFICAR A LOS JUGADORES DE LA BD
+     *
+     * @param idJugador
+     * @param nombre
+     * @param apellidos
+     * @param dorsal
+     * @param posicion
+     * @param sexo
+     * @param edad
+     * @param idEquipo
+     */
     public void modificarJugador(int idJugador, String nombre, String apellidos, String dorsal,
             String posicion, String sexo, int edad, Integer idEquipo) {
         ConexionBDR objetoConexion = new ConexionBDR();
@@ -146,6 +174,13 @@ public class controladorJugadores {
         }
     }
 
+    /**
+     * MÉTODO PARA BUSCAR A JUGADOR POR NOMBRE Y APELLIDOS
+     *
+     * @param nombre
+     * @param apellidos
+     * @return
+     */
     public Jugador buscarJugadorPorNombreApellidos(String nombre, String apellidos) {
         ConexionBDR objetoConexion = new ConexionBDR();
         Connection conn = null;
@@ -217,6 +252,11 @@ public class controladorJugadores {
         return jugadorEncontrado;
     }
 
+    /**
+     * MÉTODO PARA MOSTRAR A LOS EQUIPOS EN EL COMBO BOX, MEDIANTE SENTENCIA SQL
+     *
+     * @param jComboEquipo
+     */
     public void mostrarEquiposCombo(JComboBox jComboEquipo) {
         ConexionBDR objetoConexion = new ConexionBDR();
         Connection conn = null;
@@ -254,6 +294,11 @@ public class controladorJugadores {
         }
     }
 
+    /**
+     * MÉTODO PARA MOSTRAR SEXO EN EL COMBO BOX MEDIANTE SENTENCIA SQL
+     *
+     * @param jComboSexo
+     */
     public void MostrarSexoCombo(JComboBox jComboSexo) {
         ConexionBDR objetoConexion = new ConexionBDR();
         Connection con = null;
@@ -294,6 +339,11 @@ public class controladorJugadores {
         }
     }
 
+    /**
+     * MÉTODO PARA MOSTRAR POSICIONES DE JUGADORES, MEDIANTE SENTENCIA SQL
+     *
+     * @param jComboPosicion
+     */
     public void MostrarPosicionCombo(JComboBox jComboPosicion) {
         ConexionBDR objetoConexion = new ConexionBDR();
         Connection con = null;
@@ -334,11 +384,11 @@ public class controladorJugadores {
         }
     }
 
-//    private TreeSet<Jugador> listadoJugadores = new TreeSet<>();
-//
-//    public boolean añadir(Jugador jug) {
-//        return listadoJugadores.add(jug); // si se añadió devuelve true, si ya existía false
-//    }
+    /**
+     * MÉTODO PARA CONVERTIR A MATRIZ DE OBJETOS
+     *
+     * @return
+     */
     public Object[][] convertirAMatrizObject() {
         ConexionBDR conexionBDR = new ConexionBDR();
         Connection con = null;
@@ -392,113 +442,4 @@ public class controladorJugadores {
         }
     }
 
-    
-
-    /*    public Object[][] convertirAMatrizObjectPorEquipo(int idEquipo) {
-        ConexionBDR conexion = new ConexionBDR();
-        Connection con = null;
-        Statement st = null;
-        ResultSet rs = null;
-
-        try {
-            con = conexion.conectar();
-            st = con.createStatement();
-
-            // Consulta para contar cuántos jugadores hay del equipo
-            rs = st.executeQuery("SELECT COUNT(*) FROM jugador WHERE id_equipo = " + idEquipo);
-            rs.next();
-            int cantidad = rs.getInt(1);
-
-            Object[][] datos = new Object[cantidad][8];
-
-            rs = st.executeQuery("SELECT j.id_jugador, j.nombre, j.apellidos, j.posicion, j.dorsal, e.nombre AS equipo, j.edad, j.sexo "
-                    + "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo "
-                    + "WHERE j.id_equipo = " + idEquipo);
-
-            int i = 0;
-            while (rs.next()) {
-                datos[i][0] = rs.getInt("id_jugador");
-                datos[i][1] = rs.getString("nombre");
-                datos[i][2] = rs.getString("apellidos");
-                datos[i][3] = rs.getString("posicion");
-                datos[i][4] = rs.getString("dorsal");
-                datos[i][5] = rs.getString("equipo");
-                datos[i][6] = rs.getInt("edad");
-                datos[i][7] = rs.getString("sexo");
-                i++;
-            }
-
-            return datos;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Object[0][8];
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            conexion.desconectar();
-        }
-    }
-
-    public Object[][] convertirAMatrizObjectPorPosicion(String posicion) {
-        ConexionBDR conexion = new ConexionBDR();
-        Connection con = null;
-        Statement st = null;
-        ResultSet rs = null;
-
-        try {
-            con = conexion.conectar();
-            st = con.createStatement();
-
-            // Consulta para contar cuántos jugadores hay con esa posición
-            rs = st.executeQuery("SELECT COUNT(*) FROM jugador WHERE posicion = '" + posicion + "'");
-            rs.next();
-            int cantidad = rs.getInt(1);
-
-            Object[][] datos = new Object[cantidad][8];
-
-            rs = st.executeQuery("SELECT j.id_jugador, j.nombre, j.apellidos, j.posicion, j.dorsal, e.nombre AS equipo, j.edad, j.sexo "
-                    + "FROM jugador j LEFT JOIN equipo e ON j.id_equipo = e.id_equipo "
-                    + "WHERE j.posicion = '" + posicion + "'");
-
-            int i = 0;
-            while (rs.next()) {
-                datos[i][0] = rs.getInt("id_jugador");
-                datos[i][1] = rs.getString("nombre");
-                datos[i][2] = rs.getString("apellidos");
-                datos[i][3] = rs.getString("posicion");
-                datos[i][4] = rs.getString("dorsal");
-                datos[i][5] = rs.getString("equipo");
-                datos[i][6] = rs.getInt("edad");
-                datos[i][7] = rs.getString("sexo");
-                i++;
-            }
-
-            return datos;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Object[0][8];
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            conexion.desconectar();
-        }
-    }*/
 }

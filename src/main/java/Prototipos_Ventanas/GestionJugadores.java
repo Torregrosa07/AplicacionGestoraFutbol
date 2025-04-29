@@ -68,6 +68,12 @@ public class GestionJugadores extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * MÉTODO PARA ACTUALIZAR LA TABLA JUGADORES, SE LLAMA AL FINAZLIZAR CADA
+     * OPERACIÓN
+     *
+     * @throws SQLException
+     */
     private void actualizarTabla() throws SQLException {
         matrizDatos = controladorJugadores.convertirAMatrizObject();
         dtm = new DefaultTableModel(matrizDatos, columnas) {
@@ -416,7 +422,12 @@ public class GestionJugadores extends javax.swing.JPanel {
     private void txtDorsalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDorsalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDorsalActionPerformed
-
+    /**
+     * MÉTODO PARA AÑADIR JUGADORES, RESPETANDO LAS ENTRADAS A LOS CAMPOS DE
+     * TEXTO
+     *
+     * @param evt
+     */
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
 
         String nombre = txtNombre.getText().trim();
@@ -500,7 +511,11 @@ public class GestionJugadores extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_btnAnadirActionPerformed
-
+    /**
+     * MÉTODO PARA ELIMINAR UN JUGADOR, SELECCIONANDO AL JUGADOR EN LA TABLA
+     *
+     * @param evt
+     */
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
         int filaSeleccionada = TDatos.getSelectedRow();
@@ -538,7 +553,11 @@ public class GestionJugadores extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
-
+    /**
+     * BOTÓN PARA BUSCAR A UN JUGADOR EN LA TABLA, MEDIANTE NOMBRE Y APELLIDOS
+     *
+     * @param evt
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String nombre = txtNombre.getText().trim();
         String apellidos = txtApellidos.getText().trim();
@@ -597,41 +616,17 @@ public class GestionJugadores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jComboEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEquipoActionPerformed
-        /*String equipoSeleccionado = (String) jComboEquipo.getSelectedItem();
 
-        try {
-            if (equipoSeleccionado != null && !"Sin equipo".equals(equipoSeleccionado)) {
-                // Buscar el equipo por nombre
-                controladores.controladorEquipos ctrlEquipos = new controladores.controladorEquipos();
-                Equipo equipo = ctrlEquipos.buscarEquipoPorNombre(equipoSeleccionado);
-
-                if (equipo != null) {
-                    // Obtener jugadores de ese equipo
-                    Object[][] jugadoresPorEquipo = controladorJugadores.convertirAMatrizObjectPorEquipo(equipo.getIDEquipo());
-
-                    // Actualizar modelo de la tabla
-                    dtm = new DefaultTableModel(jugadoresPorEquipo, columnas) {
-                        @Override
-                        public boolean isCellEditable(int row, int column) {
-                            return false;
-                        }
-                    };
-                    TDatos.setModel(dtm);
-                }
-            } else {
-                // Mostrar todos los jugadores si se elige "Sin equipo"
-                actualizarTabla();
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al filtrar jugadores: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }*/
     }//GEN-LAST:event_jComboEquipoActionPerformed
 
     private void jComboSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboSexoActionPerformed
 
     }//GEN-LAST:event_jComboSexoActionPerformed
-
+    /**
+     * MÉTODO PARA EL BOTÓN DE MODIFICAR JUGADOR
+     *
+     * @param evt
+     */
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // Verificar que se haya seleccionado una fila en la tabla
         int filaSeleccionada = TDatos.getSelectedRow();
@@ -733,26 +728,12 @@ public class GestionJugadores extends javax.swing.JPanel {
 
     private void jComboPosicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboPosicionActionPerformed
 
-        /* String posicionSeleccionada = (String) jComboPosicion.getSelectedItem();
-        try {
-            if (posicionSeleccionada != null && !posicionSeleccionada.isEmpty()) {
-                Object[][] jugadoresPorPosicion = controladorJugadores.convertirAMatrizObjectPorPosicion(posicionSeleccionada);
-                dtm = new DefaultTableModel(jugadoresPorPosicion, columnas) {
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                        return false;
-                    }
-                };
-                TDatos.setModel(dtm);
-            } else {
-                actualizarTabla();
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al filtrar por posición: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }*/
-
     }//GEN-LAST:event_jComboPosicionActionPerformed
-
+    /**
+     * MÉTODO PARA DEJAR LOS CAMPOS DE TEXTO VACÍOS
+     *
+     * @param evt
+     */
     private void btnLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCamposActionPerformed
 
         txtNombre.setText("");
@@ -767,7 +748,11 @@ public class GestionJugadores extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_btnLimpiarCamposActionPerformed
-
+    /**
+     * MÉTODO PARA EXPORTAR LA TABLA COMO LISTA A UN ARCHIVO XML
+     *
+     * @param evt
+     */
     private void btnExportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarXMLActionPerformed
         try {
             DefaultTableModel modeloActual = (DefaultTableModel) TDatos.getModel();
@@ -798,7 +783,11 @@ public class GestionJugadores extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_btnExportarXMLActionPerformed
-
+    /**
+     * MÉTODO PARA EL BOTÓN IMPORTAR JUGADORES DESDE XML
+     *
+     * @param evt
+     */
     private void btnImportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportarXMLActionPerformed
         try {
             // Abrir y decodificar el XML
@@ -821,29 +810,29 @@ public class GestionJugadores extends javax.swing.JPanel {
             for (Object[] fila : lista) {
                 String nombre = (String) fila[1];
                 String apellidos = (String) fila[2];
-                String posicion = (String) fila[3];
-                String dorsal = (String) fila[4];
-                String equipoNom = (String) fila[5];
-                int edad = Integer.parseInt(fila[6].toString());
-                String sexo = (String) fila[7];
 
-                // Saltar si ya existe
-                if (controladorJugadores.buscarJugadorPorNombreApellidos(nombre, apellidos) != null) {
-                    continue;
-                }
+                // Solo procesar si no existe
+                Jugador existente = controladorJugadores.buscarJugadorPorNombreApellidos(nombre, apellidos);
+                if (existente == null) {
+                    String posicion = (String) fila[3];
+                    String dorsal = (String) fila[4];
+                    String equipoNom = (String) fila[5];
+                    int edad = Integer.parseInt(fila[6].toString());
+                    String sexo = (String) fila[7];
 
-                // Buscar ID de equipo si se proporciona nombre
-                Integer idEquipo = null;
-                if (equipoNom != null && !equipoNom.trim().isEmpty()) {
-                    Equipo eq = ctrlEquipos.buscarEquipoPorNombre(equipoNom);
-                    if (eq != null) {
-                        idEquipo = eq.getIDEquipo();
+                    // Buscar ID de equipo si se proporciona nombre
+                    Integer idEquipo = null;
+                    if (equipoNom != null && !equipoNom.trim().isEmpty()) {
+                        Equipo eq = ctrlEquipos.buscarEquipoPorNombre(equipoNom);
+                        if (eq != null) {
+                            idEquipo = eq.getIDEquipo();
+                        }
                     }
-                }
 
-                // Añadir a la BD
-                controladorJugadores.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
-                importados++;
+                    // Añadir a la BD
+                    controladorJugadores.anadirJugador(nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+                    importados++;
+                }
             }
 
             // Mostrar resultado y refrescar tabla
