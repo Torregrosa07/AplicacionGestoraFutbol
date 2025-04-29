@@ -37,12 +37,6 @@ public class GestionJugadores extends javax.swing.JPanel {
     private DefaultTableModel dtm;
     private String[] columnas = {"ID", "NOMBRE", "APELLIDOS", "POSICION", "DORSAL", "EQUIPO", "EDAD", "SEXO"};
 
-    private void modificarJugador(int idJugador, String nombre, String apellidos, String dorsal,
-            String posicion, String sexo, int edad, Integer idEquipo) {
-        controladores.controladorJugadores controlador = new controladores.controladorJugadores();
-        controlador.modificarJugador(idJugador, nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
-    }
-
     /**
      * Creates new form GestionJugadores
      *
@@ -662,9 +656,8 @@ public class GestionJugadores extends javax.swing.JPanel {
                     "Campos vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         // Expresión regular para los nombres (permite caracteres especiales) 
-        
         String regexTexto = "^([A-ZÁÉÍÓÚÑa-zñáéíóúñ]{1,}'?-?[A-ZÁÉÍÓÚÑa-zñáéíóú]+[\\s]*)+$";
         if (!nombre.matches(regexTexto)) {
             JOptionPane.showMessageDialog(this,
@@ -1065,6 +1058,11 @@ public class GestionJugadores extends javax.swing.JPanel {
     private javax.swing.JTextField txtEdad;
     private java.awt.TextField txtNombre;
     // End of variables declaration//GEN-END:variables
+    private void modificarJugador(int idJugador, String nombre, String apellidos, String dorsal,
+            String posicion, String sexo, int edad, Integer idEquipo) {
+        controladores.controladorJugadores controlador = new controladores.controladorJugadores();
+        controlador.modificarJugador(idJugador, nombre, apellidos, dorsal, posicion, sexo, edad, idEquipo);
+    }
 
     /**
      * MÉTODO PARA PASAR TABLA A LISTA Convierte un DefaultTableModel a
