@@ -8,7 +8,9 @@ import Modelos.Partido;
 import controladores.controladorPartido;
 import com.toedter.calendar.JDateChooser;
 import java.awt.TextField;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -507,7 +509,66 @@ public class GestionPartidos extends javax.swing.JPanel {
 
     private void cargarDeFicheroXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarDeFicheroXMLActionPerformed
         try {
-            int cargados = controlador.importarPartidosDesdeXML(modeloPartidos);
+            // se leer el archivo XML
+            FileInputStream fis = new FileInputStream("partidos.xml");
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(fis));
+            ArrayList<Object[]> lista = (ArrayList<Object[]>) decoder.readObject();
+            decoder.close();
+
+            // se verifica si el XML está vacío
+            if (lista.isEmpty()) {
+                throw new Exception("XML vacío.");
+            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            int cargados = 0;
+
+            // y se procesa cada fila del XML
+            for (int i = 0; i < lista.size(); i++) {
+                Object[] fila = lista.get(i);
+                try {
+                    Integer id = (Integer) fila[0];
+                    String fechaStr = (String) fila[1];
+                    String hora = (String) fila[2];
+                    String equipoLocal = (String) fila[3];
+                    String equipoVisitante = (String) fila[4];
+
+                    Date fecha = dateFormat.parse(fechaStr);
+                    if (!controlador.existeEquipo(equipoLocal) || !controlador.existeEquipo(equipoVisitante)) {
+                        continue;
+                    }
+
+                    if (hora.length() == 5) {
+                        hora = hora + ":00"; // Asegurar el formato HH:mm:ss
+                    }
+
+                    JDateChooser dateTemporal = new JDateChooser(fecha);
+                    TextField horaTemporal = new TextField(hora);
+
+                    if (!controlador.existePartido(fechaStr, hora, equipoLocal, equipoVisitante)) {
+                        if (controlador.guardarPartido(dateTemporal, horaTemporal, equipoLocal, equipoVisitante, modeloPartidos)) {
+                            cargados++;
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error al procesar partido: " + e.getMessage());
+                }
+            }
+
+            //se actualiza la tabla
+            modeloPartidos.setRowCount(0);
+            DefaultTableModel nuevoModelo = controlador.cargarPartidos();
+            for (int i = 0; i < nuevoModelo.getRowCount(); i++) {
+                modeloPartidos.addRow(new Object[]{
+                    nuevoModelo.getValueAt(i, 0),
+                    nuevoModelo.getValueAt(i, 1),
+                    nuevoModelo.getValueAt(i, 2),
+                    nuevoModelo.getValueAt(i, 3),
+                    nuevoModelo.getValueAt(i, 4)
+                });
+            }
+
+            // y muestra un mensaje según el resultado
             if (cargados > 0) {
                 JOptionPane.showMessageDialog(this,
                         cargados + " partidos importados correctamente.",

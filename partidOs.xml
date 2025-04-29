@@ -156,25 +156,6 @@
   <void method="add">
    <array class="java.lang.Object" length="5">
     <void index="0">
-     <int>117</int>
-    </void>
-    <void index="1">
-     <string>2025-12-01</string>
-    </void>
-    <void index="2">
-     <string>13:00:00</string>
-    </void>
-    <void index="3">
-     <string>Águilas Doradas</string>
-    </void>
-    <void index="4">
-     <string>Tigres FC</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="5">
-    <void index="0">
      <int>116</int>
     </void>
     <void index="1">
