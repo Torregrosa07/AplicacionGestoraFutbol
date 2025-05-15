@@ -4,271 +4,25 @@
   <void method="add">
    <array class="java.lang.Object" length="8">
     <void index="0">
-     <string>36</string>
-    </void>
-    <void index="1">
-     <string>Rapha</string>
-    </void>
-    <void index="2">
-     <string>kaka</string>
-    </void>
-    <void index="3">
-     <string>DEFENSA</string>
-    </void>
-    <void index="4">
-     <string>11</string>
-    </void>
-    <void index="6">
-     <string>22</string>
-    </void>
-    <void index="7">
-     <string>MASCULINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>38</string>
-    </void>
-    <void index="1">
-     <string>pruba</string>
-    </void>
-    <void index="2">
-     <string>jugador</string>
-    </void>
-    <void index="3">
-     <string>DELANTERO</string>
-    </void>
-    <void index="4">
-     <string>99</string>
-    </void>
-    <void index="5">
-     <string>Real Madrid</string>
-    </void>
-    <void index="6">
-     <string>99</string>
-    </void>
-    <void index="7">
-     <string>MASCULINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>40</string>
-    </void>
-    <void index="1">
-     <string>awsadasd</string>
-    </void>
-    <void index="2">
-     <string>dfssdgs</string>
-    </void>
-    <void index="3">
-     <string>DEFENSA</string>
-    </void>
-    <void index="4">
-     <string>19</string>
-    </void>
-    <void index="6">
-     <string>18</string>
-    </void>
-    <void index="7">
-     <string>MASCULINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>44</string>
-    </void>
-    <void index="1">
-     <string>Sergio</string>
-    </void>
-    <void index="2">
-     <string>López Díaz</string>
-    </void>
-    <void index="3">
-     <string>PORTERO</string>
-    </void>
-    <void index="4">
-     <string>1</string>
-    </void>
-    <void index="5">
-     <string>Prueba FC</string>
-    </void>
-    <void index="6">
-     <string>28</string>
-    </void>
-    <void index="7">
-     <string>MASCULINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>45</string>
-    </void>
-    <void index="1">
-     <string>Iván</string>
-    </void>
-    <void index="2">
-     <string>Rodríguez Peña</string>
-    </void>
-    <void index="3">
-     <string>DEFENSA</string>
-    </void>
-    <void index="4">
-     <string>3</string>
-    </void>
-    <void index="5">
-     <string>Prueba FC</string>
-    </void>
-    <void index="6">
-     <string>25</string>
-    </void>
-    <void index="7">
-     <string>MASCULINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>46</string>
-    </void>
-    <void index="1">
-     <string>Laura</string>
-    </void>
-    <void index="2">
-     <string>Martínez Vega</string>
-    </void>
-    <void index="3">
-     <string>MEDIOCENTRO</string>
-    </void>
-    <void index="4">
-     <string>6</string>
-    </void>
-    <void index="5">
-     <string>Real Prueba CF</string>
-    </void>
-    <void index="6">
-     <string>23</string>
-    </void>
-    <void index="7">
-     <string>FEMENINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>47</string>
-    </void>
-    <void index="1">
-     <string>Paula</string>
-    </void>
-    <void index="2">
-     <string>García Ramos</string>
-    </void>
-    <void index="3">
-     <string>DELANTERO</string>
-    </void>
-    <void index="4">
-     <string>9</string>
-    </void>
-    <void index="5">
-     <string>Real Prueba CF</string>
-    </void>
-    <void index="6">
-     <string>22</string>
-    </void>
-    <void index="7">
-     <string>FEMENINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>48</string>
-    </void>
-    <void index="1">
-     <string>Daniel</string>
-    </void>
-    <void index="2">
-     <string>Santos Ruiz</string>
-    </void>
-    <void index="3">
-     <string>DEFENSA</string>
-    </void>
-    <void index="4">
-     <string>4</string>
-    </void>
-    <void index="5">
-     <string>Real Madrid</string>
-    </void>
-    <void index="6">
-     <string>27</string>
-    </void>
-    <void index="7">
-     <string>MASCULINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
-     <string>49</string>
-    </void>
-    <void index="1">
-     <string>Lucía</string>
-    </void>
-    <void index="2">
-     <string>Navarro López</string>
-    </void>
-    <void index="3">
-     <string>DELANTERO</string>
-    </void>
-    <void index="4">
-     <string>11</string>
-    </void>
-    <void index="5">
-     <string>Real Madrid</string>
-    </void>
-    <void index="6">
-     <string>21</string>
-    </void>
-    <void index="7">
-     <string>FEMENINO</string>
-    </void>
-   </array>
-  </void>
-  <void method="add">
-   <array class="java.lang.Object" length="8">
-    <void index="0">
      <string>50</string>
     </void>
     <void index="1">
-     <string>Andrés</string>
+     <string>Santiago Andres</string>
     </void>
     <void index="2">
-     <string>Muñoz Torres</string>
+     <string>Torregrosa</string>
     </void>
     <void index="3">
-     <string>MEDIOCENTRO</string>
+     <string>DELANTERO</string>
     </void>
     <void index="4">
-     <string>8</string>
+     <string>100</string>
     </void>
     <void index="5">
-     <string>Atlético de Madrid</string>
+     <string>Prueba FC</string>
     </void>
     <void index="6">
-     <string>24</string>
+     <string>17</string>
     </void>
     <void index="7">
      <string>MASCULINO</string>
@@ -278,28 +32,28 @@
   <void method="add">
    <array class="java.lang.Object" length="8">
     <void index="0">
-     <string>51</string>
+     <string>54</string>
     </void>
     <void index="1">
-     <string>Natalia</string>
+     <string>pruebaaa</string>
     </void>
     <void index="2">
-     <string>Fernández Gil</string>
+     <string>aaaa</string>
     </void>
     <void index="3">
-     <string>PORTERO</string>
+     <string>DELANTERO</string>
     </void>
     <void index="4">
-     <string>12</string>
+     <string>100</string>
     </void>
     <void index="5">
-     <string>Atlético de Madrid</string>
+     <string>Prueba FC</string>
     </void>
     <void index="6">
-     <string>26</string>
+     <string>17</string>
     </void>
     <void index="7">
-     <string>FEMENINO</string>
+     <string>MASCULINO</string>
     </void>
    </array>
   </void>

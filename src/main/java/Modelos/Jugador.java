@@ -7,23 +7,30 @@ package Modelos;
 import java.io.Serializable;
 
 /**
- *
  * @author keiny
  */
-public class Jugador implements Comparable<Jugador>, Serializable{
+public class Jugador implements Comparable<Jugador>, Serializable {
     private int IDjugador;
     private String nombre;
     private String apellidos;
-    public enum Posicion{PORTERO, DEFENSA, MEDIOCENTRO, DELANTERO};
+
+    public enum Posicion {PORTERO, DEFENSA, MEDIOCENTRO, DELANTERO}
+
+    ;
     private Posicion posicion;
     private Equipo equipo;
     private String dorsal;
-    
-    public enum Sexo{FEMENINO, MASCULINO, NO_DEFINIDO};
+
+    public enum Sexo {FEMENINO, MASCULINO, NO_DEFINIDO}
+
+    ;
     private Sexo sexo;
     private int edad;
     private String nacionalidad;
-    public enum TipoTarjeta{AMARILLO, ROJO};
+
+    public enum TipoTarjeta {AMARILLO, ROJO}
+
+    ;
     private TipoTarjeta tipoTarjeta;
 
 
@@ -106,7 +113,7 @@ public class Jugador implements Comparable<Jugador>, Serializable{
     public void setTipoTarjeta(TipoTarjeta tipoTarjeta) {
         this.tipoTarjeta = tipoTarjeta;
     }
-    
+
     @Override
     public int compareTo(Jugador otro) {
         return this.getNombre().toLowerCase().compareTo(otro.getNombre().toLowerCase());
@@ -114,9 +121,7 @@ public class Jugador implements Comparable<Jugador>, Serializable{
 
     public Jugador() {
     }
-    
-    
-    
+
 
     public Jugador(int idJugador, String nombreJugador, String apellidos1, Posicion valueOf, Equipo equipo1, String dorsal1, Sexo valueOf1, int edad1, String nacionalidad1) {
     }
@@ -138,32 +143,33 @@ public class Jugador implements Comparable<Jugador>, Serializable{
         this.nacionalidad = nacionalidad;
         this.tipoTarjeta = tipoTarjeta;
     }
-    
+
     //Nuevo contructor
-      public Jugador(String nombre, String apellidos,Equipo equipo, Posicion posicion, String dorsal){
-      this.nombre = nombre;
-      this.apellidos = apellidos;
-      this.equipo = equipo;
-      this.posicion = posicion;
-      this.dorsal = dorsal;
-              
-      }  
-  
+    public Jugador(String nombre, String apellidos, Equipo equipo, Posicion posicion, String dorsal) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.equipo = equipo;
+        this.posicion = posicion;
+        this.dorsal = dorsal;
+
+    }
+
     @Override
     public String toString() {
         return "Jugador{" + "IDjugador=" + IDjugador + ", nombre=" + nombre + ", apellidos=" + apellidos + ", posicion=" + posicion + ", edad=" + edad + ", nacionalidad=" + nacionalidad + '}';
     }
 
-    private void registrarGol(){
-        
-    }   
-    
-    private void registrarTarjeta(){
-        
+    private void registrarGol() {
+
     }
-    private float calcularRendimiento(){
+
+    private void registrarTarjeta() {
+
+    }
+
+    private float calcularRendimiento() {
         return 0;
     }
-    
-    
+
+
 }
